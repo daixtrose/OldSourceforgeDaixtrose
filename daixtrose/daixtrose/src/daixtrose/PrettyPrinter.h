@@ -103,7 +103,9 @@ struct LaTeXFormatter
   template <class OP> 
   static inline void Print(std::ostream& os) 
   {
-    if (SAME_TYPE(OP, Daixt::DefaultOps::BinaryEqual)) 
+    if (SAME_TYPE(OP, Daixt::DefaultOps::BinaryEqual)
+        ||
+        SAME_TYPE(OP, Daixt::DefaultOps::BinaryModuloAndAssign)) 
       {
         os << " = ";
         return;
@@ -370,7 +372,7 @@ inline std::ostream& operator<<(std::ostream& os, const Daixt::Expr<T>& E)
 ////////////////////////////////////////////////////////////////////////////////
 // some magic to achieve correct formatting:
 // usage e.g  
-// LaTeX(std::cerr) << SomeExpression << std:endl;  
+// std::cerr << LaTeX() << SomeExpression << std:endl;  
 
 class LaTeXManipulator
 {
