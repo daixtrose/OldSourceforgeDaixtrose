@@ -2442,32 +2442,8 @@ echo "$as_me: error: please rerun using flag --with-loki=LOKI_PREFIX " >&2;}
 fi;
 
 # a simple test, whether the path to loki is correct: check for loki/TypeManip.h
-as_ac_File=`echo "ac_cv_file_$LOKIDIR/loki/TypeManip.h" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $LOKIDIR/loki/TypeManip.h" >&5
-echo $ECHO_N "checking for $LOKIDIR/loki/TypeManip.h... $ECHO_C" >&6
-if eval "test \"\${$as_ac_File+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "$LOKIDIR/loki/TypeManip.h"; then
-  eval "$as_ac_File=yes"
-else
-  eval "$as_ac_File=no"
-fi
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_File'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_File'}'`" >&6
-if test `eval echo '${'$as_ac_File'}'` = yes; then
-  :
-else
-  { { echo "$as_me:$LINENO: error: Sorry, but path to loki seems to be broken" >&5
-echo "$as_me: error: Sorry, but path to loki seems to be broken" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
+#AC_CHECK_FILE([$LOKIDIR/loki/TypeManip.h], ,
+#    AC_MSG_ERROR([Sorry[,] but path to loki seems to be broken]) )
 
 
 ################################################################################

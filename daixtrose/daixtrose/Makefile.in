@@ -148,6 +148,7 @@ check_PROGRAMS = \
 	test_tiny_vec \
 	test_inverse \
 	test_block_mat \
+	test_l2norm \
 	test_matrix_print \
 	test_simplify \
 	quicktour_mini \
@@ -177,6 +178,7 @@ test_tiny_mat_SOURCES = $(srcdir)/src/demos/tiny/TestTinyMat.C
 test_tiny_vec_SOURCES = $(srcdir)/src/demos/tiny/TestTinyVec.C
 test_inverse_SOURCES = $(srcdir)/src/demos/linalg/TestInverse.C
 test_block_mat_SOURCES = $(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C
+test_l2norm_SOURCES = $(srcdir)/src/demos/linalg/TestL2_Norm.C
 test_simplify_SOURCES = $(srcdir)/src/demos/simplify/TestSimplify.C
 test_matrix_print_SOURCES = $(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C
 
@@ -283,13 +285,13 @@ check_PROGRAMS = test_performance_matrix_times_vector$(EXEEXT) \
 	test_change_disambiguation$(EXEEXT) test_linalg$(EXEEXT) \
 	test_rowsum$(EXEEXT) test_tiny_mat$(EXEEXT) \
 	test_tiny_vec$(EXEEXT) test_inverse$(EXEEXT) \
-	test_block_mat$(EXEEXT) test_matrix_print$(EXEEXT) \
-	test_simplify$(EXEEXT) quicktour_mini$(EXEEXT) \
-	quicktour_mini_2$(EXEEXT) quicktour_mini_3$(EXEEXT) \
-	quicktour_mini_4$(EXEEXT) quicktour_mini_5$(EXEEXT) \
-	quicktour_diff$(EXEEXT) quicktour_tiny$(EXEEXT) \
-	quicktour_linalg$(EXEEXT) quicktour_pm_lambda$(EXEEXT) \
-	quicktour_pm_lambda_boost$(EXEEXT)
+	test_block_mat$(EXEEXT) test_l2norm$(EXEEXT) \
+	test_matrix_print$(EXEEXT) test_simplify$(EXEEXT) \
+	quicktour_mini$(EXEEXT) quicktour_mini_2$(EXEEXT) \
+	quicktour_mini_3$(EXEEXT) quicktour_mini_4$(EXEEXT) \
+	quicktour_mini_5$(EXEEXT) quicktour_diff$(EXEEXT) \
+	quicktour_tiny$(EXEEXT) quicktour_linalg$(EXEEXT) \
+	quicktour_pm_lambda$(EXEEXT) quicktour_pm_lambda_boost$(EXEEXT)
 am_quicktour_diff_OBJECTS = Differentiation.$(OBJEXT)
 quicktour_diff_OBJECTS = $(am_quicktour_diff_OBJECTS)
 quicktour_diff_LDADD = $(LDADD)
@@ -358,6 +360,11 @@ test_inverse_OBJECTS = $(am_test_inverse_OBJECTS)
 test_inverse_LDADD = $(LDADD)
 test_inverse_DEPENDENCIES =
 test_inverse_LDFLAGS =
+am_test_l2norm_OBJECTS = TestL2_Norm.$(OBJEXT)
+test_l2norm_OBJECTS = $(am_test_l2norm_OBJECTS)
+test_l2norm_LDADD = $(LDADD)
+test_l2norm_DEPENDENCIES =
+test_l2norm_LDFLAGS =
 am_test_linalg_OBJECTS = TestLinalg.$(OBJEXT)
 test_linalg_OBJECTS = $(am_test_linalg_OBJECTS)
 test_linalg_LDADD = $(LDADD)
@@ -419,6 +426,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/PoorMansLambda.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestBlockedMatAndVec.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestInverse.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/TestL2_Norm.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestLinalg.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestPrintingOfBlockedMatrix.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestRowSum.Po \
@@ -441,8 +449,8 @@ DIST_SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) \
 	$(quicktour_mini_5_SOURCES) $(quicktour_pm_lambda_SOURCES) \
 	$(quicktour_pm_lambda_boost_SOURCES) $(quicktour_tiny_SOURCES) \
 	$(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) \
-	$(test_inverse_SOURCES) $(test_linalg_SOURCES) \
-	$(test_matrix_print_SOURCES) \
+	$(test_inverse_SOURCES) $(test_l2norm_SOURCES) \
+	$(test_linalg_SOURCES) $(test_matrix_print_SOURCES) \
 	$(test_performance_matrix_times_vector_SOURCES) \
 	$(test_rowsum_SOURCES) $(test_simple_get_value_1_SOURCES) \
 	$(test_simple_get_value_2_SOURCES) $(test_simplify_SOURCES) \
@@ -450,7 +458,7 @@ DIST_SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) \
 DIST_COMMON = README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
 	Makefile.in NEWS aclocal.m4 config.h.in configure configure.in \
 	depcomp install-sh missing mkinstalldirs
-SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) $(quicktour_mini_SOURCES) $(quicktour_mini_2_SOURCES) $(quicktour_mini_3_SOURCES) $(quicktour_mini_4_SOURCES) $(quicktour_mini_5_SOURCES) $(quicktour_pm_lambda_SOURCES) $(quicktour_pm_lambda_boost_SOURCES) $(quicktour_tiny_SOURCES) $(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) $(test_inverse_SOURCES) $(test_linalg_SOURCES) $(test_matrix_print_SOURCES) $(test_performance_matrix_times_vector_SOURCES) $(test_rowsum_SOURCES) $(test_simple_get_value_1_SOURCES) $(test_simple_get_value_2_SOURCES) $(test_simplify_SOURCES) $(test_tiny_mat_SOURCES) $(test_tiny_vec_SOURCES)
+SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) $(quicktour_mini_SOURCES) $(quicktour_mini_2_SOURCES) $(quicktour_mini_3_SOURCES) $(quicktour_mini_4_SOURCES) $(quicktour_mini_5_SOURCES) $(quicktour_pm_lambda_SOURCES) $(quicktour_pm_lambda_boost_SOURCES) $(quicktour_tiny_SOURCES) $(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) $(test_inverse_SOURCES) $(test_l2norm_SOURCES) $(test_linalg_SOURCES) $(test_matrix_print_SOURCES) $(test_performance_matrix_times_vector_SOURCES) $(test_rowsum_SOURCES) $(test_simple_get_value_1_SOURCES) $(test_simple_get_value_2_SOURCES) $(test_simplify_SOURCES) $(test_tiny_mat_SOURCES) $(test_tiny_vec_SOURCES)
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -532,6 +540,9 @@ test_change_disambiguation$(EXEEXT): $(test_change_disambiguation_OBJECTS) $(tes
 test_inverse$(EXEEXT): $(test_inverse_OBJECTS) $(test_inverse_DEPENDENCIES) 
 	@rm -f test_inverse$(EXEEXT)
 	$(CXXLINK) $(test_inverse_LDFLAGS) $(test_inverse_OBJECTS) $(test_inverse_LDADD) $(LIBS)
+test_l2norm$(EXEEXT): $(test_l2norm_OBJECTS) $(test_l2norm_DEPENDENCIES) 
+	@rm -f test_l2norm$(EXEEXT)
+	$(CXXLINK) $(test_l2norm_LDFLAGS) $(test_l2norm_OBJECTS) $(test_l2norm_LDADD) $(LIBS)
 test_linalg$(EXEEXT): $(test_linalg_OBJECTS) $(test_linalg_DEPENDENCIES) 
 	@rm -f test_linalg$(EXEEXT)
 	$(CXXLINK) $(test_linalg_LDFLAGS) $(test_linalg_OBJECTS) $(test_linalg_LDADD) $(LIBS)
@@ -577,6 +588,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PoorMansLambda.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestBlockedMatAndVec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestInverse.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestL2_Norm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestLinalg.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestPrintingOfBlockedMatrix.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestRowSum.Po@am__quote@
@@ -899,6 +911,28 @@ TestInverse.obj: $(srcdir)/src/demos/linalg/TestInverse.C
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/TestInverse.Po' tmpdepfile='$(DEPDIR)/TestInverse.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TestInverse.obj `if test -f '$(srcdir)/src/demos/linalg/TestInverse.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/linalg/TestInverse.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/linalg/TestInverse.C'; fi`
+
+TestL2_Norm.o: $(srcdir)/src/demos/linalg/TestL2_Norm.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TestL2_Norm.o -MD -MP -MF "$(DEPDIR)/TestL2_Norm.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o TestL2_Norm.o `test -f '$(srcdir)/src/demos/linalg/TestL2_Norm.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/linalg/TestL2_Norm.C; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/TestL2_Norm.Tpo" "$(DEPDIR)/TestL2_Norm.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/TestL2_Norm.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/linalg/TestL2_Norm.C' object='TestL2_Norm.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/TestL2_Norm.Po' tmpdepfile='$(DEPDIR)/TestL2_Norm.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TestL2_Norm.o `test -f '$(srcdir)/src/demos/linalg/TestL2_Norm.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/linalg/TestL2_Norm.C
+
+TestL2_Norm.obj: $(srcdir)/src/demos/linalg/TestL2_Norm.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TestL2_Norm.obj -MD -MP -MF "$(DEPDIR)/TestL2_Norm.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o TestL2_Norm.obj `if test -f '$(srcdir)/src/demos/linalg/TestL2_Norm.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/linalg/TestL2_Norm.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/linalg/TestL2_Norm.C'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/TestL2_Norm.Tpo" "$(DEPDIR)/TestL2_Norm.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/TestL2_Norm.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/linalg/TestL2_Norm.C' object='TestL2_Norm.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/TestL2_Norm.Po' tmpdepfile='$(DEPDIR)/TestL2_Norm.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TestL2_Norm.obj `if test -f '$(srcdir)/src/demos/linalg/TestL2_Norm.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/linalg/TestL2_Norm.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/linalg/TestL2_Norm.C'; fi`
 
 TestLinalg.o: $(srcdir)/src/demos/linalg/TestLinalg.C
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TestLinalg.o -MD -MP -MF "$(DEPDIR)/TestLinalg.Tpo" \

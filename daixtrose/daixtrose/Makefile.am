@@ -43,6 +43,7 @@ check_PROGRAMS = \
 	test_tiny_vec \
 	test_inverse \
 	test_block_mat \
+	test_l2norm \
 	test_matrix_print \
 	test_simplify \
 	quicktour_mini \
@@ -71,6 +72,7 @@ test_tiny_mat_SOURCES              = $(srcdir)/src/demos/tiny/TestTinyMat.C
 test_tiny_vec_SOURCES              = $(srcdir)/src/demos/tiny/TestTinyVec.C
 test_inverse_SOURCES               = $(srcdir)/src/demos/linalg/TestInverse.C
 test_block_mat_SOURCES             = $(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C
+test_l2norm_SOURCES 		   = $(srcdir)/src/demos/linalg/TestL2_Norm.C
 test_simplify_SOURCES              = $(srcdir)/src/demos/simplify/TestSimplify.C
 test_matrix_print_SOURCES          = $(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C
 

@@ -57,8 +57,8 @@ AC_ARG_WITH(loki,
     AC_MSG_ERROR([please rerun using flag --with-loki=LOKI_PREFIX ]) )     
 
 # a simple test, whether the path to loki is correct: check for loki/TypeManip.h
-AC_CHECK_FILE([$LOKIDIR/loki/TypeManip.h], ,   
-    AC_MSG_ERROR([Sorry[,] but path to loki seems to be broken]) )
+#AC_CHECK_FILE([$LOKIDIR/loki/TypeManip.h], ,   
+#    AC_MSG_ERROR([Sorry[,] but path to loki seems to be broken]) )
 
 
 ################################################################################
