@@ -32,15 +32,26 @@
 ////////////////////////////////////////////////////////////////////////////////
 // A _very_ simple example for how to use Daixt.
 
+struct ValueGetter;
+
+// workaround for early diagnostic issues (thanks to Rani Sharoni)
+// this allows in-place definition of Variable's constructor
+// with yet unavailable definition of ValueGetter
+template<typename, typename U> struct LazyBind { typedef U type; };
+
 class Variable
 {
   double Value_;
 public:
   Variable() : Value_(0.0) {}
   Variable(double Value) : Value_(Value) {}
-  
-  template <class T> Variable(const Daixt::Expr<T>& E);
 
+  typedef LazyBind<Variable, ValueGetter>::type TheValueGetter;
+  template <class T> Variable(const Daixt::Expr<T>& E)
+    :
+    Value_(TheValueGetter()(E)) 
+  {} 
+  
   inline double GetValue() const { return Value_; }
   inline void SetValue(double Value) { Value_ = Value; }
 };
@@ -82,14 +93,6 @@ struct ValueGetter {
   }
 };
 
-
-////////////////////////////////////////////////////////////////////////////////
-// Due to a "defect" of the standard one has to postpone the definition of
-// this contructor until here
-
-template <class T>  Variable::Variable(const Daixt::Expr<T>& E)
-  :
-  Value_(ValueGetter()(E)) {} // delegate to the functor
 
 
 int main()
