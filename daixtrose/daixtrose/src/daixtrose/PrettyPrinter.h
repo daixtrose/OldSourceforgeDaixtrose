@@ -34,6 +34,8 @@
 #include "daixtrose/Scalar.h"
 #include "daixtrose/NeutralElements.h"
 #include "daixtrose/CompileTimeChecks.h"
+#include "daixtrose/ChangeDisambiguation.h"
+
 
 namespace Daixt 
 {
@@ -145,6 +147,20 @@ struct PrettyPrinter<Formatter, Daixt::Expr<T> >
     PrettyPrinter<Formatter, T>::Print(os, E.content());
   }
 };
+
+
+template <class Formatter, class T, class NewDisambiguation> 
+struct PrettyPrinter<Formatter, 
+                     Daixt::Expr<Daixt::DisambiguationChanger<T, NewDisambiguation> > >
+{
+  static void Print(std::ostream& os, 
+                    const Daixt::Expr<Daixt::DisambiguationChanger<T, NewDisambiguation> >& E)
+  {
+    PrettyPrinter<Formatter, T>::Print(os, E.content());
+  }
+};
+
+
 
 template <class Formatter, class Disambiguation> 
 struct PrettyPrinter<Formatter, Daixt::Scalar<Disambiguation> >
