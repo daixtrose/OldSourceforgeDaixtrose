@@ -49,7 +49,7 @@ public:
   typedef double NumericalType;
 
   inline Scalar(const NumericalType& Value = NumericalType()) : Value_(Value) {}
-  inline operator const NumericalType&() const { return Value_; }
+//   inline operator const NumericalType&() const { return Value_; }
   inline NumericalType Value() const { return Value_; }
 
 private:
