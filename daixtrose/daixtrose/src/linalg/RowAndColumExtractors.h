@@ -139,7 +139,6 @@ private:
 } // namespace Private
 
 
-
 // Overloading is implemented by forwarding all calls to a yet-to-be-specialized
 // template class OperatorDelimImpl.  Using this extra indirection avoids any
 // brain damage due to lookup rules, function template overload, ADL, etc. If
@@ -414,11 +413,7 @@ OperatorDelimImpl<RowExtractor<MatrixExpression<T> >,
     typename T::RowStorage Row = 
       RowExtractor<MatrixExpression<T> >(i)(arg.lhs());
 
-#if (defined(__GNUC__)) // FIXIT, when gcc has bug removed
-    using namespace Daixt::Convenience;
-#else
     using Daixt::Convenience::operator*;
-#endif
 
     iterator end = Row.end();
     for (iterator iter = Row.begin(); iter != end; ++iter)
@@ -454,12 +449,7 @@ OperatorDelimImpl<RowExtractor<MatrixExpression<T> >,
     typename T::RowStorage Row = 
       RowExtractor<MatrixExpression<T> >(i)(arg.rhs());
 
-#if (defined(__GNUC__)) // FIXIT, when gcc has bug removed
-    using namespace Daixt::Convenience;
-#else
     using Daixt::Convenience::operator*;
-#endif
-
 
     iterator end = Row.end();
     for (iterator iter = Row.begin(); iter != end; ++iter)
@@ -640,12 +630,7 @@ OperatorDelimImpl<RowExtractor<VectorExpression<T> >,
     NumT LHS_Result = RowExtractor<VectorExpression<T> >(i)(arg.lhs());
     NumT RHS_Result = RowExtractor<VectorExpression<T> >(i)(arg.rhs());
 
-#ifdef __GNUC__ 
-    // parser bug in gcc :-(
-    using namespace Daixt::DefaultOps;
-#else
     using Daixt::DefaultOps::operator+;
-#endif
 
     NumT Result = LHS_Result + RHS_Result;
     return Result;

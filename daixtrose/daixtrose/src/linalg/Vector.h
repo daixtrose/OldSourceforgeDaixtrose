@@ -311,12 +311,7 @@ operator+=(const OtherT& Other)
 
   if (Daixt::CountOccurrence(Other, *this)) 
     {
-#ifdef __GNUC__ 
-      // parser bug in gcc :-(
-      using namespace Daixt::DefaultOps;
-#else
       using Daixt::DefaultOps::operator+;
-#endif
 
       *this = *this + Other; // delegate to operator= which uses temporary
     }
@@ -339,12 +334,7 @@ Vector<T, Allocator>::
 operator-=(const OtherT& Other)
 {
   // delegate to +=
-#ifdef __GNUC__ 
-    // parser bug in gcc :-(
-    using namespace Daixt::DefaultOps;
-#else
-    using Daixt::DefaultOps::operator-;
-#endif
+  using Daixt::DefaultOps::operator-;
 
   using namespace Daixt::DefaultOps;
   return this->operator+=(Daixt::ExprManip::Simplify(- Other));
