@@ -658,7 +658,7 @@ OperatorDelimImpl<RowExtractor<VectorExpression<T> >,
         std::size_t i)
   {
     typedef typename T::NumT NumT;
-    return static_cast<NumT>(arg);
+    return arg.Value();
   }
 };
 
