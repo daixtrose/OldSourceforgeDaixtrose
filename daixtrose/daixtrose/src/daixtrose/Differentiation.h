@@ -31,7 +31,21 @@
 
 #include <limits>
 
-#include "loki/TypeManip.h"
+// #include "loki/TypeManip.h"
+
+#include "boost/mpl/apply_if.hpp"
+#include "boost/mpl/identity.hpp"
+#include "boost/mpl/lower_bound.hpp"
+#include "boost/mpl/deref.hpp"
+#include "boost/mpl/find.hpp"
+#include "boost/mpl/vector.hpp"
+#include "boost/mpl/pair.hpp"
+#include "boost/mpl/bool.hpp"
+#include "boost/mpl/select1st.hpp"
+#include "boost/mpl/select2nd.hpp"
+#include "boost/mpl/lambda.hpp"
+
+#include "boost/type_traits/is_same.hpp"
 
 #include "daixtrose/BinOps.h"
 #include "daixtrose/UnOps.h"
@@ -60,6 +74,9 @@ namespace Daixt
 {
 namespace Differentiation 
 {
+
+// getting tired of typing 
+namespace mpl = boost::mpl;
 
 // user extensible approach through partially specializable class  
 template<class WRT, class ARG> struct DiffImpl;
@@ -101,11 +118,16 @@ Diff(const ARG& arg, const WRT& wrt)
 // default: compare WRT and ARG and return 0 or 1
 template<class WRT, class ARG> struct DiffImpl
 {
-  typedef IsOne<typename Daixt::disambiguation<ARG>::type> One;
-  typedef IsNull<typename Daixt::disambiguation<ARG>::type> Null;
-  static const bool Condition = SAME_TYPE(WRT, ARG);
+  typedef typename Daixt::disambiguation<ARG>::type Disambiguation;
 
-  typedef typename Loki::Select<Condition, One, Null>::Result ReturnType;
+  enum { Condition = SAME_TYPE(WRT, ARG) };
+  
+  typedef typename 
+  mpl::apply_if_c<
+    Condition, 
+    mpl::identity<IsOne<Disambiguation> >, 
+    mpl::identity<IsNull<Disambiguation> >
+  >::type ReturnType;
 
   static inline ReturnType Apply(const ARG& UO)  
   {
@@ -140,14 +162,14 @@ struct DiffImpl<WRT, Daixt::UnOp<ARG, OP> >
   struct XXX_____________Sorry_Not_Implemented_Yet_________________XXX {};
 
   typedef typename
-  Loki::Select<(
-                SAME_TYPE(OP, Daixt::DefaultOps::UnaryPlus)
-                ||
-                SAME_TYPE(OP, Daixt::DefaultOps::UnaryMinus)
-                ),
-               Daixt::UnOp<ArgReturnType, OP>,
-               XXX_____________Sorry_Not_Implemented_Yet_________________XXX
-               >::Result ReturnType;
+  mpl::apply_if_c<(
+                    SAME_TYPE(OP, Daixt::DefaultOps::UnaryPlus)
+                    ||
+                    SAME_TYPE(OP, Daixt::DefaultOps::UnaryMinus)
+                    ),
+                   mpl::identity<Daixt::UnOp<ArgReturnType, OP> >,
+                   mpl::identity<XXX_____________Sorry_Not_Implemented_Yet_________________XXX>
+               >::type ReturnType;
 
 
   static inline ReturnType Apply(const Daixt::UnOp<ARG, OP>& UO)  
@@ -171,15 +193,15 @@ struct DiffImpl<WRT, Daixt::BinOp<LHS, RHS, OP> >
 
   struct XXX_____________Sorry_Not_Implemented_Yet_________________XXX {};
   
-    typedef typename
-    Loki::Select<(
-                  SAME_TYPE(OP, Daixt::DefaultOps::BinaryPlus)
-                  ||
-                  SAME_TYPE(OP, Daixt::DefaultOps::BinaryMinus)
-                  ),
-                 Daixt::BinOp<DiffedLHS, DiffedRHS, OP>,
-                 XXX_____________Sorry_Not_Implemented_Yet_________________XXX
-                 >::Result ReturnType;
+  typedef typename
+    mpl::apply_if_c<(
+                      SAME_TYPE(OP, Daixt::DefaultOps::BinaryPlus)
+                      ||
+                      SAME_TYPE(OP, Daixt::DefaultOps::BinaryMinus)
+                      ),
+                     mpl::identity<Daixt::BinOp<DiffedLHS, DiffedRHS, OP> >,
+                     mpl::identity<XXX_____________Sorry_Not_Implemented_Yet_________________XXX>
+                 >::type ReturnType;
 
 
   
@@ -260,7 +282,10 @@ public:
 template <class WRT, int mm, int nn, class ARG>
 struct DiffImpl<WRT, Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> > >
 {
-  typedef Daixt::Scalar<typename Daixt::disambiguation<WRT>::type> Scalar;
+  typedef Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> > ArgT;
+  typedef typename Daixt::disambiguation<ArgT>::type Disambiguation;
+
+  typedef Daixt::Scalar<Disambiguation> Scalar;
   typedef typename Scalar::NumericalType NumericalType;
 
   // Now we go astray with our basic design where we completely separate 
@@ -268,9 +293,10 @@ struct DiffImpl<WRT, Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> >
   // this expression a little bit:
   // if (nn < 0) we multiply mm and nn with (-1) in order to have some
   // nice values
-  static const int m = (nn < 0) ? -mm : mm;
-  static const int n = (nn < 0) ? -nn : nn;
+  enum { m = (nn < 0) ? -mm : mm };
+  enum { n = (nn < 0) ? -nn : nn };
 
+private:
   // we want to mutiply the result with Scalar(m)/Scalar(n), so 1/n must be possible
   COMPILE_TIME_ASSERT(!std::numeric_limits<NumericalType>::is_integer);
   // negative values must be possible
@@ -282,9 +308,8 @@ struct DiffImpl<WRT, Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> >
   COMPILE_TIME_ASSERT(n != 0); // paranoia
 
   //////////////////////////////////////////////////////////////////////////////
-  // some type calculation wizardry
+  // some type calculation wizardry for ScalarFactorT
 
-  typedef Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> > ArgT;
 
   //   if (m/n == 1)  ScalarFactorT is One 
   //   if (m/n == -1) ScalarFactorT is -One 
@@ -292,28 +317,48 @@ struct DiffImpl<WRT, Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> >
   //   if (m != 1) but (m < 0) ScalarFactorT is  - Scalar(-m)
   //   else ScalarFactorT = Scalar(m/n)
 
-  typedef IsNull<typename Daixt::disambiguation<ArgT>::type> Null;
-  typedef IsOne<typename Daixt::disambiguation<ArgT>::type> One;
-  typedef Daixt::UnOp<Scalar, Daixt::DefaultOps::RationalPower<-1, 1> > InverseOfN;
-  typedef Daixt::UnOp<Scalar, Daixt::DefaultOps::UnaryMinus > MinusScalar;
-  typedef Daixt::UnOp<One, Daixt::DefaultOps::UnaryMinus> MinusOne;
+  // emulating a "switch" on bools (pay attention, order matters!)
+  template <int i, int Dummy = 0> struct Overloader;
 
-  // If You understand that one You are really good ;-)
-  typedef typename Loki::Select<
-    ((m == n) || (m == -n)),
-    typename Loki::Select<(m == n), 
-                          One, 
-                          MinusOne
-                          >::Result,
-    typename Loki::Select<(m == 1), 
-                          InverseOfN, 
-                          typename Loki::Select<(m < 0),
-                                                MinusScalar,
-                                                Scalar
-                                                >::Result
-                          >::Result
-  >::Result ScalarFactorT;
+  typedef mpl::vector
+  <
+    mpl::pair<bool_<m == n >, 
+              mpl::pair<IsOne<Disambiguation>, 
+                        Overloader<0> > >,
 
+    mpl::pair<bool_<m == -n>, 
+              mpl::pair<Daixt::UnOp<IsOne<Disambiguation>, 
+                                    Daixt::DefaultOps::UnaryMinus>,
+                        Overloader<1> > >,
+    
+    mpl::pair<bool_<m == 1 >, 
+              mpl::pair<Daixt::UnOp<Scalar, 
+                                    Daixt::DefaultOps::RationalPower<-1, 1> >,
+                        Overloader<2> > >,
+    
+    mpl::pair<bool_<(m < 0)  >,
+              mpl::pair<Daixt::UnOp<Scalar, 
+                                    Daixt::DefaultOps::UnaryMinus>,
+                        Overloader<3> > >,
+  
+    mpl::pair<bool_<true   >, 
+              mpl::pair<Scalar,
+                        Overloader<4> > >
+  > decision_sequence;
+  
+
+  typedef typename mpl::find_if<
+    decision_sequence,
+    boost::is_same<mpl::select1st<mpl::_1>, 
+                   mpl::bool_<true> > > 
+  iter_;
+
+  typedef typename iter_::type::type pair_;
+  typedef typename mpl::select2nd<pair_>::type decision;
+  
+public:
+  typedef typename mpl::select1st<decision>::type ScalarFactorT;
+  typedef typename mpl::select2nd<decision>::type Overload;
 
   // type of pow(arg, ((m-n)/n))
   typedef Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<m-n, n> > ModPowArgT;
@@ -322,8 +367,7 @@ struct DiffImpl<WRT, Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> >
 
   // the type of the whole factor is 
   typedef Daixt::BinOp<ScalarFactorT, ModPowArgT, 
-                      Daixt::DefaultOps::BinaryMultiply> FactorT;
-
+                       Daixt::DefaultOps::BinaryMultiply> FactorT;
 
   //////////////////////////////////////////////////////////////////////////////
   typedef Daixt::BinOp<FactorT, 
@@ -333,89 +377,98 @@ struct DiffImpl<WRT, Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> >
 
   static inline ReturnType Apply(const ArgT& UO)  
   {
-    return Apply(UO, Overload());
+    return Overload::Apply(UO);
   }
 
 private:
-  template <int i> struct Overloader {};
-
-  typedef typename Loki::Select<
-    ((m == n) || (m == -n)),
-    typename Loki::Select<(m == n), 
-                          Overloader<0>, // One, 
-                          Overloader<1>  // MinusOne
-                         >::Result,
-    typename Loki::Select<(m == 1), 
-                          Overloader<2>, // InverseOfN = 1/n, 
-                          typename Loki::Select<(m < 0),
-                                                Overloader<3>, // - (-m/n),
-                                                Overloader<4>  // m/n
-                                                >::Result
-                          >::Result
-  >::Result Overload;
-
-
-  static inline ReturnType Apply(const ArgT& UO, const Overloader<0>& Ignored)  
+  template <int Dummy> 
+  struct Overloader<0, Dummy> 
   {
-    return ReturnType(
-                      FactorT(
-                              One(),
-                              ModPowArgT(UO.arg())
-                              ),
-                      DiffImpl<WRT, ARG>::Apply(UO.arg())
-                      );
-  }  
+    static inline ReturnType Apply(const ArgT& UO, const Overloader<0>& Ignored)  
+    {
+      typedef IsOne<Disambiguation> One;
+      
+      return ReturnType(
+                        FactorT(
+                                One(),
+                                ModPowArgT(UO.arg())
+                                ),
+                        DiffImpl<WRT, ARG>::Apply(UO.arg())
+                        );
+    }  
+  };
 
 
-  static inline ReturnType Apply(const ArgT& UO, const Overloader<1>& Ignored)  
+
+  template <int Dummy> 
+  struct Overloader<1, Dummy> 
   {
-    return ReturnType(
-                      FactorT(
-                              MinusOne(One()),
-                              ModPowArgT(UO.arg())
-                              ),
-                      DiffImpl<WRT, ARG>::Apply(UO.arg())
-                      );
-  }  
+    static inline ReturnType Apply(const ArgT& UO)  
+    {
+      typedef IsOne<Disambiguation> One;
+      typedef Daixt::UnOp<One, Daixt::DefaultOps::UnaryMinus> MinusOne;
+      
+      return ReturnType(
+                        FactorT(
+                                MinusOne(One()),
+                                ModPowArgT(UO.arg())
+                                ),
+                        DiffImpl<WRT, ARG>::Apply(UO.arg())
+                        );
+    }  
+  };
 
 
-  static inline ReturnType Apply(const ArgT& UO, const Overloader<2>& Ignored)  
+  template <int Dummy> 
+  struct Overloader<2, Dummy> 
   {
-    return ReturnType(
-                      FactorT(
-                              InverseOfN(Scalar(static_cast<NumericalType>(n))),
-                              ModPowArgT(UO.arg())
-                              ),
-                      DiffImpl<WRT, ARG>::Apply(UO.arg())
-                      );
-  }
+    static inline ReturnType Apply(const ArgT& UO)  
+    {
+      return ReturnType(
+                        FactorT(
+                                InverseOfN(Scalar(static_cast<NumericalType>(n))),
+                                ModPowArgT(UO.arg())
+                                ),
+                        DiffImpl<WRT, ARG>::Apply(UO.arg())
+                        );
+    }
+  };
 
 
-  static inline ReturnType Apply(const ArgT& UO, const Overloader<3>& Ignored)  
+  template <int Dummy> 
+  struct Overloader<3, Dummy> 
   {
-    return ReturnType(
-                      FactorT(
-                              MinusScalar(Scalar(static_cast<NumericalType>(-m)
-                                                 /
-                                                 static_cast<NumericalType>(n))),
-                              ModPowArgT(UO.arg())
-                              ),
-                      DiffImpl<WRT, ARG>::Apply(UO.arg())
-                      );
-  }
+    static inline ReturnType Apply(const ArgT& UO)  
+    {
+      return ReturnType(
+                        FactorT(
+                                MinusScalar(Scalar(static_cast<NumericalType>(-m)
+                                                   /
+                                                   static_cast<NumericalType>(n))),
+                                ModPowArgT(UO.arg())
+                                ),
+                        DiffImpl<WRT, ARG>::Apply(UO.arg())
+                        );
+    }
+  };
 
-  static inline ReturnType Apply(const ArgT& UO, const Overloader<4>& Ignored)  
+
+  template <int Dummy> 
+  struct Overloader<4, Dummy> 
   {
-    return ReturnType(
-                      FactorT(
-                              Scalar(static_cast<NumericalType>(m)
-                                     /
-                                     static_cast<NumericalType>(n)),
-                              ModPowArgT(UO.arg())
-                              ),
-                      DiffImpl<WRT, ARG>::Apply(UO.arg())
-                      );
-  }
+    static inline ReturnType Apply(const ArgT& UO)  
+    {
+      return ReturnType(
+                        FactorT(
+                                Scalar(static_cast<NumericalType>(m)
+                                       /
+                                       static_cast<NumericalType>(n)),
+                                ModPowArgT(UO.arg())
+                                ),
+                        DiffImpl<WRT, ARG>::Apply(UO.arg())
+                        );
+    }
+  };
 };
 
 
