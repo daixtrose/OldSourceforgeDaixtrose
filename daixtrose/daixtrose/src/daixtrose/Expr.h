@@ -61,7 +61,7 @@ public:
     : t_(t) 
   {} 
 
-  T content() const 
+  const T& content() const 
   { 
     return t_; 
   }
