@@ -124,3 +124,6 @@ ExtractColumn(const TinyQuadraticMatrix<T, n>& M)
 }
 
 #endif
+
+// Getting weary about
+// http://www.wired.com/news/conflict/0,2100,58326,00.html
