@@ -35,6 +35,8 @@
 #include <iomanip>
 #include <functional>
 
+#include <cstring>
+
 #include "daixtrose/Daixt.h"
 
 namespace TinyMat
@@ -80,6 +82,7 @@ public:
 
   //////////////////////////////////////////////////////////////////////////////
   inline void operator=(const T& t);         // assign a value to all elements
+  inline void operator=(const TinyQuadraticMatrix<T, n>& Other);
   template<class A> inline void operator=(const Daixt::Expr<A>& E);
   
   inline void operator*=(const T& t);
@@ -191,9 +194,14 @@ void
 TinyQuadraticMatrix<T, n>::
 operator+=(const TinyQuadraticMatrix<T, n>& Other)
 {
-  for (size_t i = 0; i != n * n; ++i)
+  const T* source = Other.data();
+  T* target = data_;
+  
+  for (size_t i = 0; i < n * n; ++i)
     {
-      *(data_ + i) += *(Other.data() + i);
+      *target += *source;
+      ++target;
+      ++source;
     }
 }
 
@@ -208,6 +216,16 @@ operator-=(const TinyQuadraticMatrix<T, n>& Other)
     }
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+// we guess that's what the compiler would do if it builds it itself
+// added for profiling to show it (maybe)
+template<class T, int n>
+void
+TinyQuadraticMatrix<T, n>::operator=(const TinyQuadraticMatrix<T, n>& Other)
+{
+  std::memcpy(data_, Other.data_, n * n * sizeof(T));
+}
 
 template<class T, int n>
 template<class A> 
@@ -256,6 +274,7 @@ template <class T, int n>
 T& 
 TinyQuadraticMatrix<T, n>::operator()(size_t i, size_t j)
 {
+  // column wise storage
   RangeCheck(i, j);
   return data_[i - 1 + (j - 1) * n]; 
 }
@@ -263,6 +282,7 @@ TinyQuadraticMatrix<T, n>::operator()(size_t i, size_t j)
 template <class T, int n>
 T TinyQuadraticMatrix<T, n>::operator()(size_t i, size_t j) const
 { 
+  // column wise storage
   RangeCheck(i, j);
   return data_[i - 1 + (j - 1) * n]; 
 }
