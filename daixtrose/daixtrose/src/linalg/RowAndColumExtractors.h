@@ -472,6 +472,10 @@ OperatorDelimImpl<RowExtractor<MatrixExpression<T> >,
 };
   
 
+// Vector
+template <class T, class Allocator> class Vector;
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // row extractor for vector expression
 ////////////////////////////////////////////////////////////////////////////////
@@ -487,10 +491,38 @@ struct RowExtractor<VectorExpression<T> >
   operator()(const ARG& arg) const
   {
     return 
-      OperatorDelimImpl<
-                        RowExtractor<VectorExpression<T> >, 
-                        typename Daixt::UnwrapExpr<ARG>::Type
-                        >::Apply(Daixt::unwrap_expr(arg), i_);
+      OperatorDelimImpl<RowExtractor<VectorExpression<T> >, ARG>
+      ::Apply(Daixt::unwrap_expr(arg), i_);
+  }
+
+  // uwrap expression 
+  template<class TT> 
+  inline
+  typename T::NumT 
+  operator()(const Daixt::Expr<TT>& arg) const
+  {
+    return (*this)(Daixt::unwrap_expr(arg));
+  }
+
+
+  // direct access in rare cases
+  typedef Vector<typename T::NumT, 
+                 typename T::Allocator> VectorT;
+
+  typedef Daixt::ConstRef<VectorT> CRefToVec;
+
+  inline 
+  const typename T::NumT&
+  operator()(const CRefToVec& arg) const
+  {
+    return static_cast<const VectorT&>(arg)(i_);
+  }
+
+  inline 
+  const typename T::NumT&
+  operator()(const VectorT& arg) const
+  {
+    return arg(i_);
   }
 
 private:
@@ -498,8 +530,6 @@ private:
 };
 
 
-// Vector
-template <class T, class Allocator> class Vector;
 
 template<class T>
 struct
@@ -610,8 +640,12 @@ OperatorDelimImpl<RowExtractor<VectorExpression<T> >,
     NumT LHS_Result = RowExtractor<VectorExpression<T> >(i)(arg.lhs());
     NumT RHS_Result = RowExtractor<VectorExpression<T> >(i)(arg.rhs());
 
-    //using namespace Daixt::DefaultOps;
+#ifdef __GNUC__ 
+    // parser bug in gcc :-(
+    using namespace Daixt::DefaultOps;
+#else
     using Daixt::DefaultOps::operator+;
+#endif
 
     NumT Result = LHS_Result + RHS_Result;
     return Result;
