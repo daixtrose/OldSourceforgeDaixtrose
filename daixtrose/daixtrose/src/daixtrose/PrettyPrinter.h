@@ -67,7 +67,7 @@ struct DefaultFormatter
   static inline String PowEnd() { return ""; } 
 
   static inline String FractionBegin() { return ""; } 
-  static inline String FractionInter() { return "/"; } 
+  static inline String FractionInter() { return " / "; } 
   static inline String FractionEnd() { return ""; } 
 
   template <class OP> 
@@ -126,7 +126,7 @@ template <class Formatter, class T> struct PrettyPrinter
 {
   static void Print(std::ostream& os, const T& t)
   {
-    os << t << " ";
+    os << t;// << " ";
   }
 };
 
@@ -173,9 +173,9 @@ struct PrettyPrinter<Formatter, Daixt::Scalar<Disambiguation> >
         < 
         0) os << Formatter::LeftDelimiter();
 
-    os << " ";
+//     os << " ";
     os << static_cast<typename Daixt::Scalar<Disambiguation>::NumericalType>(S);
-    os << " ";
+//     os << " ";
 
     if (static_cast<typename Daixt::Scalar<Disambiguation>::NumericalType>(S)
         < 
