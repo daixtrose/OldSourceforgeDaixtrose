@@ -73,11 +73,36 @@ struct UnOpResultDisambiguator<
                                 Allocator> >,
     Linalg::RowSumOfMatrix>
 {
+  // FIXIT: rather inflexible
+  typedef std::allocator<typename RowStorage::value_type::second_type>
+  VectorAllocator;
+
   typedef 
   Linalg::VectorExpression<Linalg::VectorDisambiguator
-  <TinyVec::TinyVector<T, N>, typename RowStorage::allocator_type> > 
+  <TinyVec::TinyVector<T, N>, VectorAllocator> > 
   Disambiguation;
 }; 
+
+
+// Block vectors also need a special handling 
+template <class T, std::size_t N, class RowStorage, class Allocator> 
+struct UnOpResultDisambiguator<
+  Linalg::MatrixExpression<
+    Linalg::MatrixDisambiguator<TinyVec::TinyVector<T, N>, 
+                                RowStorage, 
+                                Allocator> >,
+    Linalg::RowSumOfMatrix>
+{
+  // FIXIT: rather inflexible
+  typedef std::allocator<typename RowStorage::value_type::second_type>
+  VectorAllocator;
+
+  typedef 
+  Linalg::VectorExpression<Linalg::VectorDisambiguator
+  <TinyVec::TinyVector<T, N>, VectorAllocator> > 
+  Disambiguation;
+}; 
+
 
 } // namespace Daixt 
 
@@ -128,21 +153,6 @@ OperatorDelimImpl
   }
 };
 
-
-
-
-
-// template<class T, class ARG>
-// struct
-// OperatorDelimImpl<ColumnCounter<VectorExpression<T> >, 
-//                   Daixt::UnOp<ARG, RowSumOfMatrix> >
-// {
-//   static inline 
-//   size_t Apply(const Daixt::UnOp<ARG, RowSumOfMatrix>& arg)
-//   { 
-//     return 1;
-//   }
-// };
 
 ////////////////////////////////////////////////////////////////////////////////
 // extract a "row" of RowSum(SomeExpression)
@@ -196,6 +206,45 @@ OperatorDelimImpl
   Daixt::UnOp<ARG, RowSumOfMatrix> 
 >
 {
+private:
+  typedef OperatorDelimImpl
+  <
+    RowExtractor<
+                 VectorExpression<
+                                  Linalg::VectorDisambiguator
+                                    <TinyVec::TinyVector<T, N>, Allocator> 
+                                  > 
+                 >,
+    Daixt::UnOp<ARG, RowSumOfMatrix> 
+  > MyOwnT;
+
+  // row sum for ARG::Disambiguation::RowStorage::value_type::second_type
+  // default: leave untouched
+  template <class C> 
+  static C const & RowSum(C const & c)
+  {
+    return c; // leave untouched
+  }
+
+  // tiny matrix -> tiny vector
+  template <class C, std::size_t NN>
+  static TinyVec::TinyVector<C, NN>
+  RowSum(TinyMat::TinyQuadraticMatrix<C, NN> const & tm)
+  {
+    TinyVec::TinyVector<C, NN> Result = 0;
+    
+    for (std::size_t i = 1; i != N+1; ++i)
+      {
+        for (std::size_t j = 1; j != N+1; ++j)
+          {
+            Result(i) += tm(i, j);
+          }
+      }
+    
+    return Result;
+  }
+
+public:
   static inline 
   typename TinyVec::TinyVector<T, N>
   Apply(const Daixt::UnOp<ARG, RowSumOfMatrix>& arg,
@@ -220,21 +269,65 @@ OperatorDelimImpl
 
     typedef typename TinyVec::TinyVector<T, N> ResultT;
 
-    ResultT Result = 0;
-
-    for (std::size_t i = 1; i != N+1; ++i)
-      {
-        for (std::size_t j = 1; j != N+1; ++j)
-          {
-            Result(i) += SumBlock(i, j);
-          }
-      }
-
-    return Result;
+    // this->RowSum handles block matrices as expected 
+    return MyOwnT::RowSum(SumBlock);
   }
 };
 
 
+// Linalg::Matrix<BlockVector, std::map<std::size_t, BlockVector> > FluxMatrix
+//    typedef TinyVec::TinyVector<Double, MaxNumOfEqns> BlockVector;
+
+// template<class T, std::size_t N, class ARG, class Allocator>
+// struct
+// OperatorDelimImpl
+// <
+//   RowExtractor<
+//                VectorExpression<
+//                                 Linalg::VectorDisambiguator
+//                                   <TinyVec::TinyVector<T, N>, Allocator>
+//                                 > 
+//                >,
+//   Daixt::UnOp<ARG, RowSumOfMatrix> 
+// >
+// {
+//   static inline 
+//   typename TinyVec::TinyVector<T, N>
+//   Apply(const Daixt::UnOp<ARG, RowSumOfMatrix>& arg,
+//         std::size_t i)
+//   { 
+//     typedef typename ARG::Disambiguation::RowStorage RowStorage;
+//     typedef typename RowStorage::value_type::second_type BlockT;
+
+//     typedef typename RowStorage::const_iterator const_iterator;  
+    
+//     // extract the row
+//     RowStorage Row =
+//       RowExtractor<typename ARG::Disambiguation>(i)(arg.arg());
+
+//     BlockT SumBlock = T(0);
+
+//     const_iterator end = Row.end();
+//     for (const_iterator iter = Row.begin(); iter != end; ++iter)
+//       {
+//         SumBlock += iter->second;
+//       }
+
+//     typedef typename TinyVec::TinyVector<T, N> ResultT;
+
+//     ResultT Result = 0;
+
+//     for (std::size_t i = 1; i != N+1; ++i)
+//       {
+//         for (std::size_t j = 1; j != N+1; ++j)
+//           {
+//             Result(i) += SumBlock(i, j);
+//           }
+//       }
+
+//     return Result;
+//   }
+// };
 
 } // namespace Linalg
 
