@@ -312,6 +312,7 @@ void TinyQuadraticMatrix<T, n>::RangeCheck(size_t i, size_t j) const
 ////////////////////////////////////////////////////////////////////////////////
 
 template<class T, int n> 
+inline 
 std::ostream& operator<< (std::ostream& os, const TinyQuadraticMatrix<T, n>& M)
 {
   for (size_t i = 1; i != (n + 1); ++i) 
@@ -327,6 +328,32 @@ std::ostream& operator<< (std::ostream& os, const TinyQuadraticMatrix<T, n>& M)
   os << std::endl;
   return os;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+//*************************** Row and Colum Setters **************************//
+////////////////////////////////////////////////////////////////////////////////
+
+template<class T, int n> 
+inline 
+void SetEntriesInRowTo(std::size_t i, T Value, TinyQuadraticMatrix<T, n>& M)
+{
+  for (std::size_t j = 1; j != n + 1; ++j)
+    {
+      M(i, j) = Value;
+    }
+}
+
+template<class T, int n> 
+inline 
+void SetEntriesInColTo(std::size_t j, T Value, TinyQuadraticMatrix<T, n>& M)
+{
+  for (std::size_t i = 1; i != n + 1; ++i)
+    {
+      M(i, j) = Value;
+    }
+}
+
 
 
 } // namespace TinyMat
