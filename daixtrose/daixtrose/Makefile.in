@@ -141,6 +141,7 @@ check_PROGRAMS = \
 	test_simple_get_value_2 \
 	test_change_disambiguation \
 	test_linalg \
+	test_rowsum \
 	test_tiny_mat \
 	test_tiny_vec \
 	test_inverse \
@@ -165,6 +166,7 @@ test_simple_get_value_2_CXXFLAGS = $(AM_CXXFLAGS)
 
 test_change_disambiguation_SOURCES = $(srcdir)/src/demos/ChangeDisambiguation/main.C
 test_linalg_SOURCES = $(srcdir)/src/demos/linalg/TestLinalg.C
+test_rowsum_SOURCES = $(srcdir)/src/demos/linalg/TestRowSum.C
 test_tiny_mat_SOURCES = $(srcdir)/src/demos/tiny/TestTinyMat.C
 test_tiny_vec_SOURCES = $(srcdir)/src/demos/tiny/TestTinyVec.C
 test_inverse_SOURCES = $(srcdir)/src/demos/linalg/TestInverse.C
@@ -187,53 +189,78 @@ quicktour_linalg_SOURCES = $(srcdir)/src/demos/quicktour/Linalg.C
 #finally we want these headers to be in the distribution
 EXTRA_DIST = \
 	$(srcdir)/src/daixtrose/BinOps.h \
-        $(srcdir)/src/daixtrose/CompileTimeChecks.h \
-        $(srcdir)/src/daixtrose/ConstRef.h \
-        $(srcdir)/src/daixtrose/CountLeaves.h \
-        $(srcdir)/src/daixtrose/CountOccurence.h \
-        $(srcdir)/src/daixtrose/Daixt.h \
-        $(srcdir)/src/daixtrose/DefaultOps.h \
-        $(srcdir)/src/daixtrose/Differentiation.h \
-        $(srcdir)/src/daixtrose/Disambiguation.h \
-        $(srcdir)/src/daixtrose/Expr.h \
-        $(srcdir)/src/daixtrose/ExtractOp.h \
-        $(srcdir)/src/daixtrose/MatrixSelect.h \
-        $(srcdir)/src/daixtrose/NeutralElements.h \
-        $(srcdir)/src/daixtrose/PrettyPrinter.h \
-        $(srcdir)/src/daixtrose/Scalar.h \
-        $(srcdir)/src/daixtrose/Simplify.h \
-        $(srcdir)/src/daixtrose/UnOps.h \
-        $(srcdir)/src/daixtrose/ChangeDisambiguation.h \
-        $(srcdir)/src/demos/SimpleGetValue.1/main.C \
-        $(srcdir)/src/demos/SimpleGetValue.2/main.C \
-        $(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C \
-        $(srcdir)/src/demos/linalg/TestInverse.C \
-        $(srcdir)/src/demos/linalg/TestLinalg.C \
-        $(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C \
-        $(srcdir)/src/demos/ChangeDisambiguation/main.C \
-        $(srcdir)/src/demos/tiny/TestTinyMat.C \
-        $(srcdir)/src/demos/tiny/TestTinyVec.C \
-        $(srcdir)/src/demos/simplify/TestSimplify.C \
-        $(srcdir)/src/linalg/Disambiguation.h \
-        $(srcdir)/src/linalg/Inverse.h \
-        $(srcdir)/src/linalg/L2_Norm.h \
-        $(srcdir)/src/linalg/Linalg.h \
-        $(srcdir)/src/linalg/Lump.h \
-        $(srcdir)/src/linalg/Matrix.h \
-        $(srcdir)/src/linalg/MatrixVectorOps.h \
-        $(srcdir)/src/linalg/PrintBlockedMatrix.h \
-        $(srcdir)/src/linalg/RowAndColumCounters.h \
-        $(srcdir)/src/linalg/RowAndColumExtractors.h \
-        $(srcdir)/src/linalg/RowSum.h \
-        $(srcdir)/src/linalg/SliceIterator.h \
-        $(srcdir)/src/linalg/SliceVector.h \
-        $(srcdir)/src/linalg/Transpose.h \
-        $(srcdir)/src/linalg/Vector.h \
-        $(srcdir)/src/tiny/GetIndexedValue.h \
-        $(srcdir)/src/tiny/MatrixVectorOps.h \
-        $(srcdir)/src/tiny/TinyMatAndVec.h \
-        $(srcdir)/src/tiny/TinyMatrix.h \
-        $(srcdir)/src/tiny/TinyVector.h
+	$(srcdir)/src/daixtrose/CompileTimeChecks.h \
+	$(srcdir)/src/daixtrose/ConstRef.h \
+	$(srcdir)/src/daixtrose/CountLeaves.h \
+	$(srcdir)/src/daixtrose/CountOccurence.h \
+	$(srcdir)/src/daixtrose/Daixt.h \
+	$(srcdir)/src/daixtrose/DefaultOps.h \
+	$(srcdir)/src/daixtrose/Differentiation.h \
+	$(srcdir)/src/daixtrose/Disambiguation.h \
+	$(srcdir)/src/daixtrose/Expr.h \
+	$(srcdir)/src/daixtrose/ExtractOp.h \
+	$(srcdir)/src/daixtrose/MatrixSelect.h \
+	$(srcdir)/src/daixtrose/NeutralElements.h \
+	$(srcdir)/src/daixtrose/PrettyPrinter.h \
+	$(srcdir)/src/daixtrose/Scalar.h \
+	$(srcdir)/src/daixtrose/Simplify.h \
+	$(srcdir)/src/daixtrose/UnOps.h \
+	$(srcdir)/src/daixtrose/ChangeDisambiguation.h \
+	$(srcdir)/src/demos/SimpleGetValue.1/main.C \
+	$(srcdir)/src/demos/SimpleGetValue.2/main.C \
+	$(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C \
+	$(srcdir)/src/demos/linalg/TestInverse.C \
+	$(srcdir)/src/demos/linalg/TestLinalg.C \
+	$(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C \
+	$(srcdir)/src/demos/ChangeDisambiguation/main.C \
+	$(srcdir)/src/demos/tiny/TestTinyMat.C \
+	$(srcdir)/src/demos/tiny/TestTinyVec.C \
+	$(srcdir)/src/demos/simplify/TestSimplify.C \
+	$(srcdir)/src/demos/quicktour/Mini.C \
+	$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C \
+	$(srcdir)/src/demos/quicktour/Linalg.C \
+	$(srcdir)/src/demos/quicktour/Mini.2.C \
+	$(srcdir)/src/demos/quicktour/Mini.3.C \
+	$(srcdir)/src/demos/quicktour/Mini.4.C \
+	$(srcdir)/src/demos/quicktour/Mini.5.C \
+	$(srcdir)/src/demos/quicktour/Differentiation.C \
+	$(srcdir)/src/linalg/Disambiguation.h \
+	$(srcdir)/src/linalg/Inverse.h \
+	$(srcdir)/src/linalg/L2_Norm.h \
+	$(srcdir)/src/linalg/Linalg.h \
+	$(srcdir)/src/linalg/Lump.h \
+	$(srcdir)/src/linalg/Matrix.h \
+	$(srcdir)/src/linalg/MatrixVectorOps.h \
+	$(srcdir)/src/linalg/PrintBlockedMatrix.h \
+	$(srcdir)/src/linalg/RowAndColumCounters.h \
+	$(srcdir)/src/linalg/RowAndColumExtractors.h \
+	$(srcdir)/src/linalg/RowSum.h \
+	$(srcdir)/src/linalg/SliceIterator.h \
+	$(srcdir)/src/linalg/SliceVector.h \
+	$(srcdir)/src/linalg/Transpose.h \
+	$(srcdir)/src/linalg/Vector.h \
+	$(srcdir)/src/tiny/GetIndexedValue.h \
+	$(srcdir)/src/tiny/MatrixVectorOps.h \
+	$(srcdir)/src/tiny/TinyMatAndVec.h \
+	$(srcdir)/src/tiny/TinyMatrix.h \
+	$(srcdir)/src/tiny/TinyVector.h \
+	$(srcdir)/wwwdoc/bugs.html \
+	$(srcdir)/wwwdoc/contact.html \
+	$(srcdir)/wwwdoc/download.html \
+	$(srcdir)/wwwdoc/faq.html \
+	$(srcdir)/wwwdoc/index.html \
+	$(srcdir)/wwwdoc/license.html \
+	$(srcdir)/wwwdoc/manual.html \
+	$(srcdir)/wwwdoc/quicktour.html \
+	$(srcdir)/wwwdoc/template.html \
+	$(srcdir)/wwwdoc/themanual.html \
+	$(srcdir)/wwwdoc/main.css \
+	$(srcdir)/wwwdoc/css/colors.css \
+	$(srcdir)/wwwdoc/css/sflogotrick.css \
+	$(srcdir)/wwwdoc/images/sflogo.jpg \
+	$(srcdir)/wwwdoc/images/main.jpg \
+	$(srcdir)/wwwdoc/images/background.jpg \
+	$(srcdir)/wwwdoc/images/mini-logo.jpg
 
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -243,13 +270,14 @@ CONFIG_CLEAN_FILES =
 check_PROGRAMS = test_simple_get_value_1$(EXEEXT) \
 	test_simple_get_value_2$(EXEEXT) \
 	test_change_disambiguation$(EXEEXT) test_linalg$(EXEEXT) \
-	test_tiny_mat$(EXEEXT) test_tiny_vec$(EXEEXT) \
-	test_inverse$(EXEEXT) test_block_mat$(EXEEXT) \
-	test_matrix_print$(EXEEXT) test_simplify$(EXEEXT) \
-	quicktour_mini$(EXEEXT) quicktour_mini_2$(EXEEXT) \
-	quicktour_mini_3$(EXEEXT) quicktour_mini_4$(EXEEXT) \
-	quicktour_mini_5$(EXEEXT) quicktour_diff$(EXEEXT) \
-	quicktour_tiny$(EXEEXT) quicktour_linalg$(EXEEXT)
+	test_rowsum$(EXEEXT) test_tiny_mat$(EXEEXT) \
+	test_tiny_vec$(EXEEXT) test_inverse$(EXEEXT) \
+	test_block_mat$(EXEEXT) test_matrix_print$(EXEEXT) \
+	test_simplify$(EXEEXT) quicktour_mini$(EXEEXT) \
+	quicktour_mini_2$(EXEEXT) quicktour_mini_3$(EXEEXT) \
+	quicktour_mini_4$(EXEEXT) quicktour_mini_5$(EXEEXT) \
+	quicktour_diff$(EXEEXT) quicktour_tiny$(EXEEXT) \
+	quicktour_linalg$(EXEEXT)
 am_quicktour_diff_OBJECTS = Differentiation.$(OBJEXT)
 quicktour_diff_OBJECTS = $(am_quicktour_diff_OBJECTS)
 quicktour_diff_LDADD = $(LDADD)
@@ -316,6 +344,11 @@ test_matrix_print_OBJECTS = $(am_test_matrix_print_OBJECTS)
 test_matrix_print_LDADD = $(LDADD)
 test_matrix_print_DEPENDENCIES =
 test_matrix_print_LDFLAGS =
+am_test_rowsum_OBJECTS = TestRowSum.$(OBJEXT)
+test_rowsum_OBJECTS = $(am_test_rowsum_OBJECTS)
+test_rowsum_LDADD = $(LDADD)
+test_rowsum_DEPENDENCIES =
+test_rowsum_LDFLAGS =
 am_test_simple_get_value_1_OBJECTS = \
 	test_simple_get_value_1-main.$(OBJEXT)
 test_simple_get_value_1_OBJECTS = $(am_test_simple_get_value_1_OBJECTS)
@@ -355,6 +388,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/TestInverse.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestLinalg.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestPrintingOfBlockedMatrix.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/TestRowSum.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestSimplify.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestTinyMat.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestTinyVec.Po \
@@ -373,13 +407,14 @@ DIST_SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) \
 	$(quicktour_mini_5_SOURCES) $(quicktour_tiny_SOURCES) \
 	$(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) \
 	$(test_inverse_SOURCES) $(test_linalg_SOURCES) \
-	$(test_matrix_print_SOURCES) $(test_simple_get_value_1_SOURCES) \
+	$(test_matrix_print_SOURCES) $(test_rowsum_SOURCES) \
+	$(test_simple_get_value_1_SOURCES) \
 	$(test_simple_get_value_2_SOURCES) $(test_simplify_SOURCES) \
 	$(test_tiny_mat_SOURCES) $(test_tiny_vec_SOURCES)
 DIST_COMMON = README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
 	Makefile.in NEWS aclocal.m4 config.h.in configure configure.in \
 	depcomp install-sh missing mkinstalldirs
-SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) $(quicktour_mini_SOURCES) $(quicktour_mini_2_SOURCES) $(quicktour_mini_3_SOURCES) $(quicktour_mini_4_SOURCES) $(quicktour_mini_5_SOURCES) $(quicktour_tiny_SOURCES) $(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) $(test_inverse_SOURCES) $(test_linalg_SOURCES) $(test_matrix_print_SOURCES) $(test_simple_get_value_1_SOURCES) $(test_simple_get_value_2_SOURCES) $(test_simplify_SOURCES) $(test_tiny_mat_SOURCES) $(test_tiny_vec_SOURCES)
+SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) $(quicktour_mini_SOURCES) $(quicktour_mini_2_SOURCES) $(quicktour_mini_3_SOURCES) $(quicktour_mini_4_SOURCES) $(quicktour_mini_5_SOURCES) $(quicktour_tiny_SOURCES) $(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) $(test_inverse_SOURCES) $(test_linalg_SOURCES) $(test_matrix_print_SOURCES) $(test_rowsum_SOURCES) $(test_simple_get_value_1_SOURCES) $(test_simple_get_value_2_SOURCES) $(test_simplify_SOURCES) $(test_tiny_mat_SOURCES) $(test_tiny_vec_SOURCES)
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -478,6 +513,10 @@ TestPrintingOfBlockedMatrix.$(OBJEXT): \
 test_matrix_print$(EXEEXT): $(test_matrix_print_OBJECTS) $(test_matrix_print_DEPENDENCIES) 
 	@rm -f test_matrix_print$(EXEEXT)
 	$(CXXLINK) $(test_matrix_print_LDFLAGS) $(test_matrix_print_OBJECTS) $(test_matrix_print_LDADD) $(LIBS)
+TestRowSum.$(OBJEXT): $(srcdir)/src/demos/linalg/TestRowSum.C
+test_rowsum$(EXEEXT): $(test_rowsum_OBJECTS) $(test_rowsum_DEPENDENCIES) 
+	@rm -f test_rowsum$(EXEEXT)
+	$(CXXLINK) $(test_rowsum_LDFLAGS) $(test_rowsum_OBJECTS) $(test_rowsum_LDADD) $(LIBS)
 test_simple_get_value_1-main.$(OBJEXT): \
 	$(srcdir)/src/demos/SimpleGetValue.1/main.C
 test_simple_get_value_1$(EXEEXT): $(test_simple_get_value_1_OBJECTS) $(test_simple_get_value_1_DEPENDENCIES) 
@@ -518,6 +557,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestInverse.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestLinalg.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestPrintingOfBlockedMatrix.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestRowSum.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestSimplify.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestTinyMat.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestTinyVec.Po@am__quote@
@@ -837,6 +877,28 @@ TestPrintingOfBlockedMatrix.obj: $(srcdir)/src/demos/linalg/TestPrintingOfBlocke
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TestPrintingOfBlockedMatrix.obj `if test -f '$(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C'`
 
+TestRowSum.o: $(srcdir)/src/demos/linalg/TestRowSum.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TestRowSum.o -MD -MP -MF "$(DEPDIR)/TestRowSum.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o TestRowSum.o `test -f '$(srcdir)/src/demos/linalg/TestRowSum.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/linalg/TestRowSum.C; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/TestRowSum.Tpo" "$(DEPDIR)/TestRowSum.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/TestRowSum.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/linalg/TestRowSum.C' object='TestRowSum.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/TestRowSum.Po' tmpdepfile='$(DEPDIR)/TestRowSum.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TestRowSum.o `test -f '$(srcdir)/src/demos/linalg/TestRowSum.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/linalg/TestRowSum.C
+
+TestRowSum.obj: $(srcdir)/src/demos/linalg/TestRowSum.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TestRowSum.obj -MD -MP -MF "$(DEPDIR)/TestRowSum.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o TestRowSum.obj `if test -f '$(srcdir)/src/demos/linalg/TestRowSum.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/linalg/TestRowSum.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/linalg/TestRowSum.C'`; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/TestRowSum.Tpo" "$(DEPDIR)/TestRowSum.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/TestRowSum.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/linalg/TestRowSum.C' object='TestRowSum.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/TestRowSum.Po' tmpdepfile='$(DEPDIR)/TestRowSum.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TestRowSum.obj `if test -f '$(srcdir)/src/demos/linalg/TestRowSum.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/linalg/TestRowSum.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/linalg/TestRowSum.C'`
+
 test_simple_get_value_1-main.o: $(srcdir)/src/demos/SimpleGetValue.1/main.C
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_simple_get_value_1_CXXFLAGS) $(CXXFLAGS) -MT test_simple_get_value_1-main.o -MD -MP -MF "$(DEPDIR)/test_simple_get_value_1-main.Tpo" \
 @am__fastdepCXX_TRUE@	  -c -o test_simple_get_value_1-main.o `test -f '$(srcdir)/src/demos/SimpleGetValue.1/main.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/SimpleGetValue.1/main.C; \
@@ -1018,7 +1080,7 @@ distcleancheck_listfiles = find . -type f -print
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/$(srcdir)/src/daixtrose $(distdir)/$(srcdir)/src/demos/ChangeDisambiguation $(distdir)/$(srcdir)/src/demos/SimpleGetValue.1 $(distdir)/$(srcdir)/src/demos/SimpleGetValue.2 $(distdir)/$(srcdir)/src/demos/linalg $(distdir)/$(srcdir)/src/demos/simplify $(distdir)/$(srcdir)/src/demos/tiny $(distdir)/$(srcdir)/src/linalg $(distdir)/$(srcdir)/src/tiny
+	$(mkinstalldirs) $(distdir)/$(srcdir)/src/daixtrose $(distdir)/$(srcdir)/src/demos/ChangeDisambiguation $(distdir)/$(srcdir)/src/demos/SimpleGetValue.1 $(distdir)/$(srcdir)/src/demos/SimpleGetValue.2 $(distdir)/$(srcdir)/src/demos/linalg $(distdir)/$(srcdir)/src/demos/quicktour $(distdir)/$(srcdir)/src/demos/simplify $(distdir)/$(srcdir)/src/demos/tiny $(distdir)/$(srcdir)/src/linalg $(distdir)/$(srcdir)/src/tiny $(distdir)/$(srcdir)/wwwdoc $(distdir)/$(srcdir)/wwwdoc/css $(distdir)/$(srcdir)/wwwdoc/images
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
 	  case $$file in \
@@ -1201,7 +1263,7 @@ uninstall-am: uninstall-info-am
 	tags uninstall uninstall-am uninstall-info-am
 
 
-# a workaround for a missing automake feature
+# A workaround for a missing automake feature
 install-data-local:
 	@echo "installing headers"; \
         for f_raw in $(EXTRA_DIST); do \

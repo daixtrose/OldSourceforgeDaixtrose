@@ -37,6 +37,7 @@ check_PROGRAMS = \
 	test_simple_get_value_2 \
 	test_change_disambiguation \
 	test_linalg \
+	test_rowsum \
 	test_tiny_mat \
 	test_tiny_vec \
 	test_inverse \
@@ -60,6 +61,7 @@ test_simple_get_value_2_CXXFLAGS = $(AM_CXXFLAGS)
 
 test_change_disambiguation_SOURCES = $(srcdir)/src/demos/ChangeDisambiguation/main.C
 test_linalg_SOURCES                = $(srcdir)/src/demos/linalg/TestLinalg.C
+test_rowsum_SOURCES                = $(srcdir)/src/demos/linalg/TestRowSum.C
 test_tiny_mat_SOURCES              = $(srcdir)/src/demos/tiny/TestTinyMat.C
 test_tiny_vec_SOURCES              = $(srcdir)/src/demos/tiny/TestTinyVec.C
 test_inverse_SOURCES               = $(srcdir)/src/demos/linalg/TestInverse.C
@@ -83,57 +85,81 @@ quicktour_linalg_SOURCES           =  $(srcdir)/src/demos/quicktour/Linalg.C
 
 EXTRA_DIST = \
 	$(srcdir)/src/daixtrose/BinOps.h \
-        $(srcdir)/src/daixtrose/CompileTimeChecks.h \
-        $(srcdir)/src/daixtrose/ConstRef.h \
-        $(srcdir)/src/daixtrose/CountLeaves.h \
-        $(srcdir)/src/daixtrose/CountOccurence.h \
-        $(srcdir)/src/daixtrose/Daixt.h \
-        $(srcdir)/src/daixtrose/DefaultOps.h \
-        $(srcdir)/src/daixtrose/Differentiation.h \
-        $(srcdir)/src/daixtrose/Disambiguation.h \
-        $(srcdir)/src/daixtrose/Expr.h \
-        $(srcdir)/src/daixtrose/ExtractOp.h \
-        $(srcdir)/src/daixtrose/MatrixSelect.h \
-        $(srcdir)/src/daixtrose/NeutralElements.h \
-        $(srcdir)/src/daixtrose/PrettyPrinter.h \
-        $(srcdir)/src/daixtrose/Scalar.h \
-        $(srcdir)/src/daixtrose/Simplify.h \
-        $(srcdir)/src/daixtrose/UnOps.h \
-        $(srcdir)/src/daixtrose/ChangeDisambiguation.h \
-        $(srcdir)/src/demos/SimpleGetValue.1/main.C \
-        $(srcdir)/src/demos/SimpleGetValue.2/main.C \
-        $(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C \
-        $(srcdir)/src/demos/linalg/TestInverse.C \
-        $(srcdir)/src/demos/linalg/TestLinalg.C \
-        $(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C \
-        $(srcdir)/src/demos/ChangeDisambiguation/main.C \
-        $(srcdir)/src/demos/tiny/TestTinyMat.C \
-        $(srcdir)/src/demos/tiny/TestTinyVec.C \
-        $(srcdir)/src/demos/simplify/TestSimplify.C \
-        $(srcdir)/src/linalg/Disambiguation.h \
-        $(srcdir)/src/linalg/Inverse.h \
-        $(srcdir)/src/linalg/L2_Norm.h \
-        $(srcdir)/src/linalg/Linalg.h \
-        $(srcdir)/src/linalg/Lump.h \
-        $(srcdir)/src/linalg/Matrix.h \
-        $(srcdir)/src/linalg/MatrixVectorOps.h \
-        $(srcdir)/src/linalg/PrintBlockedMatrix.h \
-        $(srcdir)/src/linalg/RowAndColumCounters.h \
-        $(srcdir)/src/linalg/RowAndColumExtractors.h \
-        $(srcdir)/src/linalg/RowSum.h \
-        $(srcdir)/src/linalg/SliceIterator.h \
-        $(srcdir)/src/linalg/SliceVector.h \
-        $(srcdir)/src/linalg/Transpose.h \
-        $(srcdir)/src/linalg/Vector.h \
-        $(srcdir)/src/tiny/GetIndexedValue.h \
-        $(srcdir)/src/tiny/MatrixVectorOps.h \
-        $(srcdir)/src/tiny/TinyMatAndVec.h \
-        $(srcdir)/src/tiny/TinyMatrix.h \
-        $(srcdir)/src/tiny/TinyVector.h
+	$(srcdir)/src/daixtrose/CompileTimeChecks.h \
+	$(srcdir)/src/daixtrose/ConstRef.h \
+	$(srcdir)/src/daixtrose/CountLeaves.h \
+	$(srcdir)/src/daixtrose/CountOccurence.h \
+	$(srcdir)/src/daixtrose/Daixt.h \
+	$(srcdir)/src/daixtrose/DefaultOps.h \
+	$(srcdir)/src/daixtrose/Differentiation.h \
+	$(srcdir)/src/daixtrose/Disambiguation.h \
+	$(srcdir)/src/daixtrose/Expr.h \
+	$(srcdir)/src/daixtrose/ExtractOp.h \
+	$(srcdir)/src/daixtrose/MatrixSelect.h \
+	$(srcdir)/src/daixtrose/NeutralElements.h \
+	$(srcdir)/src/daixtrose/PrettyPrinter.h \
+	$(srcdir)/src/daixtrose/Scalar.h \
+	$(srcdir)/src/daixtrose/Simplify.h \
+	$(srcdir)/src/daixtrose/UnOps.h \
+	$(srcdir)/src/daixtrose/ChangeDisambiguation.h \
+	$(srcdir)/src/demos/SimpleGetValue.1/main.C \
+	$(srcdir)/src/demos/SimpleGetValue.2/main.C \
+	$(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C \
+	$(srcdir)/src/demos/linalg/TestInverse.C \
+	$(srcdir)/src/demos/linalg/TestLinalg.C \
+	$(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C \
+	$(srcdir)/src/demos/ChangeDisambiguation/main.C \
+	$(srcdir)/src/demos/tiny/TestTinyMat.C \
+	$(srcdir)/src/demos/tiny/TestTinyVec.C \
+	$(srcdir)/src/demos/simplify/TestSimplify.C \
+	$(srcdir)/src/demos/quicktour/Mini.C \
+	$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C \
+	$(srcdir)/src/demos/quicktour/Linalg.C \
+	$(srcdir)/src/demos/quicktour/Mini.2.C \
+	$(srcdir)/src/demos/quicktour/Mini.3.C \
+	$(srcdir)/src/demos/quicktour/Mini.4.C \
+	$(srcdir)/src/demos/quicktour/Mini.5.C \
+	$(srcdir)/src/demos/quicktour/Differentiation.C \
+	$(srcdir)/src/linalg/Disambiguation.h \
+	$(srcdir)/src/linalg/Inverse.h \
+	$(srcdir)/src/linalg/L2_Norm.h \
+	$(srcdir)/src/linalg/Linalg.h \
+	$(srcdir)/src/linalg/Lump.h \
+	$(srcdir)/src/linalg/Matrix.h \
+	$(srcdir)/src/linalg/MatrixVectorOps.h \
+	$(srcdir)/src/linalg/PrintBlockedMatrix.h \
+	$(srcdir)/src/linalg/RowAndColumCounters.h \
+	$(srcdir)/src/linalg/RowAndColumExtractors.h \
+	$(srcdir)/src/linalg/RowSum.h \
+	$(srcdir)/src/linalg/SliceIterator.h \
+	$(srcdir)/src/linalg/SliceVector.h \
+	$(srcdir)/src/linalg/Transpose.h \
+	$(srcdir)/src/linalg/Vector.h \
+	$(srcdir)/src/tiny/GetIndexedValue.h \
+	$(srcdir)/src/tiny/MatrixVectorOps.h \
+	$(srcdir)/src/tiny/TinyMatAndVec.h \
+	$(srcdir)/src/tiny/TinyMatrix.h \
+	$(srcdir)/src/tiny/TinyVector.h \
+	$(srcdir)/wwwdoc/bugs.html \
+	$(srcdir)/wwwdoc/contact.html \
+	$(srcdir)/wwwdoc/download.html \
+	$(srcdir)/wwwdoc/faq.html \
+	$(srcdir)/wwwdoc/index.html \
+	$(srcdir)/wwwdoc/license.html \
+	$(srcdir)/wwwdoc/manual.html \
+	$(srcdir)/wwwdoc/quicktour.html \
+	$(srcdir)/wwwdoc/template.html \
+	$(srcdir)/wwwdoc/themanual.html \
+	$(srcdir)/wwwdoc/main.css \
+	$(srcdir)/wwwdoc/css/colors.css \
+	$(srcdir)/wwwdoc/css/sflogotrick.css \
+	$(srcdir)/wwwdoc/images/sflogo.jpg \
+	$(srcdir)/wwwdoc/images/main.jpg \
+	$(srcdir)/wwwdoc/images/background.jpg \
+	$(srcdir)/wwwdoc/images/mini-logo.jpg
 
 
-
-# a workaround for a missing automake feature
+# A workaround for a missing automake feature
 install-data-local:
 	@echo "installing headers"; \
         for f_raw in $(EXTRA_DIST); do \
