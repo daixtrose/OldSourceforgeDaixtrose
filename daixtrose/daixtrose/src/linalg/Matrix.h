@@ -66,8 +66,6 @@ template <class T> inline size_t NumberOfCols(const T& t);
 namespace Private
 {
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // This is an SGI STL extension included for portability
 // I put it in namespace Private so that it won't interfere with any others
@@ -552,10 +550,18 @@ SetEntriesInRowTo(size_t i, Val val)
 {
   RangeCheck(i, 1);
 
-  using boost::lambda::_1;
+  RowStorage& Row = data_[i-1];
+  typedef typename RowStorage::iterator iterator;
 
-  std::for_each(data_[i-1].begin(), data_[i-1].end(), 
-                (&_1 ->* &RowStorage::value_type::second) = val);
+  iterator end = Row.end();
+  for (iterator iter = Row.begin(); iter!= end; ++iter) 
+    {
+      iter->second = val;
+    }
+//   using boost::lambda::_1;
+
+//   std::for_each(data_[i-1].begin(), data_[i-1].end(), 
+//                 (&_1 ->* &RowStorage::value_type::second) = val);
 }
 
 

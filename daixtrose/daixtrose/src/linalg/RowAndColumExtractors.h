@@ -610,7 +610,9 @@ OperatorDelimImpl<RowExtractor<VectorExpression<T> >,
     NumT LHS_Result = RowExtractor<VectorExpression<T> >(i)(arg.lhs());
     NumT RHS_Result = RowExtractor<VectorExpression<T> >(i)(arg.rhs());
 
-    using Daixt::DefaultOps::operator+;
+    using namespace Daixt::DefaultOps;
+//     using Daixt::DefaultOps::operator+;
+
     NumT Result = LHS_Result + RHS_Result;
     return Result;
 //     return (RowExtractor<VectorExpression<T> >(i)(arg.lhs())

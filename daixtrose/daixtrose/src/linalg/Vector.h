@@ -311,7 +311,8 @@ operator+=(const OtherT& Other)
 
   if (Daixt::CountOccurrence(Other, *this)) 
     {
-      using Daixt::DefaultOps::operator+; 
+      using namespace Daixt::DefaultOps;
+      //using Daixt::DefaultOps::operator+; 
       *this = *this + Other; // delegate to operator= which uses temporary
     }
   else

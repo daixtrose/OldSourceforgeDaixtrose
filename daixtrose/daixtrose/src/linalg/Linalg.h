@@ -30,6 +30,8 @@
 #ifndef DAIXT_LINALG_INC
 #define DAIXT_LINALG_INC
 
+#include "daixtrose/Daixt.h"
+
 #include "linalg/Disambiguation.h"
 #include "linalg/MatrixVectorOps.h"
 #include "linalg/Matrix.h"
@@ -38,13 +40,14 @@
 #include "linalg/RowAndColumExtractors.h"
 #include "linalg/Transpose.h"
 #include "linalg/Lump.h"
+#include "linalg/RowSum.h"
 #include "linalg/SliceVector.h"
 
 #include "linalg/PrintBlockedMatrix.h"
 #include "linalg/L2_Norm.h"
 #include "linalg/Inverse.h"
 
-// #include "linalg/RowSum.h"
+
 
 
 #endif // DAIXT_LINALG_INC

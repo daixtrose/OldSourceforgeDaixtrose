@@ -27,6 +27,8 @@
 // the GNU Lesser General Public License.
 
 
+// FIXIT: WORKS ONLY FOR BLOCKED MATRIX
+
 #ifndef DAIXT_LINALG_ROW_SUM_INC
 #define DAIXT_LINALG_ROW_SUM_INC
 
@@ -37,6 +39,8 @@
 #include "linalg/Matrix.h"
 #include "linalg/Vector.h"
 
+#include "tiny/TinyMatAndVec.h"
+
 
 namespace Linalg
 {
@@ -45,17 +49,36 @@ DAIXT_DEFINE_UNOP_AND_FUNCTION(RowSum, RowSumOfMatrix, DoNothing)
 
 namespace Daixt 
 {
-  template <class T, class RowStorage, class Allocator> 
-  struct UnOpResultDisambiguator<
-    Linalg::MatrixExpression<Linalg::MatrixDisambiguator<T, 
-                                                         RowStorage, 
-                                                         Allocator> >,
+
+template <class T, class RowStorage, class Allocator> 
+struct UnOpResultDisambiguator<
+  Linalg::MatrixExpression<Linalg::MatrixDisambiguator<T, 
+                                                       RowStorage, 
+                                                       Allocator> >,
+  Linalg::RowSumOfMatrix>
+{
+  typedef 
+  Linalg::VectorExpression<Linalg::VectorDisambiguator
+  <T, typename RowStorage::allocator_type> > 
+  Disambiguation;
+}; 
+
+
+// Block matrices need a special handling (row sums over the block matrices)
+template <class T, int N, class RowStorage, class Allocator> 
+struct UnOpResultDisambiguator<
+  Linalg::MatrixExpression<
+    Linalg::MatrixDisambiguator<TinyMat::TinyQuadraticMatrix<T, N>, 
+                                RowStorage, 
+                                Allocator> >,
     Linalg::RowSumOfMatrix>
-  {
-    typedef 
-    Linalg::VectorExpression<Linalg::VectorDisambiguator<T, Allocator> > 
-    Disambiguation;
-  }; 
+{
+  typedef 
+  Linalg::VectorExpression<Linalg::VectorDisambiguator
+  <TinyVec::TinyVector<T, N>, typename RowStorage::allocator_type> > 
+  Disambiguation;
+}; 
+
 } // namespace Daixt 
 
 
@@ -63,26 +86,59 @@ namespace Daixt
 namespace Linalg
 {
 
-template<class T, class ARG>
+template<class T, class ARG, class Allocator>
 struct
-OperatorDelimImpl<RowCounter<VectorExpression<T> >, 
-                  Daixt::UnOp<ARG, Linalg::RowSumOfMatrix> >
+OperatorDelimImpl
+<
+  RowCounter<
+             VectorExpression<
+                              VectorDisambiguator<T, Allocator> 
+                              > 
+             >, 
+  Daixt::UnOp<ARG, RowSumOfMatrix> 
+>
 {
   static inline 
-  size_t Apply(const Daixt::UnOp<ARG, Linalg::RowSumOfMatrix>& arg)
+  size_t Apply(const Daixt::UnOp<ARG, RowSumOfMatrix>& arg)
   { 
-    return RowCounter<VectorExpression<T> >()(arg.arg());
+    typedef VectorDisambiguator<T, Allocator> Disambiguation;
+    return RowCounter<VectorExpression<Disambiguation> >()(arg.arg());
   }
 };
+
+
+// matrix
+template<class T, class VecAllocator, 
+         class MatT, class RowStorage, class MatAllocator>
+struct
+OperatorDelimImpl
+<
+  RowCounter<
+             VectorExpression<
+                              VectorDisambiguator<T, VecAllocator> 
+                              > 
+             >, 
+  Linalg::Matrix<MatT, RowStorage, MatAllocator> 
+>
+{
+  static inline size_t Apply
+  (const Linalg::Matrix<MatT, RowStorage, MatAllocator>& arg) 
+  {
+    return arg.nrows();
+  }
+};
+
+
+
 
 
 // template<class T, class ARG>
 // struct
 // OperatorDelimImpl<ColumnCounter<VectorExpression<T> >, 
-//                   Daixt::UnOp<ARG, Linalg::RowSumOfMatrix> >
+//                   Daixt::UnOp<ARG, RowSumOfMatrix> >
 // {
 //   static inline 
-//   size_t Apply(const Daixt::UnOp<ARG, Linalg::RowSumOfMatrix>& arg)
+//   size_t Apply(const Daixt::UnOp<ARG, RowSumOfMatrix>& arg)
 //   { 
 //     return 1;
 //   }
@@ -91,10 +147,16 @@ OperatorDelimImpl<RowCounter<VectorExpression<T> >,
 ////////////////////////////////////////////////////////////////////////////////
 // extract a "row" of RowSum(SomeExpression)
 
-template<class T, class ARG>
+template<class T, class ARG, class Allocator>
 struct
-OperatorDelimImpl<RowExtractor<VectorExpression<T> >, 
-                  Daixt::UnOp<ARG, RowSumOfMatrix> >
+OperatorDelimImpl
+<
+  RowExtractor<
+               VectorExpression<
+                                Linalg::VectorDisambiguator<T, Allocator> 
+                                > 
+               >, 
+  Daixt::UnOp<ARG, RowSumOfMatrix> >
 {
   static inline 
   typename T::NumT
@@ -120,6 +182,57 @@ OperatorDelimImpl<RowExtractor<VectorExpression<T> >,
   }
 };
 
+
+template<class T, int N, class ARG, class Allocator>
+struct
+OperatorDelimImpl
+<
+  RowExtractor<
+               VectorExpression<
+                                Linalg::VectorDisambiguator
+                                  <TinyVec::TinyVector<T, N>, Allocator>
+                                > 
+               >,
+  Daixt::UnOp<ARG, RowSumOfMatrix> 
+>
+{
+  static inline 
+  typename TinyVec::TinyVector<T, N>
+  Apply(const Daixt::UnOp<ARG, RowSumOfMatrix>& arg,
+        std::size_t i)
+  { 
+    typedef typename ARG::Disambiguation::RowStorage RowStorage;
+    typedef typename RowStorage::value_type::second_type BlockT;
+
+    typedef typename RowStorage::const_iterator const_iterator;  
+    
+    // extract the row
+    RowStorage Row =
+      RowExtractor<typename ARG::Disambiguation>(i)(arg.arg());
+
+    BlockT SumBlock = T(0);
+
+    const_iterator end = Row.end();
+    for (const_iterator iter = Row.begin(); iter != end; ++iter)
+      {
+        SumBlock += iter->second;
+      }
+
+    typedef typename TinyVec::TinyVector<T, N> ResultT;
+
+    ResultT Result = 0;
+
+    for (std::size_t i = 1; i != N+1; ++i)
+      {
+        for (std::size_t j = 1; j != N+1; ++j)
+          {
+            Result(i) += SumBlock(i, j);
+          }
+      }
+
+    return Result;
+  }
+};
 
 
 
