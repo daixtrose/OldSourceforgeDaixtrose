@@ -148,7 +148,7 @@ OperatorDelimImpl<GetValue<T>, Daixt::UnOp<ARG, Op> >
   static inline T Apply(const Daixt::UnOp<ARG, Op>& UO, std::size_t i, std::size_t j) 
   {
     return Op::Apply(GetValue<T>(i, j)(UO.arg()), 
-                     Daixt::Hstd::size_t<T>());
+                     Daixt::Hint<T>());
   }
 };
 
@@ -426,7 +426,7 @@ OperatorDelimImpl<GetValue<T>, Daixt::UnOp<ARG, Op> >
   static inline T Apply(const Daixt::UnOp<ARG, Op>& UO, std::size_t j) 
   {
     return Op::Apply(GetValue<T>(j)(UO.arg()), 
-                     Daixt::Hstd::size_t<T>());
+                     Daixt::Hint<T>());
   }
 };
 
@@ -478,7 +478,7 @@ private:
     return 
       OP::Apply(GetValue<T>(j)(BO.lhs()),
                 GetValue<T>(j)(BO.rhs()),
-                Daixt::Hstd::size_t<T>());
+                Daixt::Hint<T>());
   }
 
   //////////////////////////////////////////////////////////////////////////////
