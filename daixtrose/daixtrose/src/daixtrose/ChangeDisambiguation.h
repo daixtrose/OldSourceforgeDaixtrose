@@ -26,31 +26,69 @@
 // invalidate any other reasons why the executable file might be covered by
 // the GNU Lesser General Public License.
 
-#ifndef DAIXT_INC
-#define DAIXT_INC
+#ifndef DAIXT_CHANGE_DISAMBIGUATION_INC
+#define DAIXT_CHANGE_DISAMBIGUATION_INC
 
-////////////////////////////////////////////////////////////////////////////////
-// Daixt: Differentiable Intrudable Expression Templates
-////////////////////////////////////////////////////////////////////////////////
-
-// This is the master file to include all of Daixt.
-
-#include "daixtrose/CompileTimeChecks.h"
-#include "daixtrose/BinOps.h"
-#include "daixtrose/UnOps.h"
-#include "daixtrose/ConstRef.h"
-#include "daixtrose/DefaultOps.h"
-#include "daixtrose/Disambiguation.h"
 #include "daixtrose/Expr.h"
-#include "daixtrose/CountLeaves.h"
-#include "daixtrose/CountOccurence.h"
-#include "daixtrose/ExtractOp.h"
-#include "daixtrose/PrettyPrinter.h"
-#include "daixtrose/Scalar.h"
-#include "daixtrose/NeutralElements.h"
-#include "daixtrose/Simplify.h"
-#include "daixtrose/Differentiation.h"
-#include "daixtrose/ChangeDisambiguation.h"
+
+////////////////////////////////////////////////////////////////////////////////
+// sometimes an expression must move its disambiguation in order to obtain
+// access to certain features (Expr inherits from FeaturesOfExpression)
+// This "Function" provides a convenient way to "force" all disambiguations 
+// to change except for the leaves 
+
+namespace Daixt 
+{
+
+template <class T, class NewDisambiguation>
+class DisambiguationChanger
+{
+  T t_;
+
+public:
+  typedef NewDisambiguation Disambiguation;
+
+  DisambiguationChanger(Daixt::Expr<T> E) 
+    : t_(E.content()) 
+  {} 
+
+  T content() const 
+  { 
+    return t_; 
+  }
+};  
 
 
-#endif
+template <class T, class NewDisambiguation>
+class Expr<DisambiguationChanger<T, NewDisambiguation> > 
+  :
+    public Daixt::FeaturesOfExpression<typename NewDisambiguation, 
+                                       Expr<DisambiguationChanger<T, NewDisambiguation> > >
+{
+  T t_;
+
+public:
+  typedef typename T::Disambiguation Disambiguation;
+
+  Expr(DisambiguationChanger<T, NewDisambiguation> DCT) 
+    : t_(DCT.content()) 
+  {} 
+
+  T content() const 
+  { 
+    return t_; 
+  }
+};
+
+
+template <class NewDisambiguation, class T>
+class Expr<DisambiguationChanger<T, NewDisambiguation> >
+ChangeDisambiguation(Expr<T> E)
+{
+  typedef Expr<DisambiguationChanger<T, NewDisambiguation> > ResultT;
+  return  ResultT(DisambiguationChanger<T, NewDisambiguation>(E));
+}
+
+} // namespace Daixt 
+
+#endif // DAIXT_CHANGE_DISAMBIGUATION_INC
