@@ -49,9 +49,8 @@ namespace Daixt
 template <class T> 
 struct Disambiguator 
 {
-  static const bool is_specialized = false;
+  enum { is_specialized = false };
   typedef T Disambiguation;
-//   virtual ~Disambiguator() {} 
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -96,7 +95,7 @@ protected:
   template<class U> static char (& check(...))[2];
 
 public:
-#if defined(__GNUC__) // I hate this bug!!!
+#if defined(__GNUC__) 
   static const bool value = (sizeof(check<T>(0)) == 1);
 #else
   enum { value = (sizeof(check<T>(0)) == 1) };
@@ -108,7 +107,7 @@ public:
 template<class T> 
 struct has_external_disambiguation 
 {
-#if defined(__GNUC__) // I hate this bug!!!
+#if defined(__GNUC__) 
   static const bool value = Disambiguator<T>::is_specialized;
 #else
   enum { value = Disambiguator<T>::is_specialized };
