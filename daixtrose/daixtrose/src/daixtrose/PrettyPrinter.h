@@ -107,7 +107,7 @@ struct LaTeXFormatter
         ||
         SAME_TYPE(OP, Daixt::DefaultOps::BinaryModuloAndAssign)) 
       {
-        os << " = ";
+        os << " & = ";
         return;
       }
 
@@ -169,17 +169,9 @@ struct PrettyPrinter<Formatter, Daixt::Scalar<Disambiguation> >
 {
   static void Print(std::ostream& os, const Daixt::Scalar<Disambiguation>& S)
   {
-    if (static_cast<typename Daixt::Scalar<Disambiguation>::NumericalType>(S)
-        < 
-        0) os << Formatter::LeftDelimiter();
-
-//     os << " ";
-    os << static_cast<typename Daixt::Scalar<Disambiguation>::NumericalType>(S);
-//     os << " ";
-
-    if (static_cast<typename Daixt::Scalar<Disambiguation>::NumericalType>(S)
-        < 
-        0) os << Formatter::RightDelimiter();
+    if (S.Value() < 0) os << Formatter::LeftDelimiter();
+    os << S.Value();
+    if (S.Value() < 0) os << Formatter::RightDelimiter();
   }
 };
 
