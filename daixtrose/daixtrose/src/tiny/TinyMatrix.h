@@ -318,8 +318,8 @@ std::ostream& operator<< (std::ostream& os, const TinyQuadraticMatrix<T, n>& M)
     {
       for (size_t j = 1; j != (n + 1); ++j) 
         {
-//           os << std::setw(12) << M(i, j) << "  ";
-          os << M(i, j) << "  ";
+          os << std::setw(12) << M(i, j) << "  ";
+          //os << M(i, j) << "  ";
         } 
       os << '\n';
     }
