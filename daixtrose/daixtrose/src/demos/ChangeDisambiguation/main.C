@@ -1,4 +1,4 @@
-//
+4//
 // Copyright (C) 2003 Markus Werle
 //
 // This file is part of the Daixtrose C++ Library.  This library is free
