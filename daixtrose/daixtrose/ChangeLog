@@ -1,0 +1,6 @@
+2003-03-11  Markus Werle  <numerical.simulation@web.de>
+
+	* start of this file, starting release of "daixtrose"
+	* GNU autotool based installation added
+	* new feature: ChangeDisambiguation
+

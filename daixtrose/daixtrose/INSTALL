@@ -1,14 +1,81 @@
 Installation instructions:
 
-This library is completely header-based. No lib has to be compiled or installed.
-So just use the headers. The most important one is "daixtrose/Daixtrose.h" which
-includes practically all of the core engine. But of course You may #include the
-files in a more intelligent way.
+System requirements
+-------------------
 
-If You like to use the tiny matrix and vector, You have to include
-"tiny/TinyMatAndVec.h".
+- A modern high performance ANSI compliant C++ compiler.  
 
-Please stay patient until the docs are finished. This lib is still in prerelease
-stage.
+  This is the strongest requirement of all, since this library exploits all the
+  bright and dark corners of C++. At present only Intel's C++ version 7.0 with
+  option -ansi is known to compile this code. GNU gcc-3.4 will be able to
+  compile this soon, since it only suffers from a parser bug in using
+  declarations, but otherwise performs well on this code.
+
+  The author appreciates success reports with other compilers
+
+- loki-lib (see http://sourceforge.net/projects/loki-lib/)
+- boost    (see http://www.boost.org/)
+
+
+Usage
+-----
+
+This library is completely header-based.  So You may use the headers directly
+and a simple #include "SomeHeader.h" will do. The most important one is
+"daixtrose/Daixt.h" which includes all of the core engine. But
+of course You may #include the files in a more refined way.
+
+In order to use the tiny matrix and vector, You have to 
+#include "tiny/TinyMatAndVec.h". 
+For the linalg package (sparse matrix + vector) one needs to 
+#include "linalg/Linalg.h"
+
+
+System wide installation and testsuite
+--------------------------------------
+
+To ease the compilation of the testsuite, to support multiple different
+installations and to support possible future diversification of the library,
+daixtrose is shipped with a GNU autotool-based configure shell script.
+
+Perform the following steps (or modifications), if You like to get the examples built:
+
+(It is recommened to create a new directory _outside_ of this directory,
+to keep the original source tree clean)
+
+$ cd ..
+$ mkdir build-daixtrose
+$ cd build-daixtrose
+$ ../daixtrose-0.0.1/configure \
+CXX=icpc CPPFLAGS="-g -wd76 -ansi -O3  -Ob2" --prefix=$HOME/daixtrose-0.0.1-beta \
+--with-loki=/path/to/loki/prefix --with-boost=/path/to/boost/prefix
+
+$ make 
+$ make check
+$ make install
+
+
+Update of the library
+---------------------
+
+At present this lib undergoes permanent evolution. So it is a good idea to use
+the cvs repository to keep track of the rapid changes.
+The following commands are sufficient to check out the latest version:
+
+$ cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/daixtrose login 
+$ cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/daixtrose co modulename 
+
+You may also take a look at the cvs web-interface under
+http://sourceforge.net/cvs/?group_id=75079
+
+
+Please stay patient until the docs are finished. Take a look at the directories
+demos, tiny and linalg to get an idea how to use this library.
+
+
+Have a lot of fun!
+
+
+Markus Werle
 
 

@@ -37,20 +37,13 @@ Features:
   workarounds in the incompatibility case.
  
 
-Caveats:
-
-Since Daixtrose exploits C++ features which are only available recently it can only
-be compiled with approximately fully compliant compilers like Intel's C++ 7.0 or
-gcc-3.3.  "Alpha" compilers like MSVC* are and will not be supported.
- 
-
 Additional Features:
 
-Daixtrose comes with a few small explanatory examples like e.g. a TinyMatrix and a
-simple std::vector/std::map based sparse-matrix implementation which show the
-most important features. Documentation is under permanent construction, but yet
-not available due to some open issues which may affect the kernel of the
-library.
+Daixtrose comes with a few small explanatory examples like e.g. a TinyMatrix and
+a simple std::vector/std::map based sparse-matrix implementation (see directory
+linlag) which show the most important features. Documentation is under permanent
+construction, but yet not available due to some open issues which may affect the
+kernel of the library.
  
 
 Lincense Issues: 
