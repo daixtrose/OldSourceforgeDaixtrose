@@ -1,0 +1,234 @@
+/* body { background-image: url(http://www.foo.com/image.gif);
+ background-attachment: fixed } */
+
+BODY {
+  background-color : #F7FFE8;
+  color:black;
+  font-family: sans-serif;
+  font-weight: 200;
+}
+
+ 
+/* start css.sty */
+.cmss-10--109{font-size:90%;  font-family: "fixed", serif;}
+.cmss-17{font-size:100%;  font-family: sans-serif;}
+.cmss-12{font-size:100%;  font-family: sans-serif;}
+.cmtt-10--109{font-size:130%;  font-family: "fixed", serif;}
+.cmtt-10
+{
+        font-size:90%; 
+        color:#005566;
+        font-family: "fixed", serif;
+        font-weight: bold;          
+
+}
+
+P.fancyvrb {
+   font-size:100%; 
+   color:#005566;
+   font-family: "fixed", serif;
+   font-weight:600;          
+   white-space: nowrap; 
+   margin:0em;
+}
+
+
+.cmssbx-10--109{
+        font-size:110%;
+        font-weight: bold;
+}
+.cmssi-10--109{
+        font-size:100%; 
+        font-style: italic; 
+        font-family: "fixed", serif;
+}
+
+.titleHead {
+        font-size:130%; 
+        font-weight: bold;
+}
+
+
+.sectionHead {
+        font-size:120%; 
+        font-weight: bold;
+}
+
+.subsectionHead {
+        font-size:110%; 
+        font-weight: bold;
+}
+
+.subsubsectionHead {
+        font-size:100%; 
+        font-weight: bold;
+}
+
+p.noindent { text-indent: 0em }
+p.nopar { text-indent: 0em; }
+p.indent{ text-indent: 1.5em }
+a img { border-top: 0; border-left: 0; border-right: 0; }
+.htf-cmbx { font-weight: bold; font-style:normal; }
+.htf-calligraphy {font-family:cursive}
+center { margin-top:1em; margin-bottom:1em; }
+td center { margin-top:0em; margin-bottom:0em; }
+.Canvas { position:relative; }
+div.displaymath{text-align:center;}
+.obeylines-h,.obeylines-v {white-space: nowrap; }
+.underline{ text-decoration:underline; }
+.overline{ text-decoration:overline; }
+div.center, div.center div.center {text-align: center; margin-left:1em; margin-right:1em; margin-top:0.5em; margin-bottom:0.5em;}
+div.center div {text-align: left;}
+div.flushright, div.flushright div.flushright {text-align: right;}
+div.flushright div {text-align: left;}
+div.flushleft {text-align: left;}
+div.tabular, div.center div.tabular {text-align: center; margin-top:0.5em; margin-bottom:0.5em;}
+div.td00{ margin-left:0pt; margin-right:0pt; }
+div.td01{ margin-left:0pt; margin-right:5pt; }
+div.td10{ margin-left:5pt; margin-right:0pt; }
+div.td11{ margin-left:5pt; margin-right:5pt; }
+td.td00{ padding-left:0pt; padding-right:0pt; }
+td.td01{ padding-left:0pt; padding-right:5pt; }
+td.td10{ padding-left:5pt; padding-right:0pt; }
+td.td11{ padding-left:5pt; padding-right:5pt; }
+.hline hr, .cline hr{ height : 1px; }
+li p.indent { text-indent: 0em }
+div.newtheorem { margin-bottom: 2em; margin-top: 2em;}
+span.TEX {letter-spacing: -0.125em; }
+span.TEX span.E{ position:relative;top:0.5ex;left:-0.0417em;}
+a span.TEX span.E {text-decoration: none; }
+span.LATEX span.A{ position:relative; top:-0.5ex; left:-0.4em; font-size:85%;}
+span.LATEX span.TEX{ position:relative; left: -0.4em; }
+.marginpar {width:20%; float:right; text-align:left; margin-left:auto; margin-top:0.5em; font-size:85%; text-decoration:underline;}
+span.footnotetext{ font-size:75%; font-style:italic; } 
+td.eqnarray4 { width:5%; white-space: normal; }
+td.eqnarray2 { width:5%; }
+table.eqnarray-star, table.eqnarray {width:100%;}
+.underline{ text-decoration:underline; }
+.overline{ text-decoration:overline; }
+.equation td{text-align:center; }
+td.equation { margin-top:1em; margin-bottom:1em; } 
+span.pmatrix img{vertical-align:middle;}
+p.bibitem { text-indent: -2em; margin-left: 2em; margin-top:0.6em; margin-bottom:0.6em; }
+p.bibitem-p { text-indent: 0em; margin-left: 2em; margin-top:0.6em; margin-bottom:0.6em; }
+h1.partHead{text-align: center}
+.paragraphHead, .likeparagraphHead { margin-top:2em; font-weight: bold;}
+.subparagraphHead, .likesubparagraphHead { font-weight: bold;}
+.quote {margin-bottom:0.25em; margin-top:0.25em; margin-left:1em; }
+.caption td.id{font-weight: bold; white-space: nowrap; }
+.verse{white-space:nowrap; margin-left:2em}
+h2.titleHead{text-align:center;}
+div.maketitle{ margin-bottom: 2em; }
+.quotation {margin-bottom:0.25em; margin-top:0.25em; margin-left:1em; }
+.abstract p {margin-left:5%; margin-right:5%;}
+.equation td{text-align:center; }
+table.align, table.alignat, table.xalignat, table.xxalignat, table.flalign, table.align-star, table.alignat-star, table.xalignat-star, table.flalign-star {width:100%; white-space: nowrap;}
+td.align-label { width:5%; }
+td.align-odd { text-align:right; padding-right:0.3em;}
+td.align-even { text-align:left; padding-right:0.6em;}
+td.gather-star, td.gather1 {text-align:center; }
+.figure img.graphics {margin-left:10%;}
+
+
+/* end css.sty */
+
+.verbatim { 
+  color:#005566;
+  font-family: "fixed", serif;
+  font-weight:600;
+}
+
+
+PRE {
+  color:#005566;
+  font-family: "fixed", serif;
+  font-weight:600;
+}
+
+TT {
+  color:#005566;
+  font-family: "fixed", serif;
+  font-weight:600;
+}
+
+
+P { width : 500pt }
+
+a:link {
+	color: #00AAAA;
+	text-decoration : none;
+}
+a:visited {
+/*	color: #555555; */
+        color: #55BB88;
+	text-decoration : none;
+}
+a:active {
+	color: #ffcc66;
+	text-decoration : none;
+}
+a:hover {
+	color: #55AACC;
+        font-weight:900; 
+}
+a.selected:link {
+	color: #ffcc66;
+}
+a.selected:visited {
+	color: #ffcc66;
+}
+a.selected:active {
+	color: #ffcc66;
+}
+a.selected:hover {
+	color: #ffcc66;
+	text-decoration : none;
+}
+
+#title
+{
+  color: #00AAAA;
+  font-family: sans-serif;
+  font-style : italic;
+  font-weight: 600;
+  font-size : 18pt;
+  text-align : center;
+}
+
+.menu, .menu TD, .menu TH {
+background-image : url('images/mini-logo.jpg');
+}
+
+#highlight {
+color: #ffcc66;
+link-color: red;
+font-family:sans-serif;
+font-weight:900;
+}
+
+#indented {
+position : relative;
+left : 40px;
+}
+
+.indent, .indent TD, .indent TH {
+position : relative;
+left : 40px;
+}
+
+
+
+#moveddown {
+position : relative;
+top : 40px;
+}
+
+
+.background, .background TD, .background TH
+{
+background-color:#F7FFE8;
+color:black;
+font-family:sans-serif;
+font-weight:200;
+}
+
