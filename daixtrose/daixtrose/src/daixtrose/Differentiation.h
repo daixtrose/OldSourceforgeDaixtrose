@@ -89,7 +89,7 @@ struct PreDifferentiator
   typedef typename 
   mpl::if_c
   <
-    StaticOccurrenceCounter<ARG, WRT>::Result, 
+    true, //StaticOccurrenceCounter<ARG, WRT>::Result, 
     mpl::pair<ARG, 
               Overloader<1> >, 
     mpl::pair<IsNull<typename Daixt::disambiguation<ARG>::type>,
