@@ -41,9 +41,7 @@ public:
   Variable() : Value_(0.0) {}
   Variable(double Value) : Value_(Value) {}
   
-  template <class T> Variable(const Daixt::Expr<T>& E)
-    :
-    Value_(ValueGetter()(E)) {} // delegate to the functor
+  template <class T> Variable(const Daixt::Expr<T>& E);
 
   inline double GetValue() const { return Value_; }
   inline void SetValue(double Value) { Value_ = Value; }
@@ -85,6 +83,11 @@ struct ValueGetter {
   }
 };
 
+
+// mourning about the C++ rules ...
+template <class T>  Variable::Variable(const Daixt::Expr<T>& E)
+  :
+  Value_(ValueGetter()(E)) {} // delegate to the functor
 
 ////////////////////////////////////////////////////////////////////////////////
 // Introduce some features we would like to add sometimes to the expression

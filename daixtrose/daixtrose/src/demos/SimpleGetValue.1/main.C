@@ -32,25 +32,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 // A _very_ simple example for how to use Daixt.
 
-struct ValueGetter;
-
 class Variable
-  :
-  public Daixt::Disambiguator<Variable> // could have been a public typedef
-                                       // inside class
 {
   double Value_;
 public:
   Variable() : Value_(0.0) {}
   Variable(double Value) : Value_(Value) {}
   
-  template <class T> Variable(const Daixt::Expr<T>& E)
-    :
-    Value_(ValueGetter()(E)) {} // delegate to the functor
+  template <class T> Variable(const Daixt::Expr<T>& E);
 
   inline double GetValue() const { return Value_; }
   inline void SetValue(double Value) { Value_ = Value; }
 };
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // all overloads of a feature are gathered together in one place, the functor
@@ -88,6 +82,14 @@ struct ValueGetter {
   }
 };
 
+
+////////////////////////////////////////////////////////////////////////////////
+// Due to a "defect" of the standard one has to postpone the definition of
+// this contructor until here
+
+template <class T>  Variable::Variable(const Daixt::Expr<T>& E)
+  :
+  Value_(ValueGetter()(E)) {} // delegate to the functor
 
 
 int main()

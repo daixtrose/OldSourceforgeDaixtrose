@@ -36,18 +36,13 @@
 struct ValueGetter;
 
 class Variable
-  :
-  public Daixt::Disambiguator<Variable> // could have been a public typedef
-                                       // inside class
 {
   double Value_;
 public:
   Variable() : Value_(0.0) {}
   Variable(double Value) : Value_(Value) {}
   
-  template <class T> Variable(const Daixt::Expr<T>& E)
-    :
-    Value_(ValueGetter()(E)) {} // delegate to the functor
+  template <class T> Variable(const Daixt::Expr<T>& E);
 
   inline double GetValue() const { return Value_; }
   inline void SetValue(double Value) { Value_ = Value; }
@@ -116,6 +111,15 @@ struct OperatorDelimImpl<ReturnType, ValueGetter, Daixt::BinOp<LHS, RHS, OP> >
                      Daixt::Hint<double>());
   }
 };
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Due to a "defect" of the standard one has to postpone the definition of
+// this contructor until here
+
+template <class T>  Variable::Variable(const Daixt::Expr<T>& E)
+  :
+  Value_(ValueGetter()(E)) {} // delegate to the functor
 
 
 
