@@ -62,7 +62,7 @@ public:
 template <class T, class NewDisambiguation>
 class Expr<DisambiguationChanger<T, NewDisambiguation> > 
   :
-    public Daixt::FeaturesOfExpression<typename NewDisambiguation, 
+    public Daixt::FeaturesOfExpression<NewDisambiguation, 
                                        Expr<DisambiguationChanger<T, NewDisambiguation> > >
 {
   T t_;

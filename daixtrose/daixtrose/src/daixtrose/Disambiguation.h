@@ -96,7 +96,7 @@ protected:
   template<class U> static char (& check(...))[2];
 
 public:
-  enum { value = sizeof(check<T>(0)) == 1 };
+  enum { value = (sizeof(check<T>(0)) == 1) };
 };
 
 template<class T> 
