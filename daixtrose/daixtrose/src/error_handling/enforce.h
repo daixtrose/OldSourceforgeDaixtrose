@@ -13,6 +13,8 @@
 // Many thanks to Andrei!
 
 
+// modified by Markus Werle
+
 #ifndef ENFORCE_H_
 #define ENFORCE_H_
 
