@@ -1,0 +1,102 @@
+% Translate with
+% latex2html -style=../../../css/colors.css -split 4 -image_type png
+% -iso_language C -address "Markus Werle <a
+% href=\"mailto:numerical.simulation@web.de\">numerical.simulation@web.de</a>"
+% -noinfo -tmp=/tmp -local_icons -html_version=4.0 main
+
+\documentclass[11pt,twoside,a4paper]{article}
+
+
+\input{../HEADER/usepackages}
+\input{../HEADER/environments}
+\input{../HEADER/newcommands}
+\input{../HEADER/layout}
+
+
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\pagestyle{fancy}
+
+\fancyhead{}
+
+\fancyhead[LE,RO]{\nouppercase{\leftmark}}
+\fancyhead[LO,RE]{\nouppercase{\rightmark}}
+\fancyfoot[LE,RO]{Page \thepage~of \pageref{LastPage}}
+\fancyfoot[LO,RE]{Daixtrose User's Manual}
+
+%\fancyfoot[CE,RO]{Page \thepage~of \pageref{LastPage}}
+
+%\rfoot{}
+\cfoot{\today}
+%\lfoot{}
+
+
+%\fancyhead[LE]{Daixtrose}
+%\fancyhead[RE]{}
+
+%\lhead{\nouppercase{\rightmark} }
+%
+%%\rhead{Markus Werle\\Page \thepage~of \pageref{Lastpage}}
+%\rhead{Markus Werle}
+
+\renewcommand{\headrulewidth}{1.8pt}
+\renewcommand{\footrulewidth}{1.8pt}
+
+
+% \usepackage{tex4ht} 
+
+\begin{document}
+
+
+\author{Markus Werle}
+\title{Daixtrose User Manual}
+
+\thispagestyle{empty}
+
+\maketitle
+
+\thispagestyle{empty}
+
+
+\tableofcontents
+
+%\Link[http://www.tug.org/]{}{XX}\TeX{} Users Group Home Page\EndLink 
+
+%\ifHtml \OutputCode\<Das ist ein Test\> \fi
+
+%\ifHtml 
+%\OutputCode\<Das ist  ein Test\>
+%\else
+%Das ist ein Test 
+%\fi
+
+\pagestyle{fancy}
+
+
+%\include{../TEXT/Introduction}
+\include{../TEXT/InstallationInstructions}
+\include{../TEXT/CodeOrganization}
+\include{../TEXT/QuickTour}
+
+\section{Programmer's Reference}
+\label{sec: Programmer's Reference}
+
+This chapter has not been written yet.
+I did not find the time to write a more detailed
+description of what \Daixtrose can be used for and how it can be extended.
+
+
+
+
+\end{document}
+
+
+%\bibliographystyle{siam}
+%\bibliography{../BIB/diss}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

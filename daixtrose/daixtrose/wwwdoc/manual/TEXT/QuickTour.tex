@@ -1,0 +1,405 @@
+\section{Quick Tour}
+\label{sec: Quick Tour}
+
+You want to know what \Daixtrose is good for? This is an attempt to explain it
+within 10 minutes. Built on top of the core \Daixtrose library are two matrix and
+vector library snippets, one for applications where the sizes of matrices or
+vectors are known at compile time and one for large scale applications with 
+sparse storage of the matrix and a more flexible approach.
+
+Both primarily were intended as demo code to show the power of \Daixtrose, but
+they already do a decent job in the authors doctoral thesis project, a
+time-implicit finite element solver.  Therefore you can profit from Daixtrose
+even if you do not want to build your own Expression Template library on top of
+\Daixtrose, but rather are only in need of a fairly good matrix and vector
+library.
+
+All code examples presented here can be found in the directory
+\somecode{src/demos/quicktour/} and will get compiled during a \somecode{make
+  check} as described in the installation instructions (\ref{sec: Installation
+  Instructions}).
+
+% ==============================================================================
+% //////////////////////////////////////////////////////////////////////////////
+
+\subsection{Fixed-Sized Matrix and Vector}
+\label{sec: Fixed-Sized Matrix and Vector}
+
+\somecode{TinyMatrix} and \somecode{TinyVector} are inspired by Todd
+Veldhuizen's \somecode{blitz++} library. They are one-based (first index is 1
+not 0) and can be used like this:
+
+\inputcppfile{../../../src/demos/quicktour/TinyMatrixAndVector.C}
+%\VerbatimInput[xleftmargin=10mm, fontseries=b, fontsize=\small,numbers=none]{../../../src/demos/quicktour/TinyMatrixAndVector.C}
+
+% ==============================================================================
+% //////////////////////////////////////////////////////////////////////////////
+
+\subsection{Linalg: Sparse Matrix and Vector}
+\label{sec: Linalg: Sparse Matrix and Vector}
+
+The sparse matrix implementation presented here assumes a row-oriented usage
+like e.g. in matrix-vector multiplications or additions resp. subtractions. The
+matrix data is stored in a \somecode{std::vector} of user-definable
+\somecode{RowStorage}s that must behave like a \somecode{std::map<size\_t, T>},
+which is the default. Each line in the matrix is represented by a
+\somecode{RowStorage}, where the keys store the colum number.  In addition to
+the common matrix interface (index operator, etc.) the user additionally has
+read-only access to each line or column, which allows individual manipulations
+if needed.  Like for \somecode{TinyMatrix} the sparse matrix and the compatible
+vector are one-based.
+
+Due to the sparse representation of the matrix it is not completely possible to
+avoid all temporaries during assignment of matrix expressions, but the run-time
+and memory overhead is negligible for matrices with more than 100 lines. The
+assignment loop creates new rows and inserts them at the correct places of the
+asignee. 
+
+Self assignment and assignment from expressions which contain the
+assigned Matrix or Vector will be detected at runtime and will safely produce a
+temporary before final assignment. 
+
+To allow complete, fine grained control over memory management, the allocators
+for the \somecode{RowStorage} can be optionally chosen to be different from
+\somecode{std::allocator}
+
+Here is some code which demonstrates the features which are available.
+(Mentioning the allocators in the typedefs is not needed, but for demonstration
+purposes the defaults are shown in the following example).
+
+\inputcppfile{../../../src/demos/quicktour/Linalg.C}
+
+
+% ==============================================================================
+% //////////////////////////////////////////////////////////////////////////////
+
+\subsection{A Sparse Matrix of Fixed-Sized Matrices}
+\label{A Sparse Matrix of Fixed-Sized Matrices}
+
+Of course you can have a sparse matrix of fixed-sized matrices. That is easy
+enough to achieve: 
+
+\begin{code}
+  typedef TinyMat::TinyQuadraticMatrix<double, 3> BlockMatrix;
+  typedef Linalg::Matrix<BlockMatrix> Matrix;
+
+  typedef TinyVec::TinyVector<double, 3> BlockVector;
+  typedef Linalg::Vector<BlockVector> Vector;
+\end{code}
+
+You can find complete examples in 
+\somecode{src/demos/linalg/TestBlockedMatAndVec.C}
+\somecode{src/demos/linalg/TestPrintingOfBlockedMatrix.C}
+
+
+% ==============================================================================
+% //////////////////////////////////////////////////////////////////////////////
+
+\subsection{Using the Core Engine (Building Expression Templates at Home)}
+\label{sec: Using the Core Engine (Building Expression Templates at Home)}
+
+
+\subsubsection{Delaying Evaluation}
+
+
+\Daixtrose was designed to provide a convenient way to apply Expression Template
+techniques to any kind of \CC classes without the need to modify any line of
+code of these classes. As an example consider you have written a very elaborated
+high performance \somecode{class X}. The only things missing are the operators
+and other code which would allow objects of type \somecode{X} to be used within
+expressions. No problem for us, we have \Daixtrose:
+%
+\inputcppfile{../../../src/demos/quicktour/Mini.C}
+
+Congratulations! You have combined the power of \somecode{class X} with the
+invaluable features of \Daixtrose. This code already compiles.  Of course there
+is some lack of functionality, but we fix that in a minute.
+
+What is important here is that with the help of \somecode{namespace
+  Daixt::DefaultOps} any expression gets mapped unto an Expression Template
+tree.  E.g. the expression above results in contructor calls for
+\somecode{Expr<T>}, \somecode{BinOp<...>} and \somecode{UnOp<...>} and yields an
+object of type\footnote{This expression tree has been simplified. All class
+  names reside inside namespaces, which were omitted for the sake of readability
+%Daixt::Expr<Daixt::BinOp<Daixt::BinOp<Daixt::BinOp<Daixt::BinOp<X, X, Daixt::DefaultOps::BinaryPlus>, Daixt::UnOp<X, Daixt::DefaultOps::RationalPower<4, 3>>, Daixt::DefaultOps::BinaryMultiply>, Daixt::UnOp<X, Daixt::DefaultOps::RationalPower<2, 1>>, Daixt::DefaultOps::BinaryDivide>, Daixt::BinOp<Daixt::UnOp<X, Daixt::DefaultOps::UnaryMinus>, X, Daixt::DefaultOps::BinaryMultiply>, Daixt::DefaultOps::BinaryDivide>>
+} (big breath)
+%
+\begin{code}
+Expr<
+     BinOp<
+           BinOp<
+                 BinOp<
+                       BinOp<X, X, BinaryPlus>, 
+                       UnOp<X, RationalPower<4, 3> >,
+                       BinaryMultiply
+                       >, 
+                 UnOp<
+                      X, 
+                      RationalPower<2, 1> 
+                      >, 
+                 BinaryDivide
+                 >, 
+           BinOp<
+                 UnOp<X, UnaryMinus>, 
+                 X, 
+                 BinaryMultiply
+                 >, 
+           BinaryDivide
+           >
+     >
+\end{code}
+
+This is what \Daixtrose offers. Users (or library authors) do not have to retake
+the tedious task of reinventing yet another Expression Template machinery but
+can rely on the \Daixtrose Expression Template core engine.
+
+Expression Templates avoid temporaries through delayed evaluation.  The first
+step of a delayed evaluation, namely the delaying, has already been taken in the
+code above. Now it is up to the user to perform the evaluation. 
+
+\subsubsection{Expression Evaluation}
+
+Evaluation can
+be achieved with a set of template functions (or a functor with an overload set
+of template member functions alias \somecode{operator()}.  These functions can
+rely on the public interfaces of the \Daixtrose classes, especially on the
+member functions  
+%
+\begin{code}
+Expr<T>::content()
+BinOp<...>::lhs()
+BinOp<...>::rhs()
+UnOp<...>::arg()
+\end{code}
+
+To illustrate this, let us extend the example above:
+%
+\inputcppfile{../../../src/demos/quicktour/Mini.2.C}
+
+
+\subsubsection{Assignment from an Expression}
+
+In a similar manner assignment can be achieved by reusing existent public
+interfaces. Consider a case where \somecode{class X} has a public member
+function that allows resetting some internal value. Here we show an example
+where no temporary object of type \somecode{X} is created, but only temporray
+objects of the contained data type are created.  Applying this technique to
+classes which contain large data sets like e.g. sparse matrices is the key to
+runtime efficiency. 
+
+ 
+
+\inputcppfile{../../../src/demos/quicktour/Mini.3.C}
+
+Note that in the example shown here assignment from an expression can be
+performed without modifying \somecode{class X}, but of course adding an
+appropriate \somecode{operator=} to \somecode{class X} is the way of choice in
+cases where \somecode{class X} was designed to rely on \Daixtrose:
+
+\begin{code}
+class X 
+{
+  std::string Name_;
+
+public:
+  X(const std::string& Name) : Name_(Name) {}
+
+  template<class T>
+  X& operator=(const Daixt::Expr<T>& E)
+  {
+    Name_ = Evaluate(E));
+    return *this;
+  }
+
+  std::string Name() const { return Name_; }
+};
+\end{code}
+
+In order to ease the output of expressions,  
+\somecode{namespace Daixt::OutputUtilities} contains everything needed to
+output any expression. This feature works for any leaf \somecode{class T} that has
+a \somecode{std::ostream\& operator<<(std::ostream\& os, const T\& t)} defined.
+See how this feature was used in the sparse matrix example 
+\ref{sec: Linalg: Sparse Matrix and Vector} above.  
+ 
+
+\subsubsection{Disambiguation}
+
+Sometimes it is a good idea to let the compiler emit an error 
+if incompatible types are combined in an exprression. Perhaps one 
+does not want a 
+\somecode{Vector} added to a \somecode{TesorRankOne} to pass the compiler
+ending in long debugging sessions. 
+
+\Daixtrose takes care of preventing the combination of incompatible types into 
+one expression and provides fine-grained control over its behaviour.
+The disambiguation mechanism compares types. Per default it takes the type of
+the leaves of the expression tree (\somecode{class X} in our example) as
+disambigution type. 
+
+There are two other possibilities for providing a disambiguation type:
+classes can contain a typedef like in
+%
+\begin{code}
+struct X_Disambiguation {};
+
+class X {
+  typedef X_Disambiguation Disambiguation;
+};
+\end{code}
+%
+or one can specialize \somecode{Daixt::Disambiguator} which again allows
+plugging class X into the Expression Template engine without modification:
+%
+\begin{code}
+class X {};
+
+struct X_Disambiguation {};
+
+namespace Daixt 
+{ 
+template <> 
+struct Disambiguator<X> 
+{
+  static const bool is_specialized = true;
+  typedef X_Disambiguation Disambiguation;
+};
+}
+\end{code}
+
+This techique allows one to combine classes 
+which differ in type, but where it makes perfect sense to combine them in
+expressions without error:
+
+\inputcppfile{../../../src/demos/quicktour/Mini.4.C}
+
+Performing an operation on some object may result in another type. Consider the
+multiplication of a matrix with a vector. The result is a vector expression.
+Daixtrose allows to communicate this fact via specializations of
+BinOpResultDisambiguator and UnOpResultDisambiguator:
+
+\inputcppfile{../../../src/demos/quicktour/Mini.5.C}
+
+\subsubsection{Value Semantics vs. Reference Semantics}
+
+\Daixtrose default behaviour is to use value semantics while building the object
+that represents the expression tree. This means that all leaves (operands) get
+copied once. Users can modify this behaviour by specializing
+template \somecode{class CRefOrVal}:
+
+Adding the following code to the example above prevents matrices and vectors to
+get copied.  
+\begin{code}
+namespace Daixt 
+{
+
+template <class T>
+struct CRefOrVal<MyOwn::Matrix<T> > 
+{
+  typedef Daixt::ConstRef<MyOwn::Matrix<T> > Type;
+};
+
+template <class T>
+struct CRefOrVal<MyOwn::Vector<T> > 
+{
+  typedef Daixt::ConstRef<MyOwn::Vector<T> > Type;
+};
+
+}
+\end{code}
+
+\Daixtrose now uses const references to the leaf objects. Of course
+the user then is responsible for avoiding dangling references by ensuring
+the lifetime of all leaves is longer than the lifetime of the expression.
+
+
+\subsubsection{Adding Polymorphic Behaviour to Expression Templates}
+
+It's a kind of magic, but it works well.
+\somecode{Daixt::Expr<T>} inherits from \somecode{FeaturesOfExpressions} using
+the Couriously Recursive Pattern (due to Geoffrey Furnish). Users can specialize
+this class and by this add publicly accessible member functions on the fly.
+This feature is build on top of a disambiguation changing mechanism
+which may help around some brain-damage in other situations, too.
+
+But see yourself: a piece of code says more than further explanations:
+
+\inputcppfilestrippedheader{../../../src/demos/ChangeDisambiguation/main.C}
+
+
+\subsubsection{Compile Time Differentiation}
+
+If You ever want to let the compiler analytically differentiate arbitrary
+expressions, \Daixtrose is the library of choice. This is not exactly what the
+compiler was invented for, but this feature is extremely useful e.g. for
+creating generic versions of exact Newton solvers.
+
+There is one restriction: compile time differentiation only works for
+variables that differ in type. Of course one wants all variables to behave
+similar, so the nearest solution is to use a template class that makes
+the variables distinguishable \emph{at compile time} through the template
+argument.
+
+Some possible candidates are
+\begin{code}
+  template <std::size_t Number> class Variable;
+\end{code}
+%
+or
+\begin{code}
+  template <const char Name[256]> class Variable;
+\end{code}
+
+The first version is used in \somecode{src/demos/simplify/TestSimplify.C}, the
+second version in the following demo example. Differentiation was implemented
+such that the product and sum rules are formally applied without any
+simplification. This means that zero terms are not automatically removed.
+Example: \somecode{Diff(a + b, b)} yields \somecode{0 + 1} or - in \CC terms - an
+object of type \somecode{Expr<BinOp<...> >} instead of an
+\somecode{Expr<IsOne<..> >}.
+
+For production code the compile time zero-branch deletion is crucial for the
+runtime performance. Therefore expression simplification is implemented
+separately and can be applied to the result of a differentiation.  
+Example: \somecode{Simplify(Diff(a + b, b))} yields the desired result \somecode{1}.
+
+In order to speed up compilation for cases where these features are not needed
+differentiation resides in \somecode{Daixt::Differentiation} and expression
+manipulation in \somecode{Daixt::ExprManip}. 
+
+The following example shows both features in action.
+
+\inputcppfile{../../../src/demos/quicktour/Differentiation.C}
+
+
+
+
+
+
+
+
+
+
+
+
+
+% ==============================================================================
+% //////////////////////////////////////////////////////////////////////////////
+
+
+\subsection{Have a lot of fun}
+
+This is the end of the Quick Tour.
+Further Information can be gathered by looking at the files in directories
+\somecode{demos}, \somecode{tiny} and \somecode{linalg}.
+
+Please send me some feedback via the mail addresses at \url{http://daixtrose.sourceforge.net/contact.html}
+
+Enjoy!
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../MAIN/main"
+%%% End: 

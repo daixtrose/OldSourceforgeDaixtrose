@@ -1,0 +1,101 @@
+\usepackage{makeidx}
+
+% ???
+\usepackage{latexsym}
+
+
+
+%===============================================================================
+% AMS
+%-------------------------------------------------------------------------------
+\usepackage[intlimits,fleqn,tbtags]{amsmath}
+%\usepackage[leqno]{amsmath}
+\usepackage{amssymb}
+%\usepackage{amsthm}
+
+\usepackage{amsthm}
+%===============================================================================
+
+
+%\usepackage[german]{babel}
+
+\usepackage{epsfig}
+\usepackage{float}
+%\usepackage{floatfig} gibt es nicht
+
+%\usepackage{moreverb}
+%\usepackage{verbatim}
+\usepackage{fancyvrb}
+
+%\usepackage{verbatimfiles}
+
+\usepackage[obeyspaces]{url}
+\usepackage{hyperref}
+%\usepackage[obeyspaces]{somecode}
+
+
+\usepackage{wrapfig}
+\usepackage{floatflt}
+\usepackage{color}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage{version}
+
+
+
+% FIXIT: ????
+%\usepackage{oldgerm}
+
+%===============================================================================
+% pstcol.sty ist die Anpassung des color-Paketes an die Interna von PSTricks
+%-------------------------------------------------------------------------------
+%\usepackage{pstcol,pstricks}
+%===============================================================================
+
+
+%Korrekte Leerzeichen nach Befehlen 
+\usepackage{xspace}
+
+%===============================================================================
+% Die leidige Font-Geschichte
+%-------------------------------------------------------------------------------
+%\usepackage{avant}
+%\usepackage{bookman}
+%\usepackage{times}
+
+\usepackage{amsfonts}
+%===============================================================================
+
+
+%===============================================================================
+% Umlaute richtig ...
+%-------------------------------------------------------------------------------
+\usepackage[isolatin]{inputenc}
+%===============================================================================
+
+%\usepackage{multicol}
+
+
+%===============================================================================
+% In grau am unteren Rand das Datum ...
+%-------------------------------------------------------------------------------
+\newcommand{\MyDate}{\number\day. \ifcase\month\or Januar\or
+  Februar\or Maerz\or April\or Mai\or Juni\or Juli\or August\or September\or
+  Oktober\or November\or Dezember\fi \space\number\year}
+
+\usepackage[none,bottom]{draftcopy}
+\draftcopyName{-------------------- Entwurf \MyDate%
+ -------------------------}{215}
+%===============================================================================
+
+
+
+%===============================================================================
+
+% does not work well
+%\usepackage{listings}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../MAIN/main"
+%%% End: 

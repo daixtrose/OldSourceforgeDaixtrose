@@ -1,0 +1,120 @@
+\pagestyle{headings}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 5pt minus 0pt}
+%\setlength{\parskip}{5pt plus 5pt minus 2pt}
+
+\frenchspacing
+\sloppy
+
+\setlength{\voffset}{-5mm}
+\setlength{\hoffset}{0mm}
+\setlength{\headsep}{15mm}
+\setlength{\textwidth}{159mm}
+\setlength{\textheight}{231mm}
+\setlength{\topmargin}{0pt}
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\footskip}{1cm}
+\setlength{\marginparwidth}{60pt}
+
+% --------------------------------------------
+
+
+\setlength{\abovedisplayskip}{3pt plus 3pt minus 0pt}
+\setlength{\belowdisplayskip}{3pt plus 3pt minus 0pt}
+\setlength{\abovedisplayshortskip}{3pt plus 3pt minus 0pt}
+\setlength{\belowdisplayshortskip}{3pt plus 3pt minus 0pt}
+
+%\numberwithin{equation}{section}
+
+% multline indents like normal equations!
+\makeatletter
+\setlength{\multlinegap}{\@mathmargin}
+\makeatother
+
+\renewcommand{\baselinestretch}{1.2}
+%===============================================================================
+% private Laengen
+
+\newlength{\imagewidth}
+\setlength{\imagewidth}{149mm}
+\newlength{\halfimagewidth}
+\setlength{\halfimagewidth}{74mm}
+
+% So kontrolliert man Laengen:
+% \message{The length is: \the\abovedisplayskip}
+% \the\textwidth
+% \showthe\textwidth
+
+
+%===============================================================================
+% Fussnotenbehaviour
+%-------------------------------------------------------------------------------
+\makeatletter
+%
+\renewcommand\footnoterule{%
+  \kern-3\p@
+  \hrule\@width1\columnwidth
+  \kern2.6\p@}
+\@addtoreset{footnote}{chapter}
+%
+\renewcommand{\@makefnmark}{\mbox{$^{\@thefnmark}$}}
+%
+\renewcommand{\@makefntext}[1]%
+   {\noindent{\@makefnmark}#1}
+%
+\makeatother
+%===============================================================================
+
+
+
+%===============================================================================
+% FONT! nochmal endgueltig verdrahten
+%-------------------------------------------------------------------------------
+% Abkürzungen:
+% pag - AvantGarde - schrift
+% pcr - echtes Courier
+% phv - Original Helvetica
+% ppl - ein ``calligraphiertes'' Times -> Buch?
+% pbk - ähnlich ppl, aber breiter
+% put - häßlich, ähnlich times
+% pnc - ähnlich Times, etwas verschnörkelter
+% pzc - NICHT EX.
+% ptm - Das schoenere times aus dem times-package
+%\renewcommand\sfdefault{phv}%               use helvetica for sans serif
+\renewcommand\familydefault{\sfdefault}%    use sans serif by default
+
+%===============================================================================
+
+
+%===============================================================================
+% An- und Abschalten von "unwichtigen" Umformungen ueber ein Flag
+%-------------------------------------------------------------------------------
+\newcommand{\textselection}{all}
+
+\ifthenelse{\equal{\textselection}{nearly all}}{
+% long Version, without the complements
+\includeversion{DetailOfAlgebra}
+\excludeversion{ReplacementForDetailOfAlgebra}
+\includeversion{UnimportantAlgebra}
+}{
+% else: short version
+\excludeversion{DetailOfAlgebra}
+\includeversion{ReplacementForDetailOfAlgebra}
+\excludeversion{UnimportantAlgebra}
+}
+
+% really everything that was typed
+\ifthenelse{\equal{\textselection}{all}}{
+\includeversion{DetailOfAlgebra}
+\includeversion{ReplacementForDetailOfAlgebra}
+\includeversion{UnimportantAlgebra}
+}{}
+%===============================================================================
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../MAIN/main"
+%%% End: 

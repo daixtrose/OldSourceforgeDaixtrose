@@ -1,0 +1,323 @@
+%===============================================================================
+% schoenes 
+%-------------------------------------------------------------------------------
+%\newcommand{\graybox}[1]{\psboxit{rectcartouche}{\spbox{#1}}}
+% obiges funktionierte nicht mehr ...
+%\newgray{superlightgray}{.95}
+%\newcommand{\graybox}[1]{\psframebox[linewidth=1pt,framearc=.0,fillstyle=solid,%
+%fillcolor=superlightgray]{#1}}
+%===============================================================================
+
+
+%eine eigene caption?
+
+%\ifHtml 
+%  \newenvironment{code}{\HCode{<CODE>}}{\HCode{</CODE>}}
+%\else 
+%  \newenvironment{code}{\verbatim}{\endverbatim}
+%\fi 
+
+%\newenvironment{code}{\verbatim}{\endverbatim}
+
+%\newenvironment{code}{}{\endverbatim}
+
+%\newcommand\url{\begingroup \Url}
+
+% klappt nich mit obeyspaces
+%\newcommand{\somecode}[1]{%
+%{%
+%  \urldef{\garbage}\url{#1}%
+%  \garbage%
+%}}
+
+% geht fast
+%\makeatletter
+%\newcommand{\somecode}[1]{\href{}{#1}}
+%\makeatother
+
+%\newcommand{\somecode}[1]{\url{#1}}
+
+% SEHR gut nur nicht fuer latex2html
+
+\newcommand{\somecode}[1]{\DefineShortVerb{\|}\SaveVerb{text}|#1|\UseVerb{text}\UndefineShortVerb{\|}}
+
+\DefineVerbatimEnvironment{codenumbered}{Verbatim}%
+{baselinestretch=1.0,numbers=none,xleftmargin=5mm,fontsize=\small}
+
+\DefineVerbatimEnvironment{code}{Verbatim}%
+{baselinestretch=1.0,numbers=none,xleftmargin=5mm,fontsize=\small}
+
+\newcommand{\inputcppfile}[1]{%
+  \VerbatimInput[baselinestretch=1.0,numbers=none,xleftmargin=5mm, fontseries=b, fontsize=\small]{#1}
+}
+
+\newcommand{\inputcppfilestrippedheader}[1]{%
+  \VerbatimInput[baselinestretch=1.0,numbers=none,xleftmargin=5mm, fontseries=b, fontsize=\small,firstline=28]{#1}
+}
+
+
+%\newcommand{\inputcppfile}[1]{%
+%  \VerbatimInput[defineactive=\def\/\/{\color{cyan}\itshape},xleftmargin=5mm, fontseries=b, fontsize=\small,numbers=none]{#1}
+%}
+%
+%\newcommand{\somecode}[1]{\<TT\>#1\</TT\>}
+
+
+%\newcommand{\somecode}[1]{\protect{\alltt{#1}}}
+%\newcommand{\somecode}[1]{\verbatim\protect{#1}\endverbatim}
+
+
+%===============================================================================
+% fuer Formeln
+%===============================================================================
+
+% Spatprodukt
+\newcommand{\spat}[3]{\ensuremath{%
+               [\,#1,#2,#3\,]}}
+
+% Kreuzprodukt (falls es irgendwer mal anders haben will)
+\newcommand{\crosssprod}{\ensuremath{\times}}
+
+% Kronecker-Symbol
+\newcommand{\kronecker}[2]{\ensuremath{{\delta}^{#2}_{#1}}}
+\newcommand{\kroneckerlow}[2]{\ensuremath{{\delta}_{#1#2}}}
+
+% Christoffel-Symbole
+\newcommand{\christoffeleins}[3]{\ensuremath{{\Gamma}\!_{#1 #2 #3}}}
+\newcommand{\christoffelzwei}[3]{\ensuremath{{\Gamma}^{#3}\!\!\!_{#1 #2}}}
+
+% Tensor
+%\newcommand{\ten}[1]{\smash{\raisebox{-2.0mm}{$\stackrel{\textstyle#1}
+%                                         {\scriptstyle\approx}$}}}
+
+%\newcommand{\ten}[1]{\boldsymbol{\MakeUppercase{#1}}}
+
+%\newcommand{\ten}[1]{\boldsymbol{\smash{\raisebox{-2.0mm}%
+%{$\stackrel{\textstyle#1}{\scriptstyle\approx}$}}}}
+ 
+%\newcommand{\ten}[1]{\text{\Large \bf #1}}
+\newcommand{\ten}[1]{ \ifthenelse{ \equal{A}{#1} \or \equal{B}{#1} \or
+    \equal{C}{#1} \or \equal{D}{#1} \or \equal{E}{#1} \or \equal{C}{#1} \or
+    \equal{D}{#1} \or \equal{E}{#1} \or \equal{F}{#1} \or \equal{G}{#1} \or
+    \equal{H}{#1} \or \equal{I}{#1} \or \equal{J}{#1} \or \equal{K}{#1} \or
+    \equal{L}{#1} \or \equal{M}{#1} \or \equal{N}{#1} \or \equal{P}{#1} \or
+    \equal{Q}{#1} \or \equal{R}{#1} \or \equal{S}{#1} \or \equal{T}{#1} \or
+    \equal{U}{#1} \or \equal{V}{#1} \or \equal{W}{#1} \or \equal{X}{#1} \or
+    \equal{Y}{#1} \or \equal{Z}{#1} }{\ensuremath{\text{$\boldsymbol{#1}$}}}{
+    \ensuremath{\text{\Large $\boldsymbol{#1}$}}}}
+
+
+%\newcommand{\ten}[1]{\ensuremath{\text{\Large $\boldsymbol{%\MakeLowercase
+%        #1}$}}}
+
+%\newcommand{\ten}[1]{\ensuremath{\text{\large $\boldsymbol{#1}$}}}
+
+
+
+%\newcommand{\ten}[1]{\boldsymbol{#1}}
+
+%\newcommand{\tvec}[1]{\smash{\raisebox{-1.7mm}{$\stackrel{\textstyle#1}
+%                                        {\scriptstyle\sim}$}}}
+
+\newcommand{\tvec}[1]{\ensuremath{\boldsymbol{#1}}}
+
+%\newcommand{\tvec}[1]{\boldsymbol{\smash{\raisebox{-1.7mm}
+%{$\stackrel{\textstyle#1}{\scriptstyle\sim}$}}}}
+
+
+%\renewcommand{\vec}[1]{\underline{#1}}
+\renewcommand{\vec}[1]{{\bf #1}}
+
+%\newcommand{\mat}[1]{\smash{\raisebox{-2.0mm}{$\stackrel{\textstyle#1}{\scriptstyle%=}$}}}
+%\newcommand{\mat}[1]{\underline{\underline{#1}}\,}
+\newcommand{\mat}[1]{{\bf #1}}
+
+
+%===============================================================================
+%\newcommand{\ptfrac}[2]{\displaystyle{\frac{\delta #1}{\delta #2}}}
+\newcommand{\ptfrac}[2]{\displaystyle{\frac{d #1}{d#2}}}
+\newcommand{\ptfracbig}[2]{\displaystyle{\frac{d}{d #2}} #1}
+\newcommand{\pfrac}[2]{\displaystyle{\frac{\partial #1}{\partial #2}}}
+\newcommand{\pfractwo}[2]{\displaystyle{\frac{\partial^{2} #1}{\partial #2^{2}}}}
+\newcommand{\pfracbig}[2]{\displaystyle{\frac{\partial}{\partial #2}} #1}
+\newcommand{\pfracshort}[2]{{#1}_{#2}}
+
+\newcommand{\totaltimediff}[1]{\ensuremath{\ptfrac{#1}{t}}}
+
+\newcommand{\differential}[2]{{#1}_{,#2}}
+
+\newcommand{\Order}[1]{O(#1)}
+
+
+
+%===============================================================================
+% werden bei Dahmens Zeug und Kontimech verwendet.
+%-------------------------------------------------------------------------------
+%\DeclareMathAccent{\widebar}{\mathord}{AMSb}{"7E}
+%{symbols}{72}
+%{AMSb}{72}
+%\DeclareMathSymbol{\Relbar}{\mathrel}{symbols}{72}
+
+
+%\newcommand{\CC}{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\tiny\bfseries++}~}
+
+%latex2html fails on the newcommand above
+\newcommand{\CC}{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{++}\xspace}
+%\newcommand{\CC}{C++\xspace}
+
+%===============================================================================
+% data from reference frame has an overline or bar
+\def\chip#1#2\sentinel{#2}
+%\newcommand{\Ref}[1]{%
+%        \expandafter\ifx\chip#1\sentinel!!
+%          \Bar{#1}%
+%        \else
+%          {#1}%
+%        \fi
+%        }
+%          \overline{#1}%
+
+\newcommand{\Ref}[1]{\setbox0=\hbox{\ensuremath{#1}}%
+  \dimen0=\ht0\advance\dimen0 by0.2ex%
+  \dimen3=\ht0\multiply\dimen3 by17\divide\dimen3 by100%
+  \dimen1=\wd0\advance\dimen1 by-\dimen3\advance\dimen1 by-0.02em%
+  \dimen2=\dimen1\advance\dimen2 by-0.03em%
+  \ensuremath{#1}%
+  \kern-\dimen1\hbox{\rule[\dimen0]{\dimen2}{0.47pt}}%
+}
+
+%\newcommand{\Ref}[1]{\ensuremath{\overset{\_}{#1}}}
+%\newcommand{\Ref}[1]{\Bar{#1}}
+%\newcommand{\Ref}[1]{\overline{#1}}
+%\newcommand{\Ref}[1]{\ifthenelse{
+%    \ifdim #1 < 1
+%}{\Bar{#1}}{\overline{#1}}
+%\newcommand{\Ref}[1]{{#1'}}
+\newcommand{\refcoord}{{\Ref{x}}}
+\newcommand{\refcoordvec}{{\Ref{\tvec{x}}}}
+
+\newcommand{\tvecref}[1]{\Ref{\tvec{#1}}}
+
+
+\newcommand{\ArgumentXt}{\ensuremath{\Ref{\tvec{x}},t }}
+\newcommand{\ArgumentPhi}{
+\ensuremath{\tvec{x} \! \left( \ArgumentXt \right)\!, t  }}
+
+\newcommand{\speed}{v}
+\newcommand{\speedvec}{\tvec{\speed} \bigl( \ArgumentPhi \bigr) }
+\newcommand{\speedref}{\Ref{\speed}}
+\newcommand{\speedvecofgrid}{\Ref{\tvec{{\speed}}_{G}}}
+\newcommand{\speedvecref}{\Ref{\tvec{\speed}} \left( \ArgumentXt \right)}
+
+\newcommand{\IndependentVolume}{V'}
+
+\newtheorem{definition}{Definition}[section]
+\numberwithin{equation}{section}
+
+\newcommand{\InnerProduct}[2]{\boldsymbol{\left<\right.} \smash{#1}, \smash{#2} \boldsymbol{\left.\right>}}
+%\newcommand{\InnerProduct}[2]{\left< \smash{#1}, \smash{#2} \right>}
+%===============================================================================
+
+
+
+
+%\DeclareMathOperator
+\DeclareMathOperator{\diverg}{\mathit{div}}
+%\DeclareMathOperator{\divergref}{\overline{\mathit{div}}}
+\DeclareMathOperator{\divergref}{\Ref{\mathit{div}}}
+\DeclareMathOperator{\grad}{\mathit{grad}}
+%\DeclareMathOperator{\gradref}{\overline{\mathit{grad}}}
+\DeclareMathOperator{\gradref}{\Ref{\mathit{grad}}}
+\DeclareMathOperator{\trace}{\mathit{tr}}
+\newcommand{\traceof}[1]{\trace \left( #1 \right)}
+\DeclareMathOperator{\doubleshift}{\mathit{:}}
+\DeclareMathOperator{\placeholder}{\cdot}
+\DeclareMathOperator{\determinant}{\mathit{det}}
+
+\newcommand{\detof}[1]{\left| #1 \right|}
+\newcommand{\signum}[1]{\mathit{sign}\left( #1 \right)}
+
+\newcommand{\Entropy}{\ensuremath{S}}
+
+\newcommand{\SpecificEntropy}{\ensuremath{s}}
+
+\newcommand{\SpecificInnerEnergy}{\ensuremath{e}}
+\newcommand{\SpecificFreeEnergy}{\ensuremath{f}}
+\newcommand{\GradientOfSpeed}{\ensuremath{V}}
+\newcommand{\tenGradientOfSpeed}{\ten{V}}
+\newcommand{\GradientOfDisplacement}{\ensuremath{U}}
+
+\newcommand{\stress}{\ensuremath{\sigma}}
+\newcommand{\tenstress}{\ensuremath{\ten{\stress}}}
+\newcommand{\FTJ}{\ten{T}}
+
+\newcommand{\strain}{\ensuremath{\epsilon}}
+\newcommand{\greenstrain}{\ensuremath{G}}
+\newcommand{\almansistrain}{\ensuremath{\epsilon}}
+\newcommand{\tenstrain}{\ensuremath{\ten{\epsilon}}}
+
+\newcommand{\tengreenstrain}{\ensuremath{\ten{G}}}
+\newcommand{\tenalmansistrain}{\ensuremath{\ten{\almansistrain}}}
+
+\newcommand{\tenC}{\ensuremath{\ten{C}}}
+
+\newcommand{\tenidentity}{\ensuremath{\ten{I}}}
+
+\newcommand{\heatflux}{\ensuremath{\tvec{q}}}
+
+\newcommand{\marginlabel}[1]{
+  \mbox{}\marginpar{\raggedleft\hspace{0pt}\emph{#1}}}
+
+%===============================================================================
+% So sollen Operatoren aussehen
+%===============================================================================
+
+\newcommand{\OperatorL}{{\cal L}}
+
+
+
+
+\newcommand{\Daixtrose}{\textbf{Daixtrose}\xspace}
+
+
+
+
+
+%===============================================================================
+% Fullref
+%===============================================================================
+
+%\makeatletter
+%\def\breakref#1.#2\relax#3\relax{\def\xchap{#1}\def\xsec{#2}}
+%
+%\def\fullref#1{%
+%  \protected@edef\@tempa{\protect\breakref\ref{#1}\relax.\relax\relax}%
+%  \@tempa
+%  \protected@edef\xxchap{\thechapter}%
+%  \ifx\xchap\xxchap
+%     \sectionname~\xsec\ in diesem \chaptername
+%  \else
+%      \chaptername~\xchap, \sectionname~\xsec
+%  \fi}
+%
+%\providecommand\sectionname{section}
+%
+%\makeatother
+%
+
+%\begin{document}
+%\chapter{aaa}\label{c1}
+%\section{bbb}\label{s1}
+%
+% a full ref (\fullref{s1}) or normal ref (\ref{s1})
+%
+%\chapter{aaa}\label{c2}
+%\section{bbb}\label{s2}
+% a full ref (\fullref{s1}) or normal ref (\ref{s1})
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../MAIN/main"
+%%% TeX-master: "../MAIN/main"
+%%% End: 

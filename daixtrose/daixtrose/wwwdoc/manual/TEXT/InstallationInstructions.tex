@@ -1,0 +1,126 @@
+
+
+\section{Installation Instructions}
+\label{sec: Installation Instructions}
+
+
+\subsection{System Requirements}
+\label{sec: System Requirements}
+
+\Daixtrose is (or at least should be) platform independent. It's only a \CC
+header library, nothing more.
+If You want to use the GNU autotools based installation procedure which
+compiles the testsuite, any unix system or a similar environment like cygwin is
+nice to have, but this library is intended to be platform independent.
+
+\subsection{Software Requirements}
+\label{sec: Software Requirements}
+
+\Daixtrose depends on the following software
+%
+
+\begin{itemize}
+\setlength{\itemsep}{5pt minus 5pt}
+\setlength{\parsep}{0pt}
+\setlength{\parskip}{0pt}
+
+
+\item A modern high performance ANSI compliant \CC compiler.  
+  
+  This library exploits most of the bright and dark corners of \CC templates. At
+  present only Intel's \CC version 7.0 with option -ansi is known to compile
+  this code. GNU gcc-3.4 will be able to compile this, since it only
+  suffers from a parser bug in using declarations, which is promised to be fixed
+  soon.
+
+%\item the \somecode{boost} library (see \url{http://www.boost.org})
+\item the \somecode{boost} 
+%\href{http://www.boost.org}{boost} 
+library (see \url{http://www.boost.org})
+\item the \somecode{loki} library (see \url{http://sourceforge.net/projects/loki-lib})
+\end{itemize}
+
+
+
+This library is completely header-based and a simple 
+\somecode{\#include "SomeHeader.h"} will do. The most important one is
+\somecode{daixtrose/Daixt.h} which includes all of the core engine. But of
+course You may \somecode{\#include} the files in a more refined way.
+
+\Daixtrose is shipped with a fixed-sized matrix and vector package.
+\somecode{\#include "tiny/TinyMatAndVec.h"} in order to use it.
+\Daixtrose also comes with a (yet incomplete) linear algebra package (sparse
+matrix + vector). In order to use these one needs to 
+\somecode{\#include "linalg/Linalg.h"}
+
+\subsection{Autotools Based Installation Procedure}
+\label{sec: Autotools Based Installation Procedure}
+
+To ease the compilation of the testsuite and in order to support possible future
+diversification of the library, daixtrose is shipped with a GNU autotool-based
+configure shell script.
+
+Perform the following steps (probably with some modifications), if You like to
+get the examples built (it is recommened to create a new directory
+\emph{outside} of this directory, to keep the original source tree clean):
+
+\begin{code}
+  $ cd ..  
+  $ mkdir build-daixtrose 
+  $ cd build-daixtrose 
+  $ ../daixtrose-0.0.1/configure \ 
+  CXX=icpc CPPFLAGS="-g -wd76 -ansi -O3 -Ob2" \ 
+  --prefix=$HOME/daixtrose-0.0.1 \ 
+  --with-loki=/path/to/loki/prefix \ 
+  --with-boost=/path/to/boost/prefix
+  
+  $ make 
+  $ make check 
+  $ make install
+\end{code}
+
+At present the command \somecode{make} will do nothing.
+
+The command \somecode{make check} is optional and may be omitted. 
+It evokes compilation of all the examples in the directory \somecode{demos}
+and can be regarded as a compiler test.
+
+The command \somecode{make install} will install the headers under 
+\somecode{prefix/include}.%$ 
+
+For further control over the installation procedure consider the
+output of \somecode{../daixtrose-0.0.1/configure --help}.
+
+%\$
+
+\subsection{Update of the Library}
+\label{sec: Update of the Library}
+
+This lib undergoes permanent evolution. So it is a good idea to consider regular
+updates. Visit the homepage of \Daixtrose at \somecode{http://daixtrose.sf.net}
+for download instructions. 
+
+A more frequent update is possible through checkouts of the cvs repository.  The
+following commands are sufficient to check out the latest version:
+
+\begin{code}
+  $ cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/daixtrose login 
+  $ cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/daixtrose \
+    co daixtrose 
+\end{code}
+
+
+You may also visit the cvs web-interface at
+\url{http://sourceforge.net/cvs/?group_id=75079}
+
+%\begin{code}
+%http://sourceforge.net/cvs/?group_id=75079
+%\end{code}
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../MAIN/main"
+%%% End: 

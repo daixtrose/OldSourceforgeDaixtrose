@@ -1,0 +1,45 @@
+%===============================================================================
+% Sachen fuer graue minipage et al.
+%-------------------------------------------------------------------------------
+\definecolor{gray80}{gray}{.8}
+\definecolor{gray95}{gray}{.95}
+
+\makeatletter
+\newenvironment{gminipage}[1][\linewidth]%
+  {\setlength{\@tempdima}{#1-2\fboxsep-2\fboxrule}%
+   \begin{lrbox}{\@tempboxa}\begin{minipage}{\@tempdima}}%
+  {\end{minipage}\end{lrbox}%
+  \fcolorbox{black}{gray95}{\usebox{\@tempboxa}}}   
+\makeatother
+%===============================================================================
+
+
+%===============================================================================
+% Float ...
+%-------------------------------------------------------------------------------
+%\floatstyle{ruled}
+%\newfloat{algorithm}{tbp}{alg}[section]
+%\floatname{algorithm}{Algorithmus}
+%\newfloat{method}{tbp}{alg}[section]
+%\floatname{method}{Methode}
+%\floatstyle{plain}
+%===============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "~/DISS/DOKU/MAIN/main"
+%%% End: 

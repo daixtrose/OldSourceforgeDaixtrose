@@ -1,0 +1,25 @@
+
+\section{Code Organization}
+\label{sec: Code Organization}
+
+
+The code of \Daixtrose is organized as follows:
+
+All sourcecode is located in the directory \somecode{src}. 
+
+\begin{itemize}
+\item directory \somecode{daixtrose} constains the core Expression Template library 
+\item directory \somecode{tiny} contains the fixed sized matrix and vector
+  library built on top of the \Daixtrose core library
+\item directory \somecode{linalg} contains a linear algebra library mainly
+  consisting of an STL-based sparse matrix implementation with
+  compatible vector classes.
+\item directory \somecode{demos} contains smaller examples which give an idea
+  about the features offered by the already mentioned parts of the library.
+\end{itemize}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../MAIN/main"
+%%% End: 
