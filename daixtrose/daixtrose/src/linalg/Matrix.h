@@ -43,6 +43,7 @@
 
 
 #include <vector>
+#include <cassert>
 #include <algorithm>
 #include <functional>
 #include <stdexcept>
@@ -105,8 +106,8 @@ template <
           // must have the same interface and semantics as std::map<size_t, T>
           class RowStorage = std::map<std::size_t, 
                                       T, 
-                                      std::less<T>,
-                                      std::allocator<T> >,
+                                      std::less<std::size_t>,
+                                      std::allocator<std::pair<const std::size_t, T> > >,
           class Allocator = std::allocator<RowStorage> 
           >
 class Matrix
