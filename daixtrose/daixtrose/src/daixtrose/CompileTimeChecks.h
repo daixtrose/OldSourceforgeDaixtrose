@@ -74,26 +74,6 @@ template <> struct CompileTimeAssertion<true> {};
   CONCAT(Error_, __LINE__) = \
   sizeof(Daixt::Check::CompileTimeAssertion<ARG>) }
 
-
-////////////////////////////////////////////////////////////////////////////////
-// compile time check for a disambiguation
-// thanks to Paul Mensonides for sending me this solution via mail
-template<class T> 
-class has_disambiguation 
-{
-protected:
-  template<class U> static char check(typename U::Disambiguation*);
-  template<class U> static char (& check(...))[2];
-public:
-  enum { value = sizeof(check<T>(0)) == 1 };
-};
-
-template<class T> 
-struct use_disambiguation 
-{
-  typedef typename T::Disambiguation type;
-};
-
 } // namespace Check  
 } // namespace Daixt 
 

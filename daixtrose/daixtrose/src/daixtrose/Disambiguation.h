@@ -33,6 +33,10 @@
 // Disambiguation inhibits operations between incompatible types 
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "daixtrose/CompileTimeChecks.h"
+
+#include "boost/mpl/apply_if.hpp"
+#include "boost/mpl/identity.hpp"
 
 namespace Daixt 
 {
@@ -45,6 +49,7 @@ namespace Daixt
 template <class T> 
 struct Disambiguator 
 {
+  static const bool is_specialized = false;
   typedef T Disambiguation;
 //   virtual ~Disambiguator() {} 
 };
@@ -74,6 +79,62 @@ template <class T, class Op>
 struct UnOpResultDisambiguator
 {
   typedef T Disambiguation;
+};
+
+
+namespace Check
+{
+
+
+////////////////////////////////////////////////////////////////////////////////
+// compile time check for a disambiguation 
+template<class T> 
+class has_member_disambiguation // (Thanks to Paul Mensonides) 
+{
+protected:
+  template<class U> static char check(typename U::Disambiguation*);
+  template<class U> static char (& check(...))[2];
+
+public:
+  enum { value = sizeof(check<T>(0)) == 1 };
+};
+
+template<class T> 
+struct has_external_disambiguation 
+{
+  enum { value = Disambiguator<T>::is_specialized };
+};
+
+
+template<class T> 
+struct use_member_disambiguation 
+{
+  typedef typename T::Disambiguation type;
+};
+
+template<class T> 
+struct use_external_disambiguation 
+{
+  typedef typename Disambiguator<T>::Disambiguation type;
+};
+
+
+} // namespace Check  
+
+template<class T> 
+struct disambiguation 
+{
+  typedef typename boost::mpl::apply_if
+  <
+    Check::has_member_disambiguation<T>,
+    Check::use_member_disambiguation<T>,
+    boost::mpl::apply_if
+    <
+     Check::has_external_disambiguation<T>,
+     Check::use_external_disambiguation<T>,
+     boost::mpl::identity<T>
+    >
+  >::type type;
 };
 
 

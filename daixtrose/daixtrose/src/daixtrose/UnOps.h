@@ -61,12 +61,7 @@ private:
   // disambiguation mechanism: if ARG does not contain a typedef or member named
   // "Disambiguation", the disambiguation type is set to ARG itself
 
-  typedef typename boost::mpl::apply_if
-  <
-    Check::has_disambiguation<ARG>,
-    Check::use_disambiguation<ARG>,
-    boost::mpl::identity<ARG> 
-  >::type ARG_Disambiguation;
+  typedef typename disambiguation<ARG>::type ARG_Disambiguation;
 
 public:
   typedef typename UnOpResultDisambiguator<ARG_Disambiguation,

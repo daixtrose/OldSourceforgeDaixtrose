@@ -31,7 +31,6 @@
 
 
 #include "daixtrose/Disambiguation.h"
-#include "daixtrose/CompileTimeChecks.h"
 
 #include "boost/mpl/apply_if.hpp"
 #include "boost/mpl/identity.hpp"
@@ -64,19 +63,8 @@ private:
   // disambiguation mechanism: if *HS does not contain a typedef or member named
   // "Disambiguation", the disambiguation type is set to *HS itself
 
-  typedef typename boost::mpl::apply_if
-  <
-    Check::has_disambiguation<LHS>,
-    Check::use_disambiguation<LHS>,
-    boost::mpl::identity<LHS> 
-  >::type LHS_Disambiguation;
-
-  typedef typename boost::mpl::apply_if
-  <
-    Check::has_disambiguation<RHS>,
-    Check::use_disambiguation<RHS>,
-    boost::mpl::identity<RHS> 
-  >::type RHS_Disambiguation;
+  typedef typename disambiguation<LHS>::type LHS_Disambiguation;
+  typedef typename disambiguation<RHS>::type RHS_Disambiguation;
 
 public:
   typedef typename BinOpResultDisambiguator<LHS_Disambiguation, 
