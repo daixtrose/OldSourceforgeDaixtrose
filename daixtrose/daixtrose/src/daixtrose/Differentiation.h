@@ -78,6 +78,56 @@ namespace Differentiation
 // getting tired of typing 
 namespace mpl = boost::mpl;
 
+////////////////////////////////////////////////////////////////////////////////
+// Prediff: this is some preprocessing: if for Diff(a, b) a does not contain b
+// then we branch for zero immediately (hoping for speedup in compile-time)
+template<class WRT, class ARG>
+struct PreDifferentiator
+{
+  template <int i, int Dummy = 0> struct Overloader;
+
+  typedef typename 
+  mpl::if_c
+  <
+    StaticOccurrenceCounter<ARG, WRT>::Result, 
+    mpl::pair<ARG, 
+              Overloader<1> >, 
+    mpl::pair<IsNull<typename Daixt::disambiguation<ARG>::type>,
+              Overloader<0> >
+  >::type Decision;
+
+
+  typedef typename mpl::select1st<Decision>::type ReturnType;
+  typedef typename mpl::select2nd<Decision>::type Overload;
+
+  static inline ReturnType Apply(const ARG& arg)
+  {
+    return Overload::Apply(arg);
+  }
+
+private:
+  // return zero
+  template <int Dummy> 
+  struct Overloader<0, Dummy> 
+  {
+    static inline ReturnType Apply(const ARG& arg)
+    {
+      return ReturnType();
+    }
+  };
+  
+  // simply reach through
+  template <int Dummy> 
+  struct Overloader<1, Dummy> 
+  {
+    static inline ReturnType const & Apply(const ARG& arg)
+    {
+      return arg;
+    }
+  };
+};
+
+
 // user extensible approach through partially specializable class  
 template<class WRT, class ARG> struct DiffImpl;
 
@@ -102,11 +152,26 @@ struct Differentiator {
 // function for convenient call
 template<class WRT, class ARG> 
 inline 
-Daixt::Expr<typename DiffImpl<WRT, ARG>::ReturnType>
+Daixt::Expr
+<
+  typename DiffImpl<
+                    WRT, 
+                    typename PreDifferentiator<WRT, ARG>::ReturnType
+                    >::ReturnType
+>
 Diff(const ARG& arg, const WRT& wrt)
 {
-  typedef Daixt::Expr<typename DiffImpl<WRT, ARG>::ReturnType> ReturnType;
-  return ReturnType(Differentiator<WRT>()(arg));
+  typedef typename PreDifferentiator<WRT, ARG>::ReturnType PreprocessedType;
+
+  typedef Daixt::Expr<typename DiffImpl<WRT, PreprocessedType>::ReturnType> 
+    ReturnType;
+
+  return ReturnType(
+                    Differentiator<WRT>()
+                    (
+                     PreDifferentiator<WRT, ARG>::Apply(arg)
+                     )
+                    );
 }
 
 
@@ -293,8 +358,8 @@ struct DiffImpl<WRT, Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> >
   // this expression a little bit:
   // if (nn < 0) we multiply mm and nn with (-1) in order to have some
   // nice values
-  enum { m = (nn < 0) ? -mm : mm };
-  enum { n = (nn < 0) ? -nn : nn };
+  enum { m = (nn < 0) ? -mm : mm, 
+         n = (nn < 0) ? -nn : nn };
 
 private:
   // we want to mutiply the result with Scalar(m)/Scalar(n), so 1/n must be possible
@@ -440,6 +505,8 @@ private:
   {
     static inline ReturnType Apply(const ArgT& UO)  
     {
+      typedef Daixt::UnOp<Scalar, Daixt::DefaultOps::UnaryMinus > MinusScalar;
+      
       return ReturnType(
                         FactorT(
                                 MinusScalar(Scalar(static_cast<NumericalType>(-m)

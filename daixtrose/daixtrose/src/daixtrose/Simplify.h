@@ -322,8 +322,8 @@ private:
 
   // if (nn < 0) we multiply mm and nn with (-1) in order to have some
   // nice values
-  static const int m = (nn < 0) ? -mm : mm;
-  static const int n = (nn < 0) ? -nn : nn;
+  enum { m = (nn < 0) ? -mm : mm, 
+         n = (nn < 0) ? -nn : nn };
 
   COMPILE_TIME_ASSERT((n>0) && ((m-n) < m)); // the (n>0) test is unnecessary,
                                              // but code robust against changes
@@ -753,14 +753,14 @@ private:
   // Simplified_RHS       if (rhs != 0 && lhs == 0)
   // DefaultResultT        in all other cases checked here
 
-  static const bool LHS_IsNull = SAME_TYPE(Null, Simplified_LHS);
-  static const bool RHS_IsNull = SAME_TYPE(Null, Simplified_RHS);
+  enum { LHS_IsNull = SAME_TYPE(Null, Simplified_LHS) };
+  enum { RHS_IsNull = SAME_TYPE(Null, Simplified_RHS) };
 
-  static const bool LHS_IsOne = SAME_TYPE(One, Simplified_LHS);
-  static const bool RHS_IsOne = SAME_TYPE(One, Simplified_RHS);
+  enum { LHS_IsOne = SAME_TYPE(One, Simplified_LHS) };
+  enum { RHS_IsOne = SAME_TYPE(One, Simplified_RHS) };
 
-  static const bool ResultIsOne = 
-    (LHS_IsOne && RHS_IsNull) || (LHS_IsNull && RHS_IsOne);
+  enum { ResultIsOne = 
+    (LHS_IsOne && RHS_IsNull) || (LHS_IsNull && RHS_IsOne) };
 
 
   template <int i> struct Overloader {};
