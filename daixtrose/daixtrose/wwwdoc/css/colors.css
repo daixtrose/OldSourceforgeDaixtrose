@@ -9,6 +9,7 @@ BODY {
 }
 
 
+
 /* -------------------------------------------------------------------- */
 /* 
 Generic font families allow the browser to choose the font most appropriate that is included on the current system. These are: 
@@ -177,6 +178,7 @@ a.selected:hover {
 .menu, .menu TD, .menu TH {
 background-image : url('images/mini-logo.jpg');
 }
+
 
 #highlight {
 color: #ffcc66;

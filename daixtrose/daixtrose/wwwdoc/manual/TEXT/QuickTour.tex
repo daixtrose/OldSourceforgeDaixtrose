@@ -317,8 +317,11 @@ the lifetime of all leaves is longer than the lifetime of the expression.
 
 It's a kind of magic, but it works well.
 \somecode{Daixt::Expr<T>} inherits from \somecode{FeaturesOfExpressions} using
-the Couriously Recursive Pattern (due to Geoffrey Furnish). Users can specialize
-this class and by this add publicly accessible member functions on the fly.
+the Couriously Recursive Template Pattern (due to Geoffrey Furnish, also called
+the Couriously Recurring Pattern, so let's call it CRTP). Users can specialize
+this class which makes it possible to add publicly accessible member functions to
+expressions on the fly.
+
 This feature is build on top of a disambiguation changing mechanism
 which may help around some brain-damage in other situations, too.
 
@@ -329,7 +332,7 @@ But see yourself: a piece of code says more than further explanations:
 
 \subsubsection{Compile Time Differentiation}
 
-If You ever want to let the compiler analytically differentiate arbitrary
+If you ever want to let the compiler analytically differentiate arbitrary
 expressions, \Daixtrose is the library of choice. This is not exactly what the
 compiler was invented for, but this feature is extremely useful e.g. for
 creating generic versions of exact Newton solvers.
@@ -364,8 +367,8 @@ separately and can be applied to the result of a differentiation.
 Example: \somecode{Simplify(Diff(a + b, b))} yields the desired result \somecode{1}.
 
 In order to speed up compilation for cases where these features are not needed
-differentiation resides in \somecode{Daixt::Differentiation} and expression
-manipulation in \somecode{Daixt::ExprManip}. 
+differentiation resides in \somecode{namespace Daixt::Differentiation} and expression
+manipulation in \somecode{namespace Daixt::ExprManip}. 
 
 The following example shows both features in action.
 
