@@ -73,8 +73,8 @@ struct Differentiator {
   typename DiffImpl<WRT, ARG>::ReturnType
   operator()(const ARG& arg) const 
   { 
-    COMPILE_TIME_ASSERT(SAME_TYPE(typename WRT::Disambiguation, 
-                                  typename ARG::Disambiguation));
+    COMPILE_TIME_ASSERT(SAME_TYPE(typename Daixt::disambiguation<WRT>::type, 
+                                  typename Daixt::disambiguation<ARG>::type));
 
     return DiffImpl<WRT, ARG>::Apply(arg); 
   }
@@ -101,8 +101,8 @@ Diff(const ARG& arg, const WRT& wrt)
 // default: compare WRT and ARG and return 0 or 1
 template<class WRT, class ARG> struct DiffImpl
 {
-  typedef IsOne<typename ARG::Disambiguation> One;
-  typedef IsNull<typename ARG::Disambiguation> Null;
+  typedef IsOne<typename Daixt::disambiguation<ARG>::type> One;
+  typedef IsNull<typename Daixt::disambiguation<ARG>::type> Null;
   static const bool Condition = SAME_TYPE(WRT, ARG);
 
   typedef typename Loki::Select<Condition, One, Null>::Result ReturnType;
@@ -233,7 +233,7 @@ struct DiffImpl<WRT, Daixt::BinOp<LHS, RHS, Daixt::DefaultOps::BinaryDivide> >
 {
 private:
   // check for division by zero                                               
-  typedef Daixt::IsNull<typename RHS::Disambiguation> Null;
+  typedef Daixt::IsNull<typename Daixt::disambiguation<RHS>::type> Null;
   COMPILE_TIME_ASSERT(!SAME_TYPE(RHS, Null));
 
 public:
@@ -260,7 +260,7 @@ public:
 template <class WRT, int mm, int nn, class ARG>
 struct DiffImpl<WRT, Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> > >
 {
-  typedef Daixt::Scalar<typename WRT::Disambiguation> Scalar;
+  typedef Daixt::Scalar<typename Daixt::disambiguation<WRT>::type> Scalar;
   typedef typename Scalar::NumericalType NumericalType;
 
   // Now we go astray with our basic design where we completely separate 
@@ -292,8 +292,8 @@ struct DiffImpl<WRT, Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> >
   //   if (m != 1) but (m < 0) ScalarFactorT is  - Scalar(-m)
   //   else ScalarFactorT = Scalar(m/n)
 
-  typedef IsNull<typename ArgT::Disambiguation> Null;
-  typedef IsOne<typename ArgT::Disambiguation> One;
+  typedef IsNull<typename Daixt::disambiguation<ArgT>::type> Null;
+  typedef IsOne<typename Daixt::disambiguation<ArgT>::type> One;
   typedef Daixt::UnOp<Scalar, Daixt::DefaultOps::RationalPower<-1, 1> > InverseOfN;
   typedef Daixt::UnOp<Scalar, Daixt::DefaultOps::UnaryMinus > MinusScalar;
   typedef Daixt::UnOp<One, Daixt::DefaultOps::UnaryMinus> MinusOne;

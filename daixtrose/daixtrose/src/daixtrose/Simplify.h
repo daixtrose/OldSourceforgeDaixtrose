@@ -164,8 +164,10 @@ private:
              >::type Decision;
 
   // paranoia: of course Disambiguation must not change, so we check
-  COMPILE_TIME_ASSERT(SAME_TYPE(typename T::Disambiguation, 
-                                typename Decision::first_type::Disambiguation));
+  COMPILE_TIME_ASSERT
+  (SAME_TYPE
+   (typename Daixt::disambiguation<T>::type, 
+    typename Daixt::disambiguation<typename Decision::first_type>::type));
 
   // Overload disambiguation: this is necessary, because SimplerA and SimplerB
   // may have same type, and we would get multiple equivalent overloads with
@@ -248,7 +250,7 @@ private:
   // special case: simplify(ARG) yields 0, then we give back a zero
   // (this may be inappropriate for soem UnOp, needs improvement)
   // Zero and Zero are not the same: we have to translate the disambiguation:
-  typedef IsNull<typename ARG::Disambiguation> ARGNull;
+  typedef IsNull<typename Daixt::disambiguation<ARG>::type> ARGNull;
   typedef Daixt::UnOp<ARG, OP> ArgT;
   typedef IsNull<typename Daixt::UnOp<ARG, OP>::Disambiguation> Null;
 
@@ -339,14 +341,14 @@ private:
   // SimplifiedARG        if (m == n)
   // DefaultResultT        in all other cases checked here
   
-  typedef IsNull<typename ARG::Disambiguation> ARGNull;
-  typedef IsOne<typename ARG::Disambiguation> ARGOne;
+  typedef IsNull<typename Daixt::disambiguation<ARG>::type> ARGNull;
+  typedef IsOne<typename Daixt::disambiguation<ARG>::type> ARGOne;
 
   typedef Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<mm, nn> > ArgT;
 
   // possible return value: 0 or 1, but has to have appropriate diambiguation
-  typedef IsNull<typename ArgT::Disambiguation> Null;
-  typedef IsOne<typename ArgT::Disambiguation> One;
+  typedef IsNull<typename Daixt::disambiguation<ArgT>::type> Null;
+  typedef IsOne<typename Daixt::disambiguation<ArgT>::type> One;
 
 
   // RationalPower<0, n>(0) is not defined
@@ -485,10 +487,10 @@ private:
   typedef Daixt::IsNull<Disambiguation> Null;
   typedef Daixt::IsOne<Disambiguation> One;
 
-  typedef Daixt::IsNull<typename LHS::Disambiguation> LHSNull;
-  typedef Daixt::IsOne<typename LHS::Disambiguation> LHSOne;
-  typedef Daixt::IsNull<typename RHS::Disambiguation> RHSNull;
-  typedef Daixt::IsOne<typename RHS::Disambiguation> RHSOne;
+  typedef Daixt::IsNull<typename Daixt::disambiguation<LHS>::type> LHSNull;
+  typedef Daixt::IsOne<typename Daixt::disambiguation<LHS>::type> LHSOne;
+  typedef Daixt::IsNull<typename Daixt::disambiguation<RHS>::type> RHSNull;
+  typedef Daixt::IsOne<typename Daixt::disambiguation<RHS>::type> RHSOne;
   
   //////////////////////////////////////////////////////////////////////////////
   // Several possibilities for the return value/type:
@@ -673,7 +675,7 @@ struct SimplImpl<Daixt::BinOp<LHS, RHS, Daixt::DefaultOps::BinaryDivide> >
 {
 private:
   // check for division by zero                                               
-  typedef Daixt::IsNull<typename RHS::Disambiguation> Null;
+  typedef Daixt::IsNull<typename Daixt::disambiguation<RHS>::type> Null;
   COMPILE_TIME_ASSERT(!SAME_TYPE(RHS, Null));
 
 public:
@@ -705,7 +707,7 @@ struct SimplImpl<Daixt::BinOp<ARG, ARG, Daixt::DefaultOps::BinaryDivide> >
 {
 private:
   // check for division by zero                                               
-  typedef Daixt::IsNull<typename ARG::Disambiguation> Null;
+  typedef Daixt::IsNull<typename Daixt::disambiguation<ARG>::type> Null;
   COMPILE_TIME_ASSERT(!SAME_TYPE(ARG, Null));
 
 public:
