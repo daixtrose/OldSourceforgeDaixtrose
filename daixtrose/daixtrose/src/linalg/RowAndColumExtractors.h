@@ -185,34 +185,17 @@ struct RowExtractor<MatrixExpression<T> >
     return static_cast<const MatrixT&>(arg)(i_);
   }
 
+  inline 
+  const typename T::RowStorage&
+  operator()(const MatrixT& arg) const
+  {
+    return arg(i_);
+  }
+
+
 private:
   std::size_t i_;
 };
-
-
-// // (never reached ...)
-
-// ////////////////////////////////////////////////////////////////////////////////
-// // Matrix 
-
-// template<class T>
-// struct
-// OperatorDelimImpl<RowExtractor<MatrixExpression<T> >, 
-//                   Matrix<typename T::NumT, 
-//                          typename T::RowStorage,
-//                          typename T::Allocator> >
-// {
-//   static inline
-//   const typename T::RowStorage& // Since some compilers are not able to optimize
-//                                 // this copy we have to avoid it by hand
-//   Apply(const Matrix<typename T::NumT, 
-//                      typename T::RowStorage,
-//                      typename T::Allocator>& arg,
-//         std::size_t i) 
-//   {
-//     return arg(i);
-//   }
-// };
 
 
 // never reached? :
@@ -232,33 +215,6 @@ private:
 //   }
 // };
 
-
-// ////////////////////////////////////////////////////////////////////////////////
-// // Daixt::ConstRef<Matrix> : return by reference to avoid copies
-// template <class T>
-// struct
-// OperatorDelimImpl<RowExtractor<MatrixExpression<T> >, 
-//                   Daixt::ConstRef<
-//                                   Matrix<typename T::NumT, 
-//                                          typename T::RowStorage,
-//                                          typename T::Allocator> 
-//                                   >
-//                   >
-// {
-//   typedef Matrix<typename T::NumT, 
-//                  typename T::RowStorage,
-//                  typename T::Allocator> ArgT;
-
-//   static inline
-//   const typename T::RowStorage&
-//   Apply(const Daixt::ConstRef<ArgT>& arg, 
-//         std::size_t i)
-//   {
-//     //return RowExtractor<MatrixExpression<T> >(i)(static_cast<const
-//     //ArgT&>(arg));
-//     return static_cast<const ArgT&>(arg)(i);
-//   }
-// };
 
 
 ////////////////////////////////////////////////////////////////////////////////
