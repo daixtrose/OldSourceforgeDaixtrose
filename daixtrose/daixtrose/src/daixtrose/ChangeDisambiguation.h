@@ -82,11 +82,13 @@ public:
 
 
 template <class NewDisambiguation, class T>
-class Expr<DisambiguationChanger<T, NewDisambiguation> >
+inline
+Expr<DisambiguationChanger<T, NewDisambiguation> >
 ChangeDisambiguation(Expr<T> E)
 {
   typedef Expr<DisambiguationChanger<T, NewDisambiguation> > ResultT;
-  return  ResultT(DisambiguationChanger<T, NewDisambiguation>(E));
+  ResultT Result = DisambiguationChanger<T, NewDisambiguation>(E);
+  return  Result;
 }
 
 } // namespace Daixt 
