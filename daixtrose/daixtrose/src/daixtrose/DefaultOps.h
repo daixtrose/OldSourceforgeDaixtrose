@@ -216,6 +216,19 @@ public:
   }                                                 
 };   
 
+// x^(-1) avoid pow
+template<> 
+struct RationalPower<-1, 1> 
+{
+public:                                                               
+  template <class ARG, class ReturnType>                              
+  static inline                                                       
+  ReturnType                                                          
+  Apply(const ARG& arg, const Hint<ReturnType>& Dummy)                
+  {
+    return ReturnType(1.0) / arg;
+  }                                           
+};   
 
 
 template<int m, int n, class ARG>
