@@ -33,6 +33,7 @@ AM_CPPFLAGS += -DBOOST_NO_CONFIG
 
 
 check_PROGRAMS = \
+	test_performance_matrix_times_vector \
 	test_simple_get_value_1 \
 	test_simple_get_value_2 \
 	test_change_disambiguation \
@@ -54,6 +55,8 @@ check_PROGRAMS = \
 	quicktour_linalg \
 	quicktour_pm_lambda \
 	quicktour_pm_lambda_boost
+
+test_performance_matrix_times_vector_SOURCES = $(srcdir)/src/demos/linalg/PerformanceOfMatrixTimesVector.C
 
 test_simple_get_value_1_SOURCES    = $(srcdir)/src/demos/SimpleGetValue.1/main.C
 test_simple_get_value_1_CXXFLAGS = $(AM_CXXFLAGS) 
