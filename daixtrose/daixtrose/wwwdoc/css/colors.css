@@ -1,10 +1,136 @@
+/* body { background-image: url(http://www.foo.com/image.gif);
+ background-attachment: fixed } */
 
 BODY {
   background-color : #F7FFE8;
   color:black;
-  font-family:sans-serif;
-  font-weight:200;
+  font-family: sans-serif;
+  font-weight: 200;
 }
+
+
+/* -------------------------------------------------------------------- */
+/* 
+Generic font families allow the browser to choose the font most appropriate that is included on the current system. These are: 
+serif
+sans-serif
+monospace
+cursive
+fantasy
+
+Text Properties
+
+ word-spacing - defines the amount of space between the words. 
+
+word-spacing : normal;
+word-spacing : +15mm;
+ Specify the length as you would the height of your font with ems, pixels, picas, points, inches, centimeters, or milimeters. (Note: many browsers don't currently support this style tag.) 
+
+letter-spacing - defines the amount of space between each letter. 
+
+letter-spacing : normal;
+letter-spacing : +1mm;
+letter-spacing : -1px;
+ Specify the length as you would the height of your font with ems, pixels, picas, points, inches, centimeters, or milimeters. (Note: many browsers don't currently support this style tag.) 
+
+text-decoration - defines the decoration of the text. 
+
+text-decoration : none; (used on <a> tags to remove the underline.)
+text-decoration : overline;
+text-decoration : underline;
+text-decoration : line-through;
+text-decoration : blink;
+
+text-transformation - defines the case of the text. 
+
+text-transform : capitalize;
+text-transform : uppercase;
+text-transform : lowercase;
+text-transform : none;
+
+text-align - defines how the text will be aligned on the page. 
+
+text-align : left;
+text-align : right;
+text-align : center;
+text-align : justify;
+
+text-indent defines how much the first line of the text should be indented. 
+
+text-indent : 15mm;
+text-indent : 5%;
+ Specify the length as you would the height of your font with ems, pixels, picas, points, inches, centimeters, or milimeters. 
+
+line-height defines the amount of space between lines of text. 
+
+line-height : 1.5; (the number of lines)
+line-height : 5mm;
+line-height : 10%;
+*/
+
+/* stolen from latex2html */
+
+/* Century Schoolbook font is very similar to Computer Modern Math: cmmi */
+.MATH    { font-family: "Century Schoolbook", serif; }
+.MATH I  { font-family: "Century Schoolbook", serif; font-style: italic }
+.BOLDMATH { font-family: "Century Schoolbook", serif; font-weight: bold }
+
+/* implement both fixed-size and relative sizes */
+SMALL.XTINY             { font-size : xx-small }
+SMALL.TINY              { font-size : x-small  }
+SMALL.SCRIPTSIZE        { font-size : smaller  }
+SMALL.FOOTNOTESIZE      { font-size : small    }
+SMALL.SMALL             {  }
+BIG.LARGE               {  }
+BIG.XLARGE              { font-size : large    }
+BIG.XXLARGE             { font-size : x-large  }
+BIG.HUGE                { font-size : larger   }
+BIG.XHUGE               { font-size : xx-large }
+
+/* heading styles */
+H1              {  }
+H2              {  }
+H3              {  }
+H4              {  }
+H5              {  }
+
+/* mathematics styles */
+DIV.displaymath         { }     /* math displays */
+TD.eqno                 { }     /* equation-number cells */
+
+
+/* document-specific styles come next */
+PRE.preform             {   }
+DIV.navigation          {   }
+SPAN.arabic             {   }
+SPAN.textit             { font-style: italic  }
+SPAN.textbf             { font-weight: bold  }
+
+/* end of stolen from latex2html */
+/* -------------------------------------------------------------------- */
+
+
+.verbatim { 
+  color:#005566;
+  font-family: "fixed", serif;
+  font-weight:600;
+}
+
+
+PRE {
+  color:#005566;
+  font-family: "fixed", serif;
+  font-weight:600;
+}
+
+TT {
+  color:#005566;
+  font-family: "fixed", serif;
+  font-weight:600;
+}
+
+
+P { width : 500pt }
 
 
 a:link {
