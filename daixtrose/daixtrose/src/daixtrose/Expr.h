@@ -37,7 +37,8 @@ namespace Daixt
 // If You like, You may specialize this class to plug convenient features 
 //////////////////////////////////////////////////////////////////////////////
 
-template <class Disambiguation, class T> class FeaturesOfExpression {
+template <class Disambiguation, class T> 
+class FeaturesOfExpression {
 public:
   virtual ~FeaturesOfExpression() {};
 };
