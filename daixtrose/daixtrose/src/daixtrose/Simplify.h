@@ -888,25 +888,25 @@ struct SimplImpl<Daixt::BinOp<LHS, RHS, Daixt::DefaultOps::BinaryMinus> >
 
 #define SPECIALIZE_FOR_SCALARS(OPNAME, OP)                                    \
 template <class Disambiguation>                                               \
-struct SimplImpl<Daixt::BinOp<Daixt::Scalar<Disambiguation>,                    \
-                             Daixt::Scalar<Disambiguation>,                    \
+struct SimplImpl<Daixt::BinOp<Daixt::Scalar<Disambiguation>,                  \
+                             Daixt::Scalar<Disambiguation>,                   \
                              OPNAME> >                                        \
 {                                                                             \
-  typedef Daixt::Scalar<Disambiguation> type;                                  \
+  typedef Daixt::Scalar<Disambiguation> type;                                 \
                                                                               \
-  typedef Daixt::BinOp<Daixt::Scalar<Disambiguation>,                           \
-                      Daixt::Scalar<Disambiguation>,                           \
+  typedef Daixt::BinOp<Daixt::Scalar<Disambiguation>,                         \
+                      Daixt::Scalar<Disambiguation>,                          \
                       OPNAME> ArgT;                                           \
                                                                               \
-  typedef typename Daixt::Scalar<Disambiguation>::NumericalType NumericalType; \
+  typedef typename Daixt::Scalar<Disambiguation>::NumericalType NumericalType;\
                                                                               \
   static type Apply(const ArgT& BO)                                           \
   {                                                                           \
     return type(                                                              \
-                  static_cast<NumericalType>(BO.lhs())                        \
-                  OP                                                          \
-                  static_cast<NumericalType>(BO.rhs())                        \
-                  );                                                          \
+                BO.lhs().Value()                                              \
+                OP                                                            \
+                BO.rhs().Value()                                              \
+                );                                                            \
   }                                                                           \
 }  
 
