@@ -46,12 +46,6 @@ namespace Daixt
 
 template <class ARG, class OP>
 class UnOp
-  :
-  public Daixt::Disambiguator<
-                             typename UnOpResultDisambiguator
-                               <typename ARG::Disambiguation, 
-                                OP>::Disambiguation
-                             > 
 {
 private:
   ARG arg_;
