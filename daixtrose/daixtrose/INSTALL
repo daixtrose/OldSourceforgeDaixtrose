@@ -47,8 +47,10 @@ $ cd ..
 $ mkdir build-daixtrose
 $ cd build-daixtrose
 $ ../daixtrose-0.0.1/configure \
-CXX=icpc CPPFLAGS="-g -wd76 -ansi -O3  -Ob2" --prefix=$HOME/daixtrose-0.0.1-beta \
---with-loki=/path/to/loki/prefix --with-boost=/path/to/boost/prefix
+  CXX=icpc CPPFLAGS="-g -wd76 -ansi -O3  -Ob2" \
+  --prefix=$HOME/daixtrose-0.0.1-beta \
+  --with-loki=/path/to/loki/prefix \
+  --with-boost=/path/to/boost/prefix
 
 $ make 
 $ make check
@@ -63,7 +65,8 @@ the cvs repository to keep track of the rapid changes.
 The following commands are sufficient to check out the latest version:
 
 $ cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/daixtrose login 
-$ cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/daixtrose co modulename 
+$ cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/daixtrose \
+  co daixtrose
 
 You may also take a look at the cvs web-interface under
 http://sourceforge.net/cvs/?group_id=75079

@@ -1,23 +1,27 @@
-daixtrose = 
-         "Differentiable EXpression Templates - the Reusable Open Source Engine"
---------------------------------------------------------------------------------
 
-Daixtrose is a C++ header library framework that serves as a generic disambiguated
-expression template (ET) core engine.
+                                    DAIXTROSE 
+
+    "Differentiable EXpression Templates - a Reusable Open Source Engine"
+
+
+
+Daixtrose is a C++ header library framework that serves as a generic
+disambiguated expression template (ET) core engine.
 
 See the file INSTALL for building and installation instructions.
 Please send all bug reports by electronic mail to:
-         "Markus Werle" <numerical.simulation@web.de>
+
+                   daixtrose-bugs@lists.sourceforge.net
 
 
 Further Description:
 
-Daixtrose provides a framework which makes the use of ET techniques both easy and
-maintainable by using a structure-functionality-separation model. A minimum of
-restrictions is placed upon the classes used together with the ET framework: it
-is possible to "plug" existing C++ types into the ET engine without the need of
-changing any line of code inside the declarations of these (exception: users who
-wish assignment from expressions to work, have to supply an appropriate
+Daixtrose provides a framework which makes the use of ET techniques both easy
+and maintainable by using a structure-functionality-separation model. A minimum
+of restrictions is placed upon the classes used together with the ET framework:
+it is possible to "plug" existing C++ types into the ET engine without the need
+of changing any line of code inside the declarations of these (exception: users
+who wish assignment from expressions to work, have to supply an appropriate
 asignment operator or some other publicly available setting mechanism)
  
 
@@ -31,9 +35,9 @@ Features:
 * maintenance ease due to the underlying separation-model: orthogonal concepts 
   stay separated from each other.
 
-* A new user-definable and user-extensible disambiguation mechanism allows for
-  fine-grained control of compile-time errors for accidentical use on 
-  incompatible types while supporting the possibility for user defined 
+  A new user-definable and user-extensible disambiguation mechanism allows for
+  fine-grained control of compile-time errors for accidentical use on
+  incompatible types while supporting the possibility for user defined
   workarounds in the incompatibility case.
  
 
@@ -64,11 +68,11 @@ into the "illegal zone":
    "As a special exception, you may use this file as part of a free software
    library without restriction.  Specifically, if other files instantiate
    templates or use macros or inline functions from this file, or you compile
-   this file and link it with other files to produce an executable, this
-   file does not by itself cause the resulting executable to be covered by
-   the GNU Lesser General Public License.  This exception does not however
-   invalidate any other reasons why the executable file might be covered by
-   the GNU Lesser General Public License."
+   this file and link it with other files to produce an executable, this file
+   does not by itself cause the resulting executable to be covered by the GNU
+   Lesser General Public License.  This exception does not however invalidate
+   any other reasons why the executable file might be covered by the GNU Lesser
+   General Public License."
 
 
  
