@@ -104,8 +104,11 @@ struct MatrixDisambiguator
 
 template <
           class T, // numerical type
-          class RowStorage, // must provide the same interface and semantics 
-                            // as std::map<size_t, T>
+          // must have the same interface and semantics as std::map<size_t, T>
+          class RowStorage = std::map<std::size_t, 
+                                      T, 
+                                      std::less<T>,
+                                      std::allocator<T> >,
           class Allocator = std::allocator<RowStorage> 
           >
 class Matrix
@@ -323,7 +326,7 @@ Matrix<T, RowStorage, Allocator>::
 operator=(const OtherT& Other)
 {
   // FIXIT: We do not check the indices of the result of GetRow(Other)
-  // so if someone makes a stupid things there, we have an undetected error here.
+  // so if someone makes stupid things there, we have an undetected error here.
 
   // The check for whether we need a temporary could be refined: if *this does
   // not occur on the rhs of a multiplication, the temporary might not be
@@ -347,48 +350,35 @@ operator=(const OtherT& Other)
       size_t nrows = NumberOfRows(Other);
       size_t ncols = NumberOfCols(Other);
 
+      // tabula rasa when sizes do not fit
       if ((nrows_ != nrows) || (ncols_ != ncols))
         {
-          throw std::runtime_error("sorry, matrix entensions currently must match");
+          nrows_ = nrows;
+          ncols_ = ncols;
+
+          std::for_each(ColumnInfo_.begin(), ColumnInfo_.end(),
+                        std::mem_fun_ref(&IndexStorage::clear));
+          
+          ColumnInfo_.resize(nrows_); 
+          
+          std::for_each(data_.begin(), data_.end(),
+                        std::mem_fun_ref(&RowStorage::clear));
+          
+          data_.resize(nrows_);
         }
 
+      // assing row by row
       for (size_t i = 1; i != nrows_ + 1; ++i)
         {
           RowStorage& ActualRow = data_[i-1];
-
+          
           RowStorage NewRow = RowExtractor<Disambiguation>(i)(Other);
-
+          
           UpdateColumnInfo(i, ActualRow, NewRow);
           ActualRow.swap(NewRow);
         }
-
-
-      // hope that this procedure minimizes the number of reallocations ...
-
-//       std::for_each(ColumnInfo_.begin(), ColumnInfo_.end(),
-//                     std::mem_fun_ref(&IndexStorage::clear));
-      
-//       ColumnInfo_.resize(nrows_); 
-      
-
-//       std::for_each(data_.begin(), data_.end(),
-//                     std::mem_fun_ref(&RowStorage::clear));
-
-//       data_.resize(nrows_);
-
-//       RowStorage Empty;
-
-//       for (size_t i = 1; i != nrows_ + 1; ++i)
-//         {
-//           RowStorage& ActualRow = data_[i-1];
-
-//           RowStorage NewRow = RowExtractor<Disambiguation>(i)(Other);
-//           ActualRow.swap(NewRow);
-
-//           UpdateColumnInfo(i, Empty, ActualRow);
-//         }
     }
-
+  
   return *this;
 }
 
