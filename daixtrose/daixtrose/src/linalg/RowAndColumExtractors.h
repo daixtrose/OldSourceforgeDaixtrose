@@ -31,7 +31,7 @@
 
 #include "linalg/Disambiguation.h"
 
-#include "daixtrose/ConstRef.h"
+#include "daixtrose/Daixt.h"
 
 #include "boost/lambda/lambda.hpp"
 #include "boost/lambda/bind.hpp"
@@ -602,7 +602,7 @@ OperatorDelimImpl<RowExtractor<VectorExpression<T> >,
     NumT LHS_Result = RowExtractor<VectorExpression<T> >(i)(arg.lhs());
     NumT RHS_Result = RowExtractor<VectorExpression<T> >(i)(arg.rhs());
 
-    using namespace Daixt::DefaultOps;
+    using Daixt::DefaultOps::operator+;
     NumT Result = LHS_Result + RHS_Result;
     return Result;
 //     return (RowExtractor<VectorExpression<T> >(i)(arg.lhs())
