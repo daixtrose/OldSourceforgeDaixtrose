@@ -31,6 +31,9 @@
 
 #include "daixtrose/Daixt.h"
 
+#include "boost/mpl/if.hpp"
+
+
 #include <stddef.h> // for std::size_t
 #include <algorithm>
 #include <iosfwd>
@@ -69,8 +72,6 @@ public:
   typedef TinyVectorExpression<T, n> Disambiguation;
   typedef T value_type;
 
-  COMPILE_TIME_ASSERT((n > 0));
-  
   //////////////////////////////////////////////////////////////////////////////
   inline TinyVector();             // uninitialized data 
   inline TinyVector(const T& t);   // initialized with some value t
@@ -113,9 +114,13 @@ public:
 private:
   //////////////////////////////////////////////////////////////////////////////
   inline void RangeCheck(size_t j) const;
+
+
+  // in order to allow a size of zero we set the internal size to 1 
+  enum { internal_size = (n == 0) ? 1 : n };
   
   // stored the fortran way
-  T data_[n]; 
+  T data_[internal_size]; 
 };      
 
 
