@@ -95,11 +95,9 @@ protected:
   template<class U> static char (& check(...))[2];
 
 public:
-#if defined(__GNUC__) 
-  static const bool value = (sizeof(check<T>(0)) == 1);
-#else
-  enum { value = (sizeof(check<T>(0)) == 1) };
-#endif
+  // the extra qualifiers help g++-3.4-20030603
+  // enum { value = (sizeof(check<T>(0)) == 1) };
+  enum { value = (sizeof(has_member_disambiguation::template check<T>(0)) == 1) };
 };
 
 
@@ -107,12 +105,7 @@ public:
 template<class T> 
 struct has_external_disambiguation 
 {
-#if defined(__GNUC__) 
-  static const bool value = Disambiguator<T>::is_specialized;
-#else
   enum { value = Disambiguator<T>::is_specialized };
-#endif
-
 };
 
 
