@@ -51,7 +51,7 @@ namespace Daixt
 template <class T, class S>
 struct StaticOccurrenceCounter
 {
-  static const std::size_t Result = Check::Is<T, S>::SameType ? 1 : 0; 
+  enum { Result = Check::Is<T, S>::SameType ? 1 : 0 }; 
 };
 
 
@@ -60,8 +60,10 @@ struct StaticOccurrenceCounter<Daixt::UnOp<ARG, OP>, S>
 {
   typedef Daixt::UnOp<ARG, OP> UO;
 
-  static const std::size_t Result = 
-    Check::Is<UO, S>::SameType ? 1 : StaticOccurrenceCounter<ARG, S>::Result;
+  enum { Result = 
+         Check::Is<UO, S>::SameType ? 
+         1 
+         : StaticOccurrenceCounter<ARG, S>::Result };
 };
 
 
@@ -70,28 +72,30 @@ struct StaticOccurrenceCounter<Daixt::BinOp<LHS, RHS, OP>, S>
 {
   typedef Daixt::BinOp<LHS, RHS, OP> BO;
 
-  static const std::size_t Result = 
-    Check::Is<BO, S>::SameType ? 1 : (StaticOccurrenceCounter<LHS, S>::Result 
-                                      +
-                                      StaticOccurrenceCounter<RHS, S>::Result) ;
+  enum { Result = 
+         Check::Is<BO, S>::SameType ? 
+         1 
+         : (StaticOccurrenceCounter<LHS, S>::Result 
+            +
+            StaticOccurrenceCounter<RHS, S>::Result) };
 };
 
 template <class T, class S>
 struct StaticOccurrenceCounter<Daixt::Expr<T>, S>
 {
-  static const std::size_t Result = 
-    Check::Is<Daixt::Expr<T>, S>::SameType ? 
-    1 
-    : StaticOccurrenceCounter<T, S>::Result;
+  enum { Result = 
+         Check::Is<Daixt::Expr<T>, S>::SameType ? 
+         1 
+         : StaticOccurrenceCounter<T, S>::Result };
 };
 
 template <class T, class S>
 struct StaticOccurrenceCounter<Daixt::ConstRef<T>, S>
 {
-  static const std::size_t Result = 
-    Check::Is<Daixt::ConstRef<T>, S>::SameType ? 
-    1 : 
-    StaticOccurrenceCounter<T, S>::Result;
+  enum { Result = 
+         Check::Is<Daixt::ConstRef<T>, S>::SameType ? 
+         1 : 
+         StaticOccurrenceCounter<T, S>::Result };
 };
 
 
