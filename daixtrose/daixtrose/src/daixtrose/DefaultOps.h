@@ -76,7 +76,7 @@ FN_NAME(const ARG& arg)                                                       \
   typedef typename                                                            \
     Daixt::UnwrapExpr<typename                                                 \
       Daixt::CRefOrVal<ARG>::Type>::Type CR;                                   \
-  typedef Daixt::UnOp<CR, OP_NAME> UO;                                         \
+  typedef Daixt::UnOp<CR, OP_NAME > UO;                                         \
   typedef typename Daixt::Expr<UO> ReturnType;                                 \
   return ReturnType(UO(CR(Daixt::unwrap_expr(arg))));                          \
 }  

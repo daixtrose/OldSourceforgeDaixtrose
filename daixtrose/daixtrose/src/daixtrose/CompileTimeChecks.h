@@ -58,7 +58,7 @@ struct Find<T, Loki::Typelist<Head, Tail> >
     (Loki::TL::IndexOf<Loki::Typelist<Head, Tail>, T>::value != -1);
 };
 
-#define FIND(T, L) Daixt::Check::Find<T, L>::Result
+#define FIND(T, L) Daixt::Check::Find<T, L >::Result
 
 ////////////////////////////////////////////////////////////////////////////////
 // compile time assertion
