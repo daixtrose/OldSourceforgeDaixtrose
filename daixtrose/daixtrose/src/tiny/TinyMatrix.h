@@ -29,7 +29,7 @@
 #ifndef TINYMAT_TINY_MATRIX_INC
 #define TINYMAT_TINY_MATRIX_INC
 
-#include <cstddef> // for size_t
+#include <cstddef> // for std::size_t
 #include <algorithm>
 #include <iosfwd>
 #include <iomanip>
@@ -48,20 +48,20 @@ namespace TinyMat
 ////////////////////////////////////////////////////////////////////////////////
 
 // Disambiguation
-template <class T, int n>
+template <class T, std::size_t n>
 struct TinyQuadraticMatrixExpression 
 {
   typedef T Type;
-  static const int Dimension = n;
+  static const std::size_t Dimension = n;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // TinyQuadraticMatrix
 
-// a simple but speedy implementation of a fixed-sized matrix which fits into 
+// a simple but speedy implementation of a fixed-sized matrix which fits std::size_to 
 // the Daixt context
 
-template <class T, int n>
+template <class T, std::size_t n>
 class TinyQuadraticMatrix
 {
 public:
@@ -98,14 +98,14 @@ public:
   inline const T* data() const;
     
   //////////////////////////////////////////////////////////////////////////////
-  inline T& operator()(size_t i, size_t j);
-  inline T operator()(size_t i, size_t j) const;
+  inline T& operator()(size_t i, std::size_t j);
+  inline T operator()(size_t i, std::size_t j) const;
 
-  inline int size() const;
+  inline std::size_t size() const;
 
 private:
   //////////////////////////////////////////////////////////////////////////////
-  inline void RangeCheck(size_t i, size_t j) const;
+  inline void RangeCheck(size_t i, std::size_t j) const;
   
   // stored the fortran way
   T data_[n * n]; 
@@ -120,11 +120,11 @@ private:
 //////////////////////////////////////////////////////////////////////////////
 // initialisation 
 
-template <class T, int n> 
+template <class T, std::size_t n> 
 TinyQuadraticMatrix<T, n>::TinyQuadraticMatrix() 
 {}
 
-template <class T, int n>
+template <class T, std::size_t n>
 TinyQuadraticMatrix<T, n>::TinyQuadraticMatrix(const T& t) 
 {
   std::fill(data_, data_ + (n * n), t);
@@ -134,7 +134,7 @@ TinyQuadraticMatrix<T, n>::TinyQuadraticMatrix(const T& t)
 // musta forward declare here
 template<class T> class GetValue;
 
-template<class T, int n>
+template<class T, std::size_t n>
 template<class A> 
 TinyQuadraticMatrix<T, n>::TinyQuadraticMatrix(const ::Daixt::Expr<A>& E)
 {
@@ -152,7 +152,7 @@ TinyQuadraticMatrix<T, n>::TinyQuadraticMatrix(const ::Daixt::Expr<A>& E)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyQuadraticMatrix<T, n>::operator=(const T& t)
 {
@@ -160,7 +160,7 @@ TinyQuadraticMatrix<T, n>::operator=(const T& t)
 }
 
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyQuadraticMatrix<T, n>::operator*=(const T& t)
 {
@@ -170,7 +170,7 @@ TinyQuadraticMatrix<T, n>::operator*=(const T& t)
 }
 
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyQuadraticMatrix<T, n>::operator+=(const T& t)
 {
@@ -180,7 +180,7 @@ TinyQuadraticMatrix<T, n>::operator+=(const T& t)
 }
 
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyQuadraticMatrix<T, n>::operator-=(const T& t)
 {
@@ -189,7 +189,7 @@ TinyQuadraticMatrix<T, n>::operator-=(const T& t)
                  std::bind1st(std::minus<T>(), t));
 }
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyQuadraticMatrix<T, n>::
 operator+=(const TinyQuadraticMatrix<T, n>& Other)
@@ -205,7 +205,7 @@ operator+=(const TinyQuadraticMatrix<T, n>& Other)
     }
 }
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyQuadraticMatrix<T, n>::
 operator-=(const TinyQuadraticMatrix<T, n>& Other)
@@ -220,14 +220,14 @@ operator-=(const TinyQuadraticMatrix<T, n>& Other)
 ////////////////////////////////////////////////////////////////////////////////
 // we guess that's what the compiler would do if it builds it itself
 // added for profiling to show it (maybe)
-template<class T, int n>
+template<class T, std::size_t n>
 void
 TinyQuadraticMatrix<T, n>::operator=(const TinyQuadraticMatrix<T, n>& Other)
 {
   std::memcpy(data_, Other.data_, n * n * sizeof(T));
 }
 
-template<class T, int n>
+template<class T, std::size_t n>
 template<class A> 
 void
 TinyQuadraticMatrix<T, n>::operator=(const ::Daixt::Expr<A>& E)
@@ -253,13 +253,13 @@ TinyQuadraticMatrix<T, n>::operator=(const ::Daixt::Expr<A>& E)
 ////////////////////////////////////////////////////////////////////////////////
 // direct access to underlying fields for low-level communication with fortran
 
-template <class T, int n>
+template <class T, std::size_t n>
 T* 
 TinyQuadraticMatrix<T, n>::data() {
   return data_; 
 }
 
-template <class T, int n>
+template <class T, std::size_t n>
 const T* 
 TinyQuadraticMatrix<T, n>::data() const 
 { 
@@ -270,17 +270,17 @@ TinyQuadraticMatrix<T, n>::data() const
 ////////////////////////////////////////////////////////////////////////////////
 // index operators
 
-template <class T, int n>
+template <class T, std::size_t n>
 T& 
-TinyQuadraticMatrix<T, n>::operator()(size_t i, size_t j)
+TinyQuadraticMatrix<T, n>::operator()(size_t i, std::size_t j)
 {
   // column wise storage
   RangeCheck(i, j);
   return data_[i - 1 + (j - 1) * n]; 
 }
 
-template <class T, int n>
-T TinyQuadraticMatrix<T, n>::operator()(size_t i, size_t j) const
+template <class T, std::size_t n>
+T TinyQuadraticMatrix<T, n>::operator()(size_t i, std::size_t j) const
 { 
   // column wise storage
   RangeCheck(i, j);
@@ -288,16 +288,16 @@ T TinyQuadraticMatrix<T, n>::operator()(size_t i, size_t j) const
 }
 
 
-template <class T, int n>
-int
+template <class T, std::size_t n>
+std::size_t
 TinyQuadraticMatrix<T, n>::size() const { return n; }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // range check
 
-template <class T, int n>
-void TinyQuadraticMatrix<T, n>::RangeCheck(size_t i, size_t j) const
+template <class T, std::size_t n>
+void TinyQuadraticMatrix<T, n>::RangeCheck(size_t i, std::size_t j) const
 {
   assert (i > 0);
   assert (j > 0);
@@ -311,7 +311,7 @@ void TinyQuadraticMatrix<T, n>::RangeCheck(size_t i, size_t j) const
 //*************************** Output Utility *********************************//
 ////////////////////////////////////////////////////////////////////////////////
 
-template<class T, int n> 
+template<class T, std::size_t n> 
 inline 
 std::ostream& operator<< (std::ostream& os, const TinyQuadraticMatrix<T, n>& M)
 {
@@ -334,7 +334,7 @@ std::ostream& operator<< (std::ostream& os, const TinyQuadraticMatrix<T, n>& M)
 //*************************** Row and Colum Setters **************************//
 ////////////////////////////////////////////////////////////////////////////////
 
-template<class T, int n> 
+template<class T, std::size_t n> 
 inline 
 void SetEntriesInRowTo(std::size_t i, T Value, TinyQuadraticMatrix<T, n>& M)
 {
@@ -344,7 +344,7 @@ void SetEntriesInRowTo(std::size_t i, T Value, TinyQuadraticMatrix<T, n>& M)
     }
 }
 
-template<class T, int n> 
+template<class T, std::size_t n> 
 inline 
 void SetEntriesInColTo(std::size_t j, T Value, TinyQuadraticMatrix<T, n>& M)
 {

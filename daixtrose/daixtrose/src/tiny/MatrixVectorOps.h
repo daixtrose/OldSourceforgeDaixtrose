@@ -40,13 +40,13 @@
 
 namespace Daixt 
 {
-  template<class T, int n> 
+  template<class T, std::size_t n> 
   struct CRefOrVal<TinyMat::TinyQuadraticMatrix<T, n> > 
   {
     typedef Daixt::ConstRef<TinyMat::TinyQuadraticMatrix<T, n> > Type;
   };
 
-  template<class T, int n> 
+  template<class T, std::size_t n> 
   struct CRefOrVal<TinyVec::TinyVector<T, n> > 
   {
     typedef Daixt::ConstRef<TinyVec::TinyVector<T, n> > Type;
@@ -76,7 +76,7 @@ DAIXT_DEFINE_UNOP_AND_FUNCTION(Lump, LumpedTinyMatrix, TINYMAT_EMPTY_ARG)
 
 namespace Daixt 
 {
-  template<class T, int n> 
+  template<class T, std::size_t n> 
   struct BinOpResultDisambiguator<TinyMat::TinyQuadraticMatrixExpression<T, n>,
                                   TinyVec::TinyVectorExpression<T, n>, 
                                   Daixt::DefaultOps::BinaryMultiply>  
@@ -93,7 +93,7 @@ namespace Daixt
 namespace TinyMat
 {
 
-template<std::size_t i, class T, int n>
+template<std::size_t i, class T, std::size_t n>
 TinyVec::TinyVector<T, n>
 ExtractRow(const TinyQuadraticMatrix<T, n>& M)
 {
@@ -107,7 +107,7 @@ ExtractRow(const TinyQuadraticMatrix<T, n>& M)
   return Result;
 }
 
-template<std::size_t i, class T, int n>
+template<std::size_t i, class T, std::size_t n>
 TinyVec::TinyVector<T, n>
 ExtractColumn(const TinyQuadraticMatrix<T, n>& M)
 {

@@ -31,7 +31,7 @@
 
 #include "daixtrose/Daixt.h"
 
-#include <stddef.h> // for size_t
+#include <stddef.h> // for std::size_t
 #include <algorithm>
 #include <iosfwd>
 #include <iomanip>
@@ -46,22 +46,22 @@ namespace TinyVec
 ////////////////////////////////////////////////////////////////////////////////
 
 // Disambiguation
-template <class T, int n>
+template <class T, std::size_t n>
 struct TinyVectorExpression 
 {
   typedef T Type;
   typedef T NumT;
   typedef T numerical_type;
-  static const int Dimension = n;
+  static const std::size_t Dimension = n;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // TinyVector
 
-// a simple but speedy implementation of a fixed-sized vector which fits into 
+// a simple but speedy implementation of a fixed-sized vector which fits std::size_to 
 // the Daixt context
 
-template <class T, int n>
+template <class T, std::size_t n>
 class TinyVector
 {
 public:
@@ -127,11 +127,11 @@ private:
 //////////////////////////////////////////////////////////////////////////////
 // initialisation 
 
-template <class T, int n> 
+template <class T, std::size_t n> 
 TinyVector<T, n>::TinyVector() 
 {}
 
-template <class T, int n>
+template <class T, std::size_t n>
 TinyVector<T, n>::TinyVector(const T& t) 
 {
   std::fill(data_, data_ + n, t);
@@ -141,7 +141,7 @@ TinyVector<T, n>::TinyVector(const T& t)
 // musta forward declare here
 template<class T> class GetValue;
 
-template<class T, int n>
+template<class T, std::size_t n>
 template<class A> 
 TinyVector<T, n>::TinyVector(const ::Daixt::Expr<A>& E)
 {
@@ -156,7 +156,7 @@ TinyVector<T, n>::TinyVector(const ::Daixt::Expr<A>& E)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyVector<T, n>::operator=(const T& t)
 {
@@ -164,7 +164,7 @@ TinyVector<T, n>::operator=(const T& t)
 }
 
 
-template<class T, int n>
+template<class T, std::size_t n>
 template<class A> 
 void
 TinyVector<T, n>::operator=(const ::Daixt::Expr<A>& E)
@@ -184,7 +184,7 @@ TinyVector<T, n>::operator=(const ::Daixt::Expr<A>& E)
 }
 
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyVector<T, n>::operator*=(const T& t)
 {
@@ -195,7 +195,7 @@ TinyVector<T, n>::operator*=(const T& t)
 }
 
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyVector<T, n>::operator+=(const T& t)
 {
@@ -206,7 +206,7 @@ TinyVector<T, n>::operator+=(const T& t)
 }
 
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyVector<T, n>::operator-=(const T& t)
 {
@@ -219,7 +219,7 @@ TinyVector<T, n>::operator-=(const T& t)
 
 
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyVector<T, n>::operator+=(const TinyVector<T, n>& Other)
 {
@@ -230,7 +230,7 @@ TinyVector<T, n>::operator+=(const TinyVector<T, n>& Other)
 }
 
 
-template<class T, int n>
+template<class T, std::size_t n>
 void 
 TinyVector<T, n>::operator-=(const TinyVector<T, n>& Other)
 {
@@ -243,14 +243,14 @@ TinyVector<T, n>::operator-=(const TinyVector<T, n>& Other)
 ////////////////////////////////////////////////////////////////////////////////
 // direct access to underlying fields for low-level communication with fortran
 
-template <class T, int n>
+template <class T, std::size_t n>
 T* 
 TinyVector<T, n>::data() 
 {
   return data_; 
 }
 
-template <class T, int n>
+template <class T, std::size_t n>
 const T* 
 TinyVector<T, n>::data() const 
 { 
@@ -258,28 +258,28 @@ TinyVector<T, n>::data() const
 }
 
 
-template <class T, int n>
+template <class T, std::size_t n>
 T* 
 TinyVector<T, n>::begin()
 {
   return data_;
 }
 
-template <class T, int n>
+template <class T, std::size_t n>
 T* 
 TinyVector<T, n>::end()
 {
   return data_ + n;
 }
 
-template <class T, int n>
+template <class T, std::size_t n>
 const T* 
 TinyVector<T, n>::begin() const
 {
   return data_;
 }
 
-template <class T, int n>
+template <class T, std::size_t n>
 const T* 
 TinyVector<T, n>::end() const
 {
@@ -290,7 +290,7 @@ TinyVector<T, n>::end() const
 ////////////////////////////////////////////////////////////////////////////////
 // index operators
 
-template <class T, int n>
+template <class T, std::size_t n>
 T& 
 TinyVector<T, n>::operator()(size_t j)
 {
@@ -298,7 +298,7 @@ TinyVector<T, n>::operator()(size_t j)
   return data_[j - 1]; 
 }
 
-template <class T, int n>
+template <class T, std::size_t n>
 T TinyVector<T, n>::operator()(size_t j) const
 { 
   RangeCheck(j);
@@ -309,7 +309,7 @@ T TinyVector<T, n>::operator()(size_t j) const
 ////////////////////////////////////////////////////////////////////////////////
 // range check
 
-template <class T, int n>
+template <class T, std::size_t n>
 void TinyVector<T, n>::RangeCheck(size_t j) const
 {
   assert(j < static_cast<size_t>(n) + 1);
@@ -321,7 +321,7 @@ void TinyVector<T, n>::RangeCheck(size_t j) const
 //*************************** Output Utility *********************************//
 ////////////////////////////////////////////////////////////////////////////////
 
-template<class T, int n> 
+template<class T, std::size_t n> 
 std::ostream& operator<< (std::ostream& os, const TinyVector<T, n>& V)
 {
   for (size_t j = 1; j != (n + 1); ++j) 

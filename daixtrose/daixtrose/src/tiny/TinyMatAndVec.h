@@ -30,7 +30,7 @@
 #define TINY_TINY_MAT_AND_VEC_INC
 
 ////////////////////////////////////////////////////////////////////////////////
-// A tiny matrix plugged into Daixt
+// A tiny matrix plugged std::size_to Daixt
 
 #include "tiny/TinyVector.h"
 #include "tiny/TinyMatrix.h"

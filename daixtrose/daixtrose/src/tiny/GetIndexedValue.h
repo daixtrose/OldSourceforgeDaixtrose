@@ -49,10 +49,10 @@ template<class T>
 class GetValue
 {
 private:
-  size_t i_, j_;
+  std::size_t i_, j_;
   
 public:
-  inline GetValue(size_t i, size_t j) : i_(i), j_(j) {}
+  inline GetValue(size_t i, std::size_t j) : i_(i), j_(j) {}
   
   ////////////////////////////////////////////////////////////////////////////
   // operator() forwards to user-extensible implementation
@@ -62,7 +62,7 @@ public:
     typedef typename Daixt::UnwrapExpr<ARG>::Type UnwrappedARG;
     typedef typename UnwrappedARG::Disambiguation Disambiguation;
     
-    static const int Dimension = Disambiguation::Dimension;
+    static const std::size_t Dimension = Disambiguation::Dimension;
 
     typedef 
       TinyMat::TinyQuadraticMatrixExpression<T, Dimension> 
@@ -84,11 +84,11 @@ public:
 
 
 // TinyMatrix
-template <class T, int n>
+template <class T, std::size_t n>
 struct OperatorDelimImpl<GetValue<T>, 
                          TinyQuadraticMatrix<T, n> >
 {
-  static inline T Apply(const TinyQuadraticMatrix<T, n>& M, size_t i, size_t j) 
+  static inline T Apply(const TinyQuadraticMatrix<T, n>& M, std::size_t i, std::size_t j) 
   {
     return M(i, j);
   }
@@ -100,7 +100,7 @@ template <class T, class C>
 struct OperatorDelimImpl<GetValue<T>, Daixt::Expr<C> > 
 {
   typedef Daixt::Expr<C> ArgT;
-  static inline T Apply(const ArgT& E, size_t i, size_t j) 
+  static inline T Apply(const ArgT& E, std::size_t i, std::size_t j) 
   {
     return GetValue<T>(i, j)(E.content());
   }
@@ -108,12 +108,12 @@ struct OperatorDelimImpl<GetValue<T>, Daixt::Expr<C> >
 
 
 // Daixt::ConstRef
-template <class T, int n>
+template <class T, std::size_t n>
 struct OperatorDelimImpl<GetValue<T>, 
                          Daixt::ConstRef<TinyQuadraticMatrix<T, n> > >
 {
   typedef Daixt::ConstRef<TinyQuadraticMatrix<T, n> > ArgT;
-  static inline T Apply(const ArgT& M, size_t i, size_t j) 
+  static inline T Apply(const ArgT& M, std::size_t i, std::size_t j) 
   {
     return static_cast<const TinyQuadraticMatrix<T, n>&>(M)(i, j);
   }
@@ -122,13 +122,13 @@ struct OperatorDelimImpl<GetValue<T>,
 
 
 // Daixt::Scalar Value
-template <class T, int n>
+template <class T, std::size_t n>
 struct OperatorDelimImpl<GetValue<T>,
                          Daixt::Scalar<TinyQuadraticMatrixExpression<T, n> > >
 {
   typedef typename Daixt::Scalar<TinyQuadraticMatrixExpression<T, n> > ArgT;
   
-  static inline T Apply(const ArgT& S, size_t i, size_t j) 
+  static inline T Apply(const ArgT& S, std::size_t i, std::size_t j) 
   {
     return static_cast<T>(S);
   }
@@ -145,10 +145,10 @@ template<class T, class ARG, class Op>
 struct 
 OperatorDelimImpl<GetValue<T>, Daixt::UnOp<ARG, Op> >
 {
-  static inline T Apply(const Daixt::UnOp<ARG, Op>& UO, size_t i, size_t j) 
+  static inline T Apply(const Daixt::UnOp<ARG, Op>& UO, std::size_t i, std::size_t j) 
   {
     return Op::Apply(GetValue<T>(i, j)(UO.arg()), 
-                     Daixt::Hint<T>());
+                     Daixt::Hstd::size_t<T>());
   }
 };
 
@@ -160,7 +160,7 @@ OperatorDelimImpl<GetValue<T>,
                   Daixt::UnOp<ARG, TinyMat::TransposeOfTinyMatrix> >
 {
   static inline T Apply(const Daixt::UnOp<ARG, TinyMat::TransposeOfTinyMatrix>& UO, 
-                        size_t i, size_t j) 
+                        std::size_t i, std::size_t j) 
   {
     return GetValue<T>(j, i)(UO.arg());
   }
@@ -174,12 +174,12 @@ OperatorDelimImpl<GetValue<T>,
                   Daixt::UnOp<ARG, TinyMat::LumpedTinyMatrix> >
 {
   static inline T Apply(const Daixt::UnOp<ARG, TinyMat::LumpedTinyMatrix>& UO, 
-                        size_t i, size_t j) 
+                        std::size_t i, std::size_t j) 
   {
     if (i != j) return T();
 
     typedef typename ARG::Disambiguation Disambiguation;
-    size_t k_max = Disambiguation::Dimension + 1;
+    std::size_t k_max = Disambiguation::Dimension + 1;
 
     T Result = T();
     
@@ -209,7 +209,7 @@ OperatorDelimImpl<GetValue<T>,
 
   static inline T Apply(const Daixt::BinOp<LHS, RHS, 
                                           Daixt::DefaultOps::BinaryPlus>& BO, 
-                        size_t i, size_t j)
+                        std::size_t i, std::size_t j)
   {
     return 
       GetValue<T>(i, j)(BO.lhs())
@@ -232,7 +232,7 @@ OperatorDelimImpl<GetValue<T>,
 
   static inline T Apply(const Daixt::BinOp<LHS, RHS, 
                                           Daixt::DefaultOps::BinaryMinus>& BO, 
-                        size_t i, size_t j)
+                        std::size_t i, std::size_t j)
   {
     return 
       GetValue<T>(i, j)(BO.lhs())
@@ -256,12 +256,12 @@ OperatorDelimImpl<GetValue<T>,
 
   static inline T Apply
   (const Daixt::BinOp<LHS, RHS, Daixt::DefaultOps::BinaryMultiply>& BO, 
-   size_t i, size_t j)
+   std::size_t i, std::size_t j)
   {
     T Result = T();
     
     typedef typename LHS::Disambiguation Disambiguation;
-    size_t k_max = Disambiguation::Dimension + 1;
+    std::size_t k_max = Disambiguation::Dimension + 1;
 
     for (size_t k = 1; k != k_max; ++k)
       { 
@@ -288,7 +288,7 @@ OperatorDelimImpl<GetValue<T>,
 {
   static inline T Apply
   (const Daixt::BinOp<LHS, Daixt::Scalar<D>, Daixt::DefaultOps::BinaryMultiply>& BO, 
-   size_t i, size_t j)
+   std::size_t i, std::size_t j)
   {
     return GetValue<T>(i, j)(BO.lhs()) * BO.rhs().Value();
   }
@@ -305,7 +305,7 @@ OperatorDelimImpl<GetValue<T>,
 {
   static inline T Apply
   (const Daixt::BinOp<Daixt::Scalar<D>, RHS, Daixt::DefaultOps::BinaryMultiply>& BO, 
-   size_t i, size_t j)
+   std::size_t i, std::size_t j)
   {
     return GetValue<T>(i, j)(BO.rhs()) * BO.lhs().Value();
   }
@@ -332,7 +332,7 @@ template<class T>
 class GetValue
 {
 private:
-  size_t j_;
+  std::size_t j_;
   
 public:
   inline GetValue(size_t j) : j_(j) {}
@@ -362,11 +362,11 @@ public:
 
 
 // TinyVector
-template <class T, int n>
+template <class T, std::size_t n>
 struct OperatorDelimImpl<GetValue<T>, 
                          TinyVector<T, n> >
 {
-  static inline T Apply(const TinyVector<T, n>& V, size_t j) 
+  static inline T Apply(const TinyVector<T, n>& V, std::size_t j) 
   {
     return V(j);
   }
@@ -378,7 +378,7 @@ template <class T, class C>
 struct OperatorDelimImpl<GetValue<T>, Daixt::Expr<C> > 
 {
   typedef Daixt::Expr<C> ArgT;
-  static inline T Apply(const ArgT& E, size_t j) 
+  static inline T Apply(const ArgT& E, std::size_t j) 
   {
     return GetValue<T>(j)(E.content());
   }
@@ -386,12 +386,12 @@ struct OperatorDelimImpl<GetValue<T>, Daixt::Expr<C> >
 
 
 // Daixt::ConstRef
-template <class T, int n>
+template <class T, std::size_t n>
 struct OperatorDelimImpl<GetValue<T>, 
                          Daixt::ConstRef<TinyVector<T, n> > >
 {
   typedef Daixt::ConstRef<TinyVector<T, n> > ArgT;
-  static inline T Apply(const ArgT& V, size_t j) 
+  static inline T Apply(const ArgT& V, std::size_t j) 
   {
     return static_cast<const TinyVector<T, n>&>(V)(j);
   }
@@ -400,13 +400,13 @@ struct OperatorDelimImpl<GetValue<T>,
 
 
 // Daixt::Scalar Value
-template <class T, int n>
+template <class T, std::size_t n>
 struct OperatorDelimImpl<GetValue<T>,
                          Daixt::Scalar<TinyVectorExpression<T, n> > >
 {
   typedef typename Daixt::Scalar<TinyVectorExpression<T, n> > ArgT;
   
-  static inline T Apply(const ArgT& S, size_t j) 
+  static inline T Apply(const ArgT& S, std::size_t j) 
   {
     return static_cast<T>(S);
   }
@@ -423,10 +423,10 @@ template<class T, class ARG, class Op>
 struct 
 OperatorDelimImpl<GetValue<T>, Daixt::UnOp<ARG, Op> >
 {
-  static inline T Apply(const Daixt::UnOp<ARG, Op>& UO, size_t j) 
+  static inline T Apply(const Daixt::UnOp<ARG, Op>& UO, std::size_t j) 
   {
     return Op::Apply(GetValue<T>(j)(UO.arg()), 
-                     Daixt::Hint<T>());
+                     Daixt::Hstd::size_t<T>());
   }
 };
 
@@ -438,14 +438,14 @@ template<class T, class LHS, class RHS, class OP>
 struct
 OperatorDelimImpl<GetValue<T>, Daixt::BinOp<LHS, RHS, OP> >
 {
-  static const size_t N1 = LHS::Disambiguation::Dimension; 
-  static const size_t N2 = RHS::Disambiguation::Dimension; 
+  static const std::size_t N1 = LHS::Disambiguation::Dimension; 
+  static const std::size_t N2 = RHS::Disambiguation::Dimension; 
 
   COMPILE_TIME_ASSERT(N1 == N2);
 
 
   static inline T Apply(const Daixt::BinOp<LHS, RHS, OP>& BO, 
-                        size_t j)
+                        std::size_t j)
   {
     return Apply(BO, j, Overload());
   }
@@ -463,7 +463,7 @@ private:
    SAME_TYPE(typename RHS::Disambiguation, TV));
 
   
-  template <int i> struct Overloader {};
+  template <std::size_t i> struct Overloader {};
 
   typedef typename Loki::Select<MatrixTimesVector,
                                 Overloader<1>,
@@ -472,13 +472,13 @@ private:
   //////////////////////////////////////////////////////////////////////////////
   // the normal forward to OP
   static inline T Apply(const Daixt::BinOp<LHS, RHS, OP>& BO, 
-                        size_t j, 
+                        std::size_t j, 
                         const Overloader<0>& Ignored)
   {
     return 
       OP::Apply(GetValue<T>(j)(BO.lhs()),
                 GetValue<T>(j)(BO.rhs()),
-                Daixt::Hint<T>());
+                Daixt::Hstd::size_t<T>());
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -486,11 +486,11 @@ private:
   // imperfect loop unrolling
   template 
   <size_t N, 
-   size_t FuckTheStandardWhichDoesNotAllowExplicitTemplSpecInsideClass = 0>
+   std::size_t FuckTheStandardWhichDoesNotAllowExplicitTemplSpecInsideClass = 0>
   class MatVecMult
   {
   private:
-    size_t RowNumber_;
+    std::size_t RowNumber_;
   public:
     inline MatVecMult(size_t RowNumber) : RowNumber_(RowNumber) {}
     inline T Result (const LHS& lhs, const RHS& rhs)
@@ -509,7 +509,7 @@ private:
   class MatVecMult<1, SeeAbove>
   {
   private:
-    size_t RowNumber_;
+    std::size_t RowNumber_;
   public:
     inline MatVecMult(size_t RowNumber) : RowNumber_(RowNumber) {}
     inline T Result (const LHS& lhs, const RHS& rhs)
@@ -524,7 +524,7 @@ private:
 
   ////////////////////////////////////////////////////////////////////////////////
   static inline T Apply(const Daixt::BinOp<LHS, RHS, OP>& BO, 
-                        size_t j, 
+                        std::size_t j, 
                         const Overloader<1>& Ignored)
   {
     return MatVecMult<N2>(j).Result(BO.lhs(), BO.rhs());
