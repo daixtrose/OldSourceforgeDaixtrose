@@ -71,6 +71,8 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   typedef TinyVectorExpression<T, n> Disambiguation;
   typedef T value_type;
+  typedef T const * const_iterator;
+  typedef T * iterator;
 
   //////////////////////////////////////////////////////////////////////////////
   inline TinyVector();             // uninitialized data 
@@ -85,6 +87,7 @@ public:
   template<class A> inline void operator=(const Daixt::Expr<A>& E);
   
   inline void operator*=(const T& t);
+  inline void operator/=(const T& t);
   inline void operator+=(const T& t);
   inline void operator-=(const T& t);
 
@@ -196,6 +199,16 @@ TinyVector<T, n>::operator*=(const T& t)
   std::transform(data_, data_ + n, 
                  data_,
                  std::bind1st(std::multiplies<T>(), t));
+  
+}
+
+template<class T, std::size_t n>
+void 
+TinyVector<T, n>::operator/=(const T& t)
+{
+  std::transform(data_, data_ + n, 
+                 data_,
+                 std::bind2nd(std::divides<T>(), t));
   
 }
 
