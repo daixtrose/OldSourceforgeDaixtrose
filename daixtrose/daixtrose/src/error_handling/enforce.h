@@ -85,6 +85,18 @@ MakeEnforcer(T& t, const char* locus)
     return Enforcer<T&, P, R>(t, locus);
 }
 
+
+struct DummyNoActionEnforcer
+{
+  template <class MsgType>
+  DummyNoActionEnforcer& operator()(const MsgType& msg) 
+  {
+    return *this;
+  }
+};
+
+
+
 #define STRINGIZE(expr) STRINGIZE_HELPER(expr)
 #define STRINGIZE_HELPER(expr) #expr
 
@@ -92,13 +104,17 @@ MakeEnforcer(T& t, const char* locus)
     *MakeEnforcer<DefaultPredicate, DefaultRaiser>((exp), "Expression '" #exp "' failed in '" \
     __FILE__ "', line: " STRINGIZE(__LINE__))
 
+
 #ifndef NDEBUG
-#define DEBUG_ENFORCE(exp) \
+
+#  define DEBUG_ENFORCE(exp) \
     *MakeEnforcer<DefaultPredicate, DefaultRaiser>((exp), "Expression '" #exp "' failed in '" \
     __FILE__ "', line: " STRINGIZE(__LINE__))
 
 #else
-#define DEBUG_ENFORCE(exp)
+
+#  define DEBUG_ENFORCE(exp) DummyNoActionEnforcer()
+
 #endif // NDEBUG
 
 
