@@ -25,9 +25,10 @@
 // invalidate any other reasons why the executable file might be covered by
 // the GNU Lesser General Public License.
 
+#include "daixtrose/Daixt.h"
+
 #include <iostream>
 
-#include "daixtrose/Daixt.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // A _very_ simple example for how to use Daixt.
