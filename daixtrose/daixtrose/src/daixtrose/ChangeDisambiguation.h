@@ -68,7 +68,7 @@ class Expr<DisambiguationChanger<T, NewDisambiguation> >
   T t_;
 
 public:
-  typedef typename T::Disambiguation Disambiguation;
+  typedef typename disambiguation<T>::type Disambiguation;
 
   Expr(DisambiguationChanger<T, NewDisambiguation> DCT) 
     : t_(DCT.content()) 

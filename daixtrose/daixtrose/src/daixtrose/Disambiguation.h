@@ -89,20 +89,31 @@ namespace Check
 ////////////////////////////////////////////////////////////////////////////////
 // compile time check for a disambiguation 
 template<class T> 
-class has_member_disambiguation // (Thanks to Paul Mensonides) 
+class has_member_disambiguation // Thanks to Paul Mensonides
 {
 protected:
   template<class U> static char check(typename U::Disambiguation*);
   template<class U> static char (& check(...))[2];
 
 public:
+#if defined(__GNUC__) // I hate this bug!!!
+  static const bool value = (sizeof(check<T>(0)) == 1);
+#else
   enum { value = (sizeof(check<T>(0)) == 1) };
+#endif
 };
+
+
 
 template<class T> 
 struct has_external_disambiguation 
 {
+#if defined(__GNUC__) // I hate this bug!!!
+  static const bool value = Disambiguator<T>::is_specialized;
+#else
   enum { value = Disambiguator<T>::is_specialized };
+#endif
+
 };
 
 

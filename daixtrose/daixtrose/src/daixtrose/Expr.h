@@ -29,6 +29,9 @@
 #ifndef DAIXT_EXPR_INC
 #define DAIXT_EXPR_INC
 
+#include "daixtrose/Disambiguation.h"
+
+
 namespace Daixt
 {
 
@@ -51,12 +54,13 @@ public:
 template <class T>
 class Expr 
   :
-  public Daixt::FeaturesOfExpression<typename T::Disambiguation, Expr<T> >
+  public Daixt::FeaturesOfExpression<typename disambiguation<T>::type, 
+                                     Expr<T> >
 {
   T t_;
 
 public:
-  typedef typename T::Disambiguation Disambiguation;
+  typedef typename disambiguation<T>::type Disambiguation;
 
   Expr(T t) 
     : t_(t) 
