@@ -104,10 +104,11 @@ struct MatrixDisambiguator
 template <
           class T, // numerical type
           // must have the same interface and semantics as std::map<size_t, T>
-          class RowStorage = std::map<std::size_t, 
-                                      T, 
-                                      std::less<std::size_t>,
-                                      std::allocator<std::pair<const std::size_t, T> > >,
+          class RowStorage = 
+            std::map<std::size_t, 
+                     T, 
+                     std::less<std::size_t>,
+                     std::allocator<std::pair<const std::size_t, T> > >,
           class Allocator = std::allocator<RowStorage> 
           >
 class Matrix
@@ -141,6 +142,8 @@ public:
 
   // this one retains sparsity pattern
   inline MyOwnType& operator=(const T& t);
+
+  inline MyOwnType& operator*=(const T& t);
 
   // assignments which use RowExtractor
   template<class OtherT> 
@@ -311,6 +314,27 @@ operator=(const T& t)
       for (iterator rsiter = iter->begin(); rsiter != rsend; ++rsiter)
         {
           rsiter->second = t; 
+        }
+    }
+  
+  return *this;
+}
+
+
+template<class T, class RowStorage, class Allocator>
+Matrix<T, RowStorage, Allocator>& 
+Matrix<T, RowStorage, Allocator>::
+operator*=(const T& t)
+{
+  typename DataStorageT::iterator end = data_.end();
+  for (typename DataStorageT::iterator iter = data_.begin(); iter != end; ++iter)
+    {
+      typedef typename RowStorage::iterator iterator;
+      iterator rsend = iter->end();
+      for (iterator rsiter = iter->begin(); rsiter != rsend; ++rsiter)
+        {
+          using namespace Daixt::DefaultOps;
+          rsiter->second = rsiter->second * t; 
         }
     }
   
