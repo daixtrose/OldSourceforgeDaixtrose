@@ -198,7 +198,7 @@ public:
   ReturnType                                                          
   Apply(const ARG& arg, const Hint<ReturnType>& Dummy)                
   {                                                                   
-    return pow(pow(arg, m) -n);                       
+    return pow(pow(arg, m), -n);                       
   }                                                 
 };   
 
