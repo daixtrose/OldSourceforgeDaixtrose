@@ -42,8 +42,15 @@ check_PROGRAMS = \
 	test_inverse \
 	test_block_mat \
 	test_matrix_print \
-	test_simplify 
-
+	test_simplify \
+	quicktour_mini \
+	quicktour_mini_2 \
+	quicktour_mini_3 \
+	quicktour_mini_4 \
+	quicktour_mini_5 \
+	quicktour_diff \
+	quicktour_tiny \
+	quicktour_linalg
 
 test_simple_get_value_1_SOURCES    = $(srcdir)/src/demos/SimpleGetValue.1/main.C
 test_simple_get_value_1_CXXFLAGS = $(AM_CXXFLAGS) 
@@ -59,6 +66,16 @@ test_inverse_SOURCES               = $(srcdir)/src/demos/linalg/TestInverse.C
 test_block_mat_SOURCES             = $(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C
 test_simplify_SOURCES              = $(srcdir)/src/demos/simplify/TestSimplify.C
 test_matrix_print_SOURCES          = $(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C
+
+quicktour_mini_SOURCES             =  $(srcdir)/src/demos/quicktour/Mini.C
+quicktour_mini_2_SOURCES           =  $(srcdir)/src/demos/quicktour/Mini.2.C
+quicktour_mini_3_SOURCES           =  $(srcdir)/src/demos/quicktour/Mini.3.C
+quicktour_mini_4_SOURCES           =  $(srcdir)/src/demos/quicktour/Mini.4.C
+quicktour_mini_5_SOURCES           =  $(srcdir)/src/demos/quicktour/Mini.5.C
+quicktour_diff_SOURCES             =  $(srcdir)/src/demos/quicktour/Differentiation.C
+
+quicktour_tiny_SOURCES             =  $(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C 
+quicktour_linalg_SOURCES           =  $(srcdir)/src/demos/quicktour/Linalg.C 
 
 ################################################################################
 #finally we want these headers to be in the distribution

@@ -146,7 +146,15 @@ check_PROGRAMS = \
 	test_inverse \
 	test_block_mat \
 	test_matrix_print \
-	test_simplify 
+	test_simplify \
+	quicktour_mini \
+	quicktour_mini_2 \
+	quicktour_mini_3 \
+	quicktour_mini_4 \
+	quicktour_mini_5 \
+	quicktour_diff \
+	quicktour_tiny \
+	quicktour_linalg
 
 
 test_simple_get_value_1_SOURCES = $(srcdir)/src/demos/SimpleGetValue.1/main.C
@@ -163,6 +171,16 @@ test_inverse_SOURCES = $(srcdir)/src/demos/linalg/TestInverse.C
 test_block_mat_SOURCES = $(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C
 test_simplify_SOURCES = $(srcdir)/src/demos/simplify/TestSimplify.C
 test_matrix_print_SOURCES = $(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C
+
+quicktour_mini_SOURCES = $(srcdir)/src/demos/quicktour/Mini.C
+quicktour_mini_2_SOURCES = $(srcdir)/src/demos/quicktour/Mini.2.C
+quicktour_mini_3_SOURCES = $(srcdir)/src/demos/quicktour/Mini.3.C
+quicktour_mini_4_SOURCES = $(srcdir)/src/demos/quicktour/Mini.4.C
+quicktour_mini_5_SOURCES = $(srcdir)/src/demos/quicktour/Mini.5.C
+quicktour_diff_SOURCES = $(srcdir)/src/demos/quicktour/Differentiation.C
+
+quicktour_tiny_SOURCES = $(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C 
+quicktour_linalg_SOURCES = $(srcdir)/src/demos/quicktour/Linalg.C 
 
 
 ################################################################################
@@ -227,7 +245,51 @@ check_PROGRAMS = test_simple_get_value_1$(EXEEXT) \
 	test_change_disambiguation$(EXEEXT) test_linalg$(EXEEXT) \
 	test_tiny_mat$(EXEEXT) test_tiny_vec$(EXEEXT) \
 	test_inverse$(EXEEXT) test_block_mat$(EXEEXT) \
-	test_matrix_print$(EXEEXT) test_simplify$(EXEEXT)
+	test_matrix_print$(EXEEXT) test_simplify$(EXEEXT) \
+	quicktour_mini$(EXEEXT) quicktour_mini_2$(EXEEXT) \
+	quicktour_mini_3$(EXEEXT) quicktour_mini_4$(EXEEXT) \
+	quicktour_mini_5$(EXEEXT) quicktour_diff$(EXEEXT) \
+	quicktour_tiny$(EXEEXT) quicktour_linalg$(EXEEXT)
+am_quicktour_diff_OBJECTS = Differentiation.$(OBJEXT)
+quicktour_diff_OBJECTS = $(am_quicktour_diff_OBJECTS)
+quicktour_diff_LDADD = $(LDADD)
+quicktour_diff_DEPENDENCIES =
+quicktour_diff_LDFLAGS =
+am_quicktour_linalg_OBJECTS = Linalg.$(OBJEXT)
+quicktour_linalg_OBJECTS = $(am_quicktour_linalg_OBJECTS)
+quicktour_linalg_LDADD = $(LDADD)
+quicktour_linalg_DEPENDENCIES =
+quicktour_linalg_LDFLAGS =
+am_quicktour_mini_OBJECTS = Mini.$(OBJEXT)
+quicktour_mini_OBJECTS = $(am_quicktour_mini_OBJECTS)
+quicktour_mini_LDADD = $(LDADD)
+quicktour_mini_DEPENDENCIES =
+quicktour_mini_LDFLAGS =
+am_quicktour_mini_2_OBJECTS = Mini.2.$(OBJEXT)
+quicktour_mini_2_OBJECTS = $(am_quicktour_mini_2_OBJECTS)
+quicktour_mini_2_LDADD = $(LDADD)
+quicktour_mini_2_DEPENDENCIES =
+quicktour_mini_2_LDFLAGS =
+am_quicktour_mini_3_OBJECTS = Mini.3.$(OBJEXT)
+quicktour_mini_3_OBJECTS = $(am_quicktour_mini_3_OBJECTS)
+quicktour_mini_3_LDADD = $(LDADD)
+quicktour_mini_3_DEPENDENCIES =
+quicktour_mini_3_LDFLAGS =
+am_quicktour_mini_4_OBJECTS = Mini.4.$(OBJEXT)
+quicktour_mini_4_OBJECTS = $(am_quicktour_mini_4_OBJECTS)
+quicktour_mini_4_LDADD = $(LDADD)
+quicktour_mini_4_DEPENDENCIES =
+quicktour_mini_4_LDFLAGS =
+am_quicktour_mini_5_OBJECTS = Mini.5.$(OBJEXT)
+quicktour_mini_5_OBJECTS = $(am_quicktour_mini_5_OBJECTS)
+quicktour_mini_5_LDADD = $(LDADD)
+quicktour_mini_5_DEPENDENCIES =
+quicktour_mini_5_LDFLAGS =
+am_quicktour_tiny_OBJECTS = TinyMatrixAndVector.$(OBJEXT)
+quicktour_tiny_OBJECTS = $(am_quicktour_tiny_OBJECTS)
+quicktour_tiny_LDADD = $(LDADD)
+quicktour_tiny_DEPENDENCIES =
+quicktour_tiny_LDFLAGS =
 am_test_block_mat_OBJECTS = TestBlockedMatAndVec.$(OBJEXT)
 test_block_mat_OBJECTS = $(am_test_block_mat_OBJECTS)
 test_block_mat_LDADD = $(LDADD)
@@ -285,13 +347,19 @@ test_tiny_vec_LDFLAGS =
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I.
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/TestBlockedMatAndVec.Po \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/Differentiation.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/Linalg.Po ./$(DEPDIR)/Mini.2.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/Mini.3.Po ./$(DEPDIR)/Mini.4.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/Mini.5.Po ./$(DEPDIR)/Mini.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/TestBlockedMatAndVec.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestInverse.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestLinalg.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestPrintingOfBlockedMatrix.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestSimplify.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestTinyMat.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/TestTinyVec.Po ./$(DEPDIR)/main.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/TestTinyVec.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/TinyMatrixAndVector.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/main.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/test_simple_get_value_1-main.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/test_simple_get_value_2-main.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
@@ -299,16 +367,19 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
-DIST_SOURCES = $(test_block_mat_SOURCES) \
-	$(test_change_disambiguation_SOURCES) $(test_inverse_SOURCES) \
-	$(test_linalg_SOURCES) $(test_matrix_print_SOURCES) \
-	$(test_simple_get_value_1_SOURCES) \
+DIST_SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) \
+	$(quicktour_mini_SOURCES) $(quicktour_mini_2_SOURCES) \
+	$(quicktour_mini_3_SOURCES) $(quicktour_mini_4_SOURCES) \
+	$(quicktour_mini_5_SOURCES) $(quicktour_tiny_SOURCES) \
+	$(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) \
+	$(test_inverse_SOURCES) $(test_linalg_SOURCES) \
+	$(test_matrix_print_SOURCES) $(test_simple_get_value_1_SOURCES) \
 	$(test_simple_get_value_2_SOURCES) $(test_simplify_SOURCES) \
 	$(test_tiny_mat_SOURCES) $(test_tiny_vec_SOURCES)
 DIST_COMMON = README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
 	Makefile.in NEWS aclocal.m4 config.h.in configure configure.in \
 	depcomp install-sh missing mkinstalldirs
-SOURCES = $(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) $(test_inverse_SOURCES) $(test_linalg_SOURCES) $(test_matrix_print_SOURCES) $(test_simple_get_value_1_SOURCES) $(test_simple_get_value_2_SOURCES) $(test_simplify_SOURCES) $(test_tiny_mat_SOURCES) $(test_tiny_vec_SOURCES)
+SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) $(quicktour_mini_SOURCES) $(quicktour_mini_2_SOURCES) $(quicktour_mini_3_SOURCES) $(quicktour_mini_4_SOURCES) $(quicktour_mini_5_SOURCES) $(quicktour_tiny_SOURCES) $(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) $(test_inverse_SOURCES) $(test_linalg_SOURCES) $(test_matrix_print_SOURCES) $(test_simple_get_value_1_SOURCES) $(test_simple_get_value_2_SOURCES) $(test_simplify_SOURCES) $(test_tiny_mat_SOURCES) $(test_tiny_vec_SOURCES)
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -351,6 +422,40 @@ distclean-hdr:
 
 clean-checkPROGRAMS:
 	-test -z "$(check_PROGRAMS)" || rm -f $(check_PROGRAMS)
+Differentiation.$(OBJEXT): \
+	$(srcdir)/src/demos/quicktour/Differentiation.C
+quicktour_diff$(EXEEXT): $(quicktour_diff_OBJECTS) $(quicktour_diff_DEPENDENCIES) 
+	@rm -f quicktour_diff$(EXEEXT)
+	$(CXXLINK) $(quicktour_diff_LDFLAGS) $(quicktour_diff_OBJECTS) $(quicktour_diff_LDADD) $(LIBS)
+Linalg.$(OBJEXT): $(srcdir)/src/demos/quicktour/Linalg.C
+quicktour_linalg$(EXEEXT): $(quicktour_linalg_OBJECTS) $(quicktour_linalg_DEPENDENCIES) 
+	@rm -f quicktour_linalg$(EXEEXT)
+	$(CXXLINK) $(quicktour_linalg_LDFLAGS) $(quicktour_linalg_OBJECTS) $(quicktour_linalg_LDADD) $(LIBS)
+Mini.$(OBJEXT): $(srcdir)/src/demos/quicktour/Mini.C
+quicktour_mini$(EXEEXT): $(quicktour_mini_OBJECTS) $(quicktour_mini_DEPENDENCIES) 
+	@rm -f quicktour_mini$(EXEEXT)
+	$(CXXLINK) $(quicktour_mini_LDFLAGS) $(quicktour_mini_OBJECTS) $(quicktour_mini_LDADD) $(LIBS)
+Mini.2.$(OBJEXT): $(srcdir)/src/demos/quicktour/Mini.2.C
+quicktour_mini_2$(EXEEXT): $(quicktour_mini_2_OBJECTS) $(quicktour_mini_2_DEPENDENCIES) 
+	@rm -f quicktour_mini_2$(EXEEXT)
+	$(CXXLINK) $(quicktour_mini_2_LDFLAGS) $(quicktour_mini_2_OBJECTS) $(quicktour_mini_2_LDADD) $(LIBS)
+Mini.3.$(OBJEXT): $(srcdir)/src/demos/quicktour/Mini.3.C
+quicktour_mini_3$(EXEEXT): $(quicktour_mini_3_OBJECTS) $(quicktour_mini_3_DEPENDENCIES) 
+	@rm -f quicktour_mini_3$(EXEEXT)
+	$(CXXLINK) $(quicktour_mini_3_LDFLAGS) $(quicktour_mini_3_OBJECTS) $(quicktour_mini_3_LDADD) $(LIBS)
+Mini.4.$(OBJEXT): $(srcdir)/src/demos/quicktour/Mini.4.C
+quicktour_mini_4$(EXEEXT): $(quicktour_mini_4_OBJECTS) $(quicktour_mini_4_DEPENDENCIES) 
+	@rm -f quicktour_mini_4$(EXEEXT)
+	$(CXXLINK) $(quicktour_mini_4_LDFLAGS) $(quicktour_mini_4_OBJECTS) $(quicktour_mini_4_LDADD) $(LIBS)
+Mini.5.$(OBJEXT): $(srcdir)/src/demos/quicktour/Mini.5.C
+quicktour_mini_5$(EXEEXT): $(quicktour_mini_5_OBJECTS) $(quicktour_mini_5_DEPENDENCIES) 
+	@rm -f quicktour_mini_5$(EXEEXT)
+	$(CXXLINK) $(quicktour_mini_5_LDFLAGS) $(quicktour_mini_5_OBJECTS) $(quicktour_mini_5_LDADD) $(LIBS)
+TinyMatrixAndVector.$(OBJEXT): \
+	$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C
+quicktour_tiny$(EXEEXT): $(quicktour_tiny_OBJECTS) $(quicktour_tiny_DEPENDENCIES) 
+	@rm -f quicktour_tiny$(EXEEXT)
+	$(CXXLINK) $(quicktour_tiny_LDFLAGS) $(quicktour_tiny_OBJECTS) $(quicktour_tiny_LDADD) $(LIBS)
 TestBlockedMatAndVec.$(OBJEXT): \
 	$(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C
 test_block_mat$(EXEEXT): $(test_block_mat_OBJECTS) $(test_block_mat_DEPENDENCIES) 
@@ -402,6 +507,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Differentiation.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Linalg.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Mini.2.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Mini.3.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Mini.4.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Mini.5.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Mini.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestBlockedMatAndVec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestInverse.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestLinalg.Po@am__quote@
@@ -409,6 +521,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestSimplify.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestTinyMat.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestTinyVec.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TinyMatrixAndVector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_simple_get_value_1-main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_simple_get_value_2-main.Po@am__quote@
@@ -437,6 +550,182 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'`
+
+Differentiation.o: $(srcdir)/src/demos/quicktour/Differentiation.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Differentiation.o -MD -MP -MF "$(DEPDIR)/Differentiation.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Differentiation.o `test -f '$(srcdir)/src/demos/quicktour/Differentiation.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Differentiation.C; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Differentiation.Tpo" "$(DEPDIR)/Differentiation.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Differentiation.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Differentiation.C' object='Differentiation.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Differentiation.Po' tmpdepfile='$(DEPDIR)/Differentiation.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Differentiation.o `test -f '$(srcdir)/src/demos/quicktour/Differentiation.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Differentiation.C
+
+Differentiation.obj: $(srcdir)/src/demos/quicktour/Differentiation.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Differentiation.obj -MD -MP -MF "$(DEPDIR)/Differentiation.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Differentiation.obj `if test -f '$(srcdir)/src/demos/quicktour/Differentiation.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Differentiation.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Differentiation.C'`; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Differentiation.Tpo" "$(DEPDIR)/Differentiation.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Differentiation.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Differentiation.C' object='Differentiation.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Differentiation.Po' tmpdepfile='$(DEPDIR)/Differentiation.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Differentiation.obj `if test -f '$(srcdir)/src/demos/quicktour/Differentiation.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Differentiation.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Differentiation.C'`
+
+Linalg.o: $(srcdir)/src/demos/quicktour/Linalg.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Linalg.o -MD -MP -MF "$(DEPDIR)/Linalg.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Linalg.o `test -f '$(srcdir)/src/demos/quicktour/Linalg.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Linalg.C; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Linalg.Tpo" "$(DEPDIR)/Linalg.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Linalg.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Linalg.C' object='Linalg.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Linalg.Po' tmpdepfile='$(DEPDIR)/Linalg.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Linalg.o `test -f '$(srcdir)/src/demos/quicktour/Linalg.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Linalg.C
+
+Linalg.obj: $(srcdir)/src/demos/quicktour/Linalg.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Linalg.obj -MD -MP -MF "$(DEPDIR)/Linalg.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Linalg.obj `if test -f '$(srcdir)/src/demos/quicktour/Linalg.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Linalg.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Linalg.C'`; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Linalg.Tpo" "$(DEPDIR)/Linalg.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Linalg.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Linalg.C' object='Linalg.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Linalg.Po' tmpdepfile='$(DEPDIR)/Linalg.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Linalg.obj `if test -f '$(srcdir)/src/demos/quicktour/Linalg.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Linalg.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Linalg.C'`
+
+Mini.o: $(srcdir)/src/demos/quicktour/Mini.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Mini.o -MD -MP -MF "$(DEPDIR)/Mini.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Mini.o `test -f '$(srcdir)/src/demos/quicktour/Mini.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Mini.C; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Mini.Tpo" "$(DEPDIR)/Mini.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Mini.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Mini.C' object='Mini.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Mini.Po' tmpdepfile='$(DEPDIR)/Mini.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Mini.o `test -f '$(srcdir)/src/demos/quicktour/Mini.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Mini.C
+
+Mini.obj: $(srcdir)/src/demos/quicktour/Mini.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Mini.obj -MD -MP -MF "$(DEPDIR)/Mini.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Mini.obj `if test -f '$(srcdir)/src/demos/quicktour/Mini.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Mini.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Mini.C'`; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Mini.Tpo" "$(DEPDIR)/Mini.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Mini.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Mini.C' object='Mini.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Mini.Po' tmpdepfile='$(DEPDIR)/Mini.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Mini.obj `if test -f '$(srcdir)/src/demos/quicktour/Mini.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Mini.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Mini.C'`
+
+Mini.2.o: $(srcdir)/src/demos/quicktour/Mini.2.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Mini.2.o -MD -MP -MF "$(DEPDIR)/Mini.2.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Mini.2.o `test -f '$(srcdir)/src/demos/quicktour/Mini.2.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Mini.2.C; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Mini.2.Tpo" "$(DEPDIR)/Mini.2.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Mini.2.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Mini.2.C' object='Mini.2.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Mini.2.Po' tmpdepfile='$(DEPDIR)/Mini.2.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Mini.2.o `test -f '$(srcdir)/src/demos/quicktour/Mini.2.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Mini.2.C
+
+Mini.2.obj: $(srcdir)/src/demos/quicktour/Mini.2.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Mini.2.obj -MD -MP -MF "$(DEPDIR)/Mini.2.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Mini.2.obj `if test -f '$(srcdir)/src/demos/quicktour/Mini.2.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Mini.2.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Mini.2.C'`; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Mini.2.Tpo" "$(DEPDIR)/Mini.2.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Mini.2.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Mini.2.C' object='Mini.2.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Mini.2.Po' tmpdepfile='$(DEPDIR)/Mini.2.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Mini.2.obj `if test -f '$(srcdir)/src/demos/quicktour/Mini.2.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Mini.2.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Mini.2.C'`
+
+Mini.3.o: $(srcdir)/src/demos/quicktour/Mini.3.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Mini.3.o -MD -MP -MF "$(DEPDIR)/Mini.3.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Mini.3.o `test -f '$(srcdir)/src/demos/quicktour/Mini.3.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Mini.3.C; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Mini.3.Tpo" "$(DEPDIR)/Mini.3.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Mini.3.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Mini.3.C' object='Mini.3.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Mini.3.Po' tmpdepfile='$(DEPDIR)/Mini.3.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Mini.3.o `test -f '$(srcdir)/src/demos/quicktour/Mini.3.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Mini.3.C
+
+Mini.3.obj: $(srcdir)/src/demos/quicktour/Mini.3.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Mini.3.obj -MD -MP -MF "$(DEPDIR)/Mini.3.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Mini.3.obj `if test -f '$(srcdir)/src/demos/quicktour/Mini.3.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Mini.3.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Mini.3.C'`; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Mini.3.Tpo" "$(DEPDIR)/Mini.3.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Mini.3.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Mini.3.C' object='Mini.3.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Mini.3.Po' tmpdepfile='$(DEPDIR)/Mini.3.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Mini.3.obj `if test -f '$(srcdir)/src/demos/quicktour/Mini.3.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Mini.3.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Mini.3.C'`
+
+Mini.4.o: $(srcdir)/src/demos/quicktour/Mini.4.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Mini.4.o -MD -MP -MF "$(DEPDIR)/Mini.4.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Mini.4.o `test -f '$(srcdir)/src/demos/quicktour/Mini.4.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Mini.4.C; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Mini.4.Tpo" "$(DEPDIR)/Mini.4.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Mini.4.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Mini.4.C' object='Mini.4.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Mini.4.Po' tmpdepfile='$(DEPDIR)/Mini.4.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Mini.4.o `test -f '$(srcdir)/src/demos/quicktour/Mini.4.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Mini.4.C
+
+Mini.4.obj: $(srcdir)/src/demos/quicktour/Mini.4.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Mini.4.obj -MD -MP -MF "$(DEPDIR)/Mini.4.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Mini.4.obj `if test -f '$(srcdir)/src/demos/quicktour/Mini.4.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Mini.4.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Mini.4.C'`; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Mini.4.Tpo" "$(DEPDIR)/Mini.4.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Mini.4.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Mini.4.C' object='Mini.4.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Mini.4.Po' tmpdepfile='$(DEPDIR)/Mini.4.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Mini.4.obj `if test -f '$(srcdir)/src/demos/quicktour/Mini.4.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Mini.4.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Mini.4.C'`
+
+Mini.5.o: $(srcdir)/src/demos/quicktour/Mini.5.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Mini.5.o -MD -MP -MF "$(DEPDIR)/Mini.5.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Mini.5.o `test -f '$(srcdir)/src/demos/quicktour/Mini.5.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Mini.5.C; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Mini.5.Tpo" "$(DEPDIR)/Mini.5.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Mini.5.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Mini.5.C' object='Mini.5.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Mini.5.Po' tmpdepfile='$(DEPDIR)/Mini.5.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Mini.5.o `test -f '$(srcdir)/src/demos/quicktour/Mini.5.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/Mini.5.C
+
+Mini.5.obj: $(srcdir)/src/demos/quicktour/Mini.5.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Mini.5.obj -MD -MP -MF "$(DEPDIR)/Mini.5.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o Mini.5.obj `if test -f '$(srcdir)/src/demos/quicktour/Mini.5.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Mini.5.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Mini.5.C'`; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/Mini.5.Tpo" "$(DEPDIR)/Mini.5.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/Mini.5.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/Mini.5.C' object='Mini.5.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Mini.5.Po' tmpdepfile='$(DEPDIR)/Mini.5.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Mini.5.obj `if test -f '$(srcdir)/src/demos/quicktour/Mini.5.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Mini.5.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Mini.5.C'`
+
+TinyMatrixAndVector.o: $(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TinyMatrixAndVector.o -MD -MP -MF "$(DEPDIR)/TinyMatrixAndVector.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o TinyMatrixAndVector.o `test -f '$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/TinyMatrixAndVector.Tpo" "$(DEPDIR)/TinyMatrixAndVector.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/TinyMatrixAndVector.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C' object='TinyMatrixAndVector.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/TinyMatrixAndVector.Po' tmpdepfile='$(DEPDIR)/TinyMatrixAndVector.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TinyMatrixAndVector.o `test -f '$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C
+
+TinyMatrixAndVector.obj: $(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TinyMatrixAndVector.obj -MD -MP -MF "$(DEPDIR)/TinyMatrixAndVector.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o TinyMatrixAndVector.obj `if test -f '$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C'`; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/TinyMatrixAndVector.Tpo" "$(DEPDIR)/TinyMatrixAndVector.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/TinyMatrixAndVector.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C' object='TinyMatrixAndVector.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/TinyMatrixAndVector.Po' tmpdepfile='$(DEPDIR)/TinyMatrixAndVector.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TinyMatrixAndVector.obj `if test -f '$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C'`
 
 TestBlockedMatAndVec.o: $(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TestBlockedMatAndVec.o -MD -MP -MF "$(DEPDIR)/TestBlockedMatAndVec.Tpo" \
