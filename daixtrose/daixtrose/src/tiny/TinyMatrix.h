@@ -36,6 +36,7 @@
 #include <functional>
 
 #include <cstring>
+#include <cassert>
 
 #include "daixtrose/Daixt.h"
 

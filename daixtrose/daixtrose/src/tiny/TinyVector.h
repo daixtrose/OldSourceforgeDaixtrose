@@ -34,13 +34,13 @@
 #include "boost/mpl/if.hpp"
 
 
-#include <stddef.h> // for std::size_t
+#include <cstddef> // for std::size_t
 #include <algorithm>
 #include <iosfwd>
 #include <iomanip>
 #include <functional>
 
-
+#include <cassert>
 
 namespace TinyVec
 {
