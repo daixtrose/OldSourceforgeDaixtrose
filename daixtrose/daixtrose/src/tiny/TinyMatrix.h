@@ -67,6 +67,7 @@ class TinyQuadraticMatrix
 {
 public:
   typedef T value_type;
+  static const std::size_t dimension = n;
   // FIXIT : make this class fit for use in std::algos, provide typedefs
 
   //////////////////////////////////////////////////////////////////////////////
