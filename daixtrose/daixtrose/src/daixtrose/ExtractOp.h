@@ -15,7 +15,7 @@
 
 // You should have received a copy of the GNU Lesser General Public License
 // along with this library; see the file COPYING.  If not, send mail to the
-// developers of daixt (see e.g. http://daixt.sourceforge.net/)
+// developers of daixtrose (see e.g. http://daixtrose.sourceforge.net/)
 
 // As a special exception, you may use this file as part of a free software
 // library without restriction.  Specifically, if other files instantiate

@@ -15,7 +15,7 @@
 
 // You should have received a copy of the GNU Lesser General Public License
 // along with this library; see the file COPYING.  If not, send mail to the
-// developers of daixt (see e.g. http://daixt.sourceforge.net/)
+// developers of daixtrose (see e.g. http://daixtrose.sourceforge.net/)
 
 // As a special exception, you may use this file as part of a free software
 // library without restriction.  Specifically, if other files instantiate
@@ -35,6 +35,10 @@
 
 #include "boost/lambda/lambda.hpp"
 #include "boost/lambda/bind.hpp"
+
+#include "boost/mpl/apply_if.hpp"
+#include "boost/mpl/identity.hpp"
+
 
 #include <algorithm>
 #include <functional>
@@ -143,6 +147,9 @@ private:
 // specializations of OperatorDelimImpl will be considered by the compiler.
 template<class T, class ARG> struct OperatorDelimImpl;
 
+// matrix forward declared
+template <class T, class RowStorage, class Allocator> class Matrix;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // row extractor for matrix expression
@@ -164,49 +171,94 @@ struct RowExtractor<MatrixExpression<T> >
                         >::Apply(Daixt::unwrap_expr(arg), i_);
   }
 
+  // sometimes a const reference can be used as return type: short-circuit
+  typedef Matrix<typename T::NumT, 
+                 typename T::RowStorage,
+                 typename T::Allocator> MatrixT;
+
+  typedef Daixt::ConstRef<MatrixT> CRefToMat;
+
+  inline 
+  const typename T::RowStorage&
+  operator()(const CRefToMat& arg) const
+  {
+    return static_cast<const MatrixT&>(arg)(i_);
+  }
+
 private:
   std::size_t i_;
 };
 
 
-////////////////////////////////////////////////////////////////////////////////
-// Matrix
-template <class T, class RowStorage, class Allocator> class Matrix;
+// // (never reached ...)
 
-template<class T>
-struct
-OperatorDelimImpl<RowExtractor<MatrixExpression<T> >, 
-                  Matrix<typename T::NumT, 
-                         typename T::RowStorage,
-                         typename T::Allocator> >
-{
-  static inline
-  typename T::RowStorage
-  Apply(const Matrix<typename T::NumT, 
-                     typename T::RowStorage,
-                     typename T::Allocator>& arg,
-        std::size_t i) 
-  {
-    return arg(i);
-  }
-};
+// ////////////////////////////////////////////////////////////////////////////////
+// // Matrix 
+
+// template<class T>
+// struct
+// OperatorDelimImpl<RowExtractor<MatrixExpression<T> >, 
+//                   Matrix<typename T::NumT, 
+//                          typename T::RowStorage,
+//                          typename T::Allocator> >
+// {
+//   static inline
+//   const typename T::RowStorage& // Since some compilers are not able to optimize
+//                                 // this copy we have to avoid it by hand
+//   Apply(const Matrix<typename T::NumT, 
+//                      typename T::RowStorage,
+//                      typename T::Allocator>& arg,
+//         std::size_t i) 
+//   {
+//     return arg(i);
+//   }
+// };
 
 
+// never reached? :
 ////////////////////////////////////////////////////////////////////////////////
 // Daixt::ConstRef
-template <class T, class Arg>
-struct
-OperatorDelimImpl<RowExtractor<MatrixExpression<T> >, 
-                  Daixt::ConstRef<Arg> >
-{
-  static inline
-  typename T::RowStorage
-  Apply(const Daixt::ConstRef<Arg>& arg,
-        std::size_t i)
-  {
-    return RowExtractor<MatrixExpression<T> >(i)(static_cast<const Arg&>(arg));
-  }
-};
+// template <class T, class Arg>
+// struct
+// OperatorDelimImpl<RowExtractor<MatrixExpression<T> >, 
+//                   Daixt::ConstRef<Arg> >
+// {
+//   static inline
+//   typename T::RowStorage
+//   Apply(const Daixt::ConstRef<Arg>& arg,
+//         std::size_t i)
+//   {
+//     return RowExtractor<MatrixExpression<T> >(i)(static_cast<const Arg&>(arg));
+//   }
+// };
+
+
+// ////////////////////////////////////////////////////////////////////////////////
+// // Daixt::ConstRef<Matrix> : return by reference to avoid copies
+// template <class T>
+// struct
+// OperatorDelimImpl<RowExtractor<MatrixExpression<T> >, 
+//                   Daixt::ConstRef<
+//                                   Matrix<typename T::NumT, 
+//                                          typename T::RowStorage,
+//                                          typename T::Allocator> 
+//                                   >
+//                   >
+// {
+//   typedef Matrix<typename T::NumT, 
+//                  typename T::RowStorage,
+//                  typename T::Allocator> ArgT;
+
+//   static inline
+//   const typename T::RowStorage&
+//   Apply(const Daixt::ConstRef<ArgT>& arg, 
+//         std::size_t i)
+//   {
+//     //return RowExtractor<MatrixExpression<T> >(i)(static_cast<const
+//     //ArgT&>(arg));
+//     return static_cast<const ArgT&>(arg)(i);
+//   }
+// };
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -292,7 +344,7 @@ OperatorDelimImpl<RowExtractor<MatrixExpression<T> >,
     
     RowStorage LHS_Result = 
       RowExtractor<MatrixExpression<T> >(i)(arg.lhs());
-    RowStorage RHS_Result = 
+    const RowStorage& RHS_Result = 
       RowExtractor<MatrixExpression<T> >(i)(arg.rhs());
     
     return Private::Merge(LHS_Result, RHS_Result);
@@ -318,7 +370,7 @@ OperatorDelimImpl<RowExtractor<MatrixExpression<T> >,
 
     RowStorage LHS_Result = 
       RowExtractor<MatrixExpression<T> >(i)(arg.lhs());
-    const RowStorage RHS_Result = 
+    const RowStorage& RHS_Result = 
       RowExtractor<MatrixExpression<T> >(i)(arg.rhs());
     
     const_iterator end = RHS_Result.end();
@@ -730,7 +782,15 @@ private:
     NumT Result = NumT(0); // Oughta be zero ...
     const RHS& rhs = arg.rhs();
 
-    RowStorage Row = 
+//     // If lhs is matrix, we can use the const reference
+//     typedef typename boost::mpl::apply_if_c
+//       <
+//       SAME_TYPE(),
+//       boost::mpl::identity<const RowStorage&>,
+//       boost::mpl::identity<RowStorage> 
+//       >::type RowType;
+
+    const RowStorage& Row = 
       RowExtractor<typename LHS::Disambiguation>(i)(arg.lhs());
 
     // for the sake of readability we renounce the use of boost::lambda here and

@@ -15,7 +15,7 @@
 
 // You should have received a copy of the GNU Lesser General Public License
 // along with this library; see the file COPYING.  If not, send mail to the
-// developers of daixt (see e.g. http://daixt.sourceforge.net/)
+// developers of daixtrose (see e.g. http://daixtrose.sourceforge.net/)
 
 // As a special exception, you may use this file as part of a free software
 // library without restriction.  Specifically, if other files instantiate
@@ -36,7 +36,6 @@
 #include <functional>
 
 #include "daixtrose/Daixt.h"
-#include "loki/SmallObj.h"
 
 namespace TinyMat
 {
@@ -62,10 +61,6 @@ struct TinyQuadraticMatrixExpression
 
 template <class T, int n>
 class TinyQuadraticMatrix
-//   : 
-//     Loki::SmallObject<DEFAULT_THREADING, 
-//                       DEFAULT_CHUNK_SIZE, 
-//                       256>
 {
 public:
   typedef T value_type;
@@ -303,7 +298,8 @@ std::ostream& operator<< (std::ostream& os, const TinyQuadraticMatrix<T, n>& M)
     {
       for (size_t j = 1; j != (n + 1); ++j) 
         {
-          os << std::setw(12) << M(i, j) << "  ";
+//           os << std::setw(12) << M(i, j) << "  ";
+          os << M(i, j) << "  ";
         } 
       os << '\n';
     }
