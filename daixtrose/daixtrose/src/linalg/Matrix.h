@@ -106,7 +106,7 @@ template <
           class T, // numerical type
           class RowStorage, // must provide the same interface and semantics 
                             // as std::map<size_t, T>
-          class Allocator = std::allocator<T> 
+          class Allocator = std::allocator<RowStorage> 
           >
 class Matrix
 {
