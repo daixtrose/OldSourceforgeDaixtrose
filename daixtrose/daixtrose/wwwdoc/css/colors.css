@@ -1,0 +1,99 @@
+
+BODY {
+  background-color : #F7FFE8;
+  color:black;
+  font-family:sans-serif;
+  font-weight:200;
+}
+
+
+a:link {
+	color: #00AAAA;
+	text-decoration : none;
+}
+a:visited {
+/*	color: #555555; */
+        color: #55BB88;
+	text-decoration : none;
+}
+a:active {
+	color: #ffcc66;
+	text-decoration : none;
+}
+a:hover {
+	color: #55AACC;
+        font-weight:900; 
+}
+a.selected:link {
+	color: #ffcc66;
+}
+a.selected:visited {
+	color: #ffcc66;
+}
+a.selected:active {
+	color: #ffcc66;
+}
+a.selected:hover {
+	color: #ffcc66;
+	text-decoration : none;
+}
+
+#title
+{
+  color: #00AAAA;
+  font-family: sans-serif;
+  font-style : italic;
+  font-weight: 600;
+  font-size : 18pt;
+  text-align : center;
+}
+
+.menu, .menu TD, .menu TH {
+background-image : url('images/mini-logo.jpg');
+}
+
+#highlight {
+color: #ffcc66;
+link-color: red;
+font-family:sans-serif;
+font-weight:900;
+}
+
+#indented {
+position : relative;
+left : 40px;
+}
+
+.indent, .indent TD, .indent TH {
+position : relative;
+left : 40px;
+}
+
+
+
+#moveddown {
+position : relative;
+top : 40px;
+}
+
+
+.background, .background TD, .background TH
+{
+background-color:#F7FFE8;
+color:black;
+font-family:sans-serif;
+font-weight:200;
+}
+
+
+/* ID selectors for menu boxes*/
+#menu6{
+	color : #003399;
+	padding : 5px 3px 5px 3px;
+	position : absolute;
+	top : 6em;
+	left : 0px;
+	width : 9.1em;
+	text-align : center;
+	z-index : 1;
+}

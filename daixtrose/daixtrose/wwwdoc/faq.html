@@ -2,55 +2,58 @@
 <html>
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-   <meta name="GENERATOR" content="Mozilla/4.79 [en] (X11; U; HP-UX B.11.11 9000/785) [Netscape]">
+   <meta http-equiv="Content-Style-Type" content="text/css">
    <meta name="Author" content="Markus Werle">
-   <meta name="Description" content="a C++ header library">
+   <meta name="Description" content="Daixtrose, a C++ header library">
    <meta name="Keywords" content="C++ Expression Templates">
-   <title>Daixtrose = Differentiable EXpression Templates - a Reusable Open Source Engine: FAQ</title>
-
-<STYLE TYPE="text/css">
-<!--
-.background, .background TD, .background TH
-{
-background-color:#F7FFE8;
-color:black;
-font-family:sans-serif;
-font-weight:600;
-}
--->
-</STYLE>
-
+   <title>Daixtrose - FAQ</title>
+   <link href="css/colors.css" rel="stylesheet" type="text/css">
 </head>
-<body text="#000000" bgcolor="#F7FFE8" link="#00AAAA" vlink="#555555" alink="#555555">
+
+<body>
 
 <center>
-<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 >
+<TABLE border="0" 
+       cellpadding="0" 
+       cellspacing="0" 
+       summary="layout of this page">
 
-<TR> 
-<TD  WIDTH=200 HEIGHT=600 valign="top">
-<TABLE WIDTH=200>
-<TR><TD WIDTH=10> <TD> <IMG SRC="images/mini-logo.xpm">
-<TR><TD WIDTH=10> <TD> <b>&nbsp;&middot;&nbsp;</b><A HREF="index.html">home</A> 
-<TR><TD WIDTH=10> <TD> <b>&nbsp;&middot;&nbsp;</b><A HREF="faq.html">faq</A> </TD>
-<TR><TD WIDTH=10> <TD> <b>&nbsp;&middot;&nbsp;</b><A HREF="download.html">download</A> 
-<TR><TD WIDTH=10> <TD> <b>&nbsp;&middot;&nbsp;</b><A HREF="quicktour.html">quicktour</A> 
-<TR><TD WIDTH=10> <TD> <b>&nbsp;&middot;&nbsp;</b><A HREF="manual.html">manual</A> 
-<TR><TD WIDTH=10> <TD> <b>&nbsp;&middot;&nbsp;</b><A HREF="bugs.html">bugs</A> 
-<TR><TD WIDTH=10> <TD> <b>&nbsp;&middot;&nbsp;</b><A HREF="license.html">license</A> 
-<TR><TD WIDTH=10> <TD> <b>&nbsp;&middot;&nbsp;</b><A HREF="https://sourceforge.net/projects/daixtrose/">daixtrose@sf.net</A> 
-<TR><TD WIDTH=10> <TD> <b>&nbsp;&middot;&nbsp;</b><A HREF="https://sourceforge.net/cvs/?group_id=75079">cvs</A> 
-<TR><TD WIDTH=10> <TD> <b>&nbsp;&middot;&nbsp;</b><A HREF="contact.html">contact</A>
-</TABLE>
-</TD>
+<TR><TD rowspan="1" colspan="3" height="20"> <!-- distance from top --> 
+<TR><TD rowspan="2" colspan="2" width="200" height="150"> <IMG SRC="images/mini-logo.jpg"> 
+    <TD rowspan="5" width="30"> <!-- empty distance-column --> 
+    <TD rowspan="1" colspan="1" height="20"> <!-- distance between image and menu -->
+<TR><TH rowspan="1" width="600" height="20" id="title"> Daixtrose FAQ
+<TR> <TD colspan="2" width="200" height="30"> 
+<TR>
+  <TD width="50" height="400">  
+  <TD valign = "top"> 
+      <A HREF="index.html">home</A> <BR>
+      <A id="highlight" HREF="faq.html" >faq</A><BR>
+      <A HREF="download.html">download</A> <BR>
+      <A HREF="quicktour.html">quicktour</A> <BR>
+      <A HREF="manual.html">manual</A> <BR>
+      <A HREF="bugs.html">bugs</A> <BR>
+      <A HREF="license.html">license</A> <BR>
+      <A HREF="https://sourceforge.net/projects/daixtrose/">Daixtrose@sf.net</A> <BR>
+      <A HREF="https://sourceforge.net/cvs/?group_id=75079">cvs</A> <BR>
+      <A HREF="contact.html">contact</A><BR>
 
-<TD  WIDTH=800 HEIGHT=600 CLASS="background">
-DAIXTROSE FAQ
+
+    <TD rowspan="3" width="600"> 
+
+<!-- ======================================================================= --> 
+<!-- ----------------------------------------------------------------------- --> 
+<!-- ======================================================================= --> 
+
 <UL>
-<LI> What is daixtrose? 
+<LI> What is Daixtrose? 
 <UL>
 <LI>
-<p> <b>Daixtrose </b>is a an acronym for <b>D</b>ifferentiable <b>EX</b>pression <b>T</b>emplates - a <b>R</b>eusable <b>O</b>pen <b>S</b>ource <b>E</b>ngine
-
+<p> <b>Daixtrose </b>is a an acronym for<BR>
+<center>
+<b>D</b>ifferentiable <b>EX</b>pression <b>T</b>emplates 
+<br> a <b>R</b>eusable <b>O</b>pen <b>S</b>ource <b>E</b>ngine
+</center>
 <li>
 <p> <b>Daixtrose </b>is a C++ header library framework
 that serves as a generic disambiguated expression template (ET) core engine.
@@ -68,29 +71,24 @@ programming.
  <p> Yes. You really need a standard conformant compiler. Something like Intel's icpc-7.0 (EDG frontend) or gcc-3.4 is appropriate. 
 <p><br>
 
-<LI> Why don't You port <b>daixtrose</b> to Compiler foo?  <p> Well,
-<b>daixtrose</b> seeks portability through standard conformance, not by crappy
+<LI> Ist there a port of <b>Daixtrose</b> to compiler foo?  <p> Well,
+<b>Daixtrose</b> seeks portability through standard conformance, not by crappy
 constructs for compilers from companies that did not try hard enough to follow
 standards. Take a look at the source code and find that it is awkward enough
 without any #ifdef inside. If You find a piece of code that can be made a little
-bit more portable by just adding some delimiters or so, feel free to drop <a
-HREF="contact.html">me</a> a message about this.  <p><br>
+bit more portable by just adding some delimiters or so, feel free to contribute thsi information via <a href="mailto:daixtrose-port@lists.sourceforge.net">daixtrose-port@lists.sourceforge.net</a>.
 
-On the other hand, if You feel like there must be a port to a certain compiler
+<p>
+Also, if You feel like there must be a port to a certain compiler
 and You take the task, Your contribution to this library is welcome.
-Perhaps You could tell the rest of the world about Your plans by sending mail to 
-<a href="mailto:daixtrose-port@lists.sourceforge.net">daixtrose-port@lists.sourceforge.net</a>
+You are encouraged to use the above-mentioned mailing list.
 </UL>
-</TD> 
 
+<!-- ======================================================================= --> 
+<!-- ----------------------------------------------------------------------- --> 
+<!-- ======================================================================= --> 
 
 </TABLE>
-
-<p><br>
-<p><br>
-
-
 </center>
-
 
 </body>
