@@ -1,0 +1,14 @@
+Installation instructions:
+
+This library is completely header-based. No lib has to be compiled or installed.
+So just use the headers. The most important one is "daixtrose/Daixtrose.h" which
+includes practically all of the core engine. But of course You may #include the
+files in a more intelligent way.
+
+If You like to use the tiny matrix and vector, You have to include
+"tiny/TinyMatAndVec.h".
+
+Please stay patient until the docs are finished. This lib is still in prerelease
+stage.
+
+

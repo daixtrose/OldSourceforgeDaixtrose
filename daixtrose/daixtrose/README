@@ -1,0 +1,86 @@
+daixtrose = 
+         "Differentiable EXpression Templates - the Reusable Open Source Engine"
+--------------------------------------------------------------------------------
+
+Daixtrose is a C++ header library framework that serves as a generic disambiguated
+expression template (ET) core engine.
+
+See the file INSTALL for building and installation instructions.
+Please send all bug reports by electronic mail to:
+         "Markus Werle" <numerical.simulation@web.de>
+
+
+Further Description:
+
+Daixtrose provides a framework which makes the use of ET techniques both easy and
+maintainable by using a structure-functionality-separation model. A minimum of
+restrictions is placed upon the classes used together with the ET framework: it
+is possible to "plug" existing C++ types into the ET engine without the need of
+changing any line of code inside the declarations of these (exception: users who
+wish assignment from expressions to work, have to supply an appropriate
+asignment operator or some other publicly available setting mechanism)
+ 
+
+Features:
+
+* compile-time analytic differentiation of expressions
+
+* compile-time expression manipulation a la simplify (yet rudimentary but easily
+  extensible)
+
+* maintenance ease due to the underlying separation-model: orthogonal concepts 
+  stay separated from each other.
+
+* A new user-definable and user-extensible disambiguation mechanism allows for
+  fine-grained control of compile-time errors for accidentical use on 
+  incompatible types while supporting the possibility for user defined 
+  workarounds in the incompatibility case.
+ 
+
+Caveats:
+
+Since Daixtrose exploits C++ features which are only available recently it can only
+be compiled with approximately fully compliant compilers like Intel's C++ 7.0 or
+gcc-3.3.  "Alpha" compilers like MSVC* are and will not be supported.
+ 
+
+Additional Features:
+
+Daixtrose comes with a few small explanatory examples like e.g. a TinyMatrix and a
+simple std::vector/std::map based sparse-matrix implementation which show the
+most important features. Documentation is under permanent construction, but yet
+not available due to some open issues which may affect the kernel of the
+library.
+ 
+
+Lincense Issues: 
+
+Daixtrose is free software.  See the file COPYING for copying conditions.
+Daixtrose is intended to be used by everyone. Though Daixtrose is published
+under the LGPL it is planned to change the license to something less restrictive
+_if_ the drawbacks of the LGPL, as recently discussed at www.boost.org, really
+inhibit the broad use of this library for commercial projects. The decision
+about the final license model is postponed until boost developers took the
+decision about their own license or if the author obtains more clarity about
+this issue (You may help in this really nasty and political decision)
+
+In the meantime the license has an additional passage added to every source code
+file, which allows commercial programs to use the template code without getting
+into the "illegal zone":
+
+   "As a special exception, you may use this file as part of a free software
+   library without restriction.  Specifically, if other files instantiate
+   templates or use macros or inline functions from this file, or you compile
+   this file and link it with other files to produce an executable, this
+   file does not by itself cause the resulting executable to be covered by
+   the GNU Lesser General Public License.  This exception does not however
+   invalidate any other reasons why the executable file might be covered by
+   the GNU Lesser General Public License."
+
+
+ 
+
+Markus Werle
+
+
+ 
