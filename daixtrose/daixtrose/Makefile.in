@@ -155,7 +155,9 @@ check_PROGRAMS = \
 	quicktour_mini_5 \
 	quicktour_diff \
 	quicktour_tiny \
-	quicktour_linalg
+	quicktour_linalg \
+	quicktour_pm_lambda \
+	quicktour_pm_lambda_boost
 
 
 test_simple_get_value_1_SOURCES = $(srcdir)/src/demos/SimpleGetValue.1/main.C
@@ -183,6 +185,10 @@ quicktour_diff_SOURCES = $(srcdir)/src/demos/quicktour/Differentiation.C
 
 quicktour_tiny_SOURCES = $(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C 
 quicktour_linalg_SOURCES = $(srcdir)/src/demos/quicktour/Linalg.C 
+quicktour_pm_lambda_SOURCES = $(srcdir)/src/demos/quicktour/PoorMansLambda.C 
+
+quicktour_pm_lambda_boost_SOURCES = $(srcdir)/src/demos/quicktour/PoorMansLambda.C 
+quicktour_pm_lambda_boost_CPPFLAGS = $(AM_CPPFLAGS) "-DUSE_BOOST_LAMBDA"
 
 
 ################################################################################
@@ -277,7 +283,8 @@ check_PROGRAMS = test_simple_get_value_1$(EXEEXT) \
 	quicktour_mini_2$(EXEEXT) quicktour_mini_3$(EXEEXT) \
 	quicktour_mini_4$(EXEEXT) quicktour_mini_5$(EXEEXT) \
 	quicktour_diff$(EXEEXT) quicktour_tiny$(EXEEXT) \
-	quicktour_linalg$(EXEEXT)
+	quicktour_linalg$(EXEEXT) quicktour_pm_lambda$(EXEEXT) \
+	quicktour_pm_lambda_boost$(EXEEXT)
 am_quicktour_diff_OBJECTS = Differentiation.$(OBJEXT)
 quicktour_diff_OBJECTS = $(am_quicktour_diff_OBJECTS)
 quicktour_diff_LDADD = $(LDADD)
@@ -313,6 +320,18 @@ quicktour_mini_5_OBJECTS = $(am_quicktour_mini_5_OBJECTS)
 quicktour_mini_5_LDADD = $(LDADD)
 quicktour_mini_5_DEPENDENCIES =
 quicktour_mini_5_LDFLAGS =
+am_quicktour_pm_lambda_OBJECTS = PoorMansLambda.$(OBJEXT)
+quicktour_pm_lambda_OBJECTS = $(am_quicktour_pm_lambda_OBJECTS)
+quicktour_pm_lambda_LDADD = $(LDADD)
+quicktour_pm_lambda_DEPENDENCIES =
+quicktour_pm_lambda_LDFLAGS =
+am_quicktour_pm_lambda_boost_OBJECTS = \
+	quicktour_pm_lambda_boost-PoorMansLambda.$(OBJEXT)
+quicktour_pm_lambda_boost_OBJECTS = \
+	$(am_quicktour_pm_lambda_boost_OBJECTS)
+quicktour_pm_lambda_boost_LDADD = $(LDADD)
+quicktour_pm_lambda_boost_DEPENDENCIES =
+quicktour_pm_lambda_boost_LDFLAGS =
 am_quicktour_tiny_OBJECTS = TinyMatrixAndVector.$(OBJEXT)
 quicktour_tiny_OBJECTS = $(am_quicktour_tiny_OBJECTS)
 quicktour_tiny_LDADD = $(LDADD)
@@ -384,6 +403,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/Linalg.Po ./$(DEPDIR)/Mini.2.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/Mini.3.Po ./$(DEPDIR)/Mini.4.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/Mini.5.Po ./$(DEPDIR)/Mini.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/PoorMansLambda.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestBlockedMatAndVec.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestInverse.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TestLinalg.Po \
@@ -394,6 +414,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/TestTinyVec.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/TinyMatrixAndVector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/main.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/test_simple_get_value_1-main.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/test_simple_get_value_2-main.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
@@ -404,7 +425,8 @@ CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 DIST_SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) \
 	$(quicktour_mini_SOURCES) $(quicktour_mini_2_SOURCES) \
 	$(quicktour_mini_3_SOURCES) $(quicktour_mini_4_SOURCES) \
-	$(quicktour_mini_5_SOURCES) $(quicktour_tiny_SOURCES) \
+	$(quicktour_mini_5_SOURCES) $(quicktour_pm_lambda_SOURCES) \
+	$(quicktour_pm_lambda_boost_SOURCES) $(quicktour_tiny_SOURCES) \
 	$(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) \
 	$(test_inverse_SOURCES) $(test_linalg_SOURCES) \
 	$(test_matrix_print_SOURCES) $(test_rowsum_SOURCES) \
@@ -414,7 +436,7 @@ DIST_SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) \
 DIST_COMMON = README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
 	Makefile.in NEWS aclocal.m4 config.h.in configure configure.in \
 	depcomp install-sh missing mkinstalldirs
-SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) $(quicktour_mini_SOURCES) $(quicktour_mini_2_SOURCES) $(quicktour_mini_3_SOURCES) $(quicktour_mini_4_SOURCES) $(quicktour_mini_5_SOURCES) $(quicktour_tiny_SOURCES) $(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) $(test_inverse_SOURCES) $(test_linalg_SOURCES) $(test_matrix_print_SOURCES) $(test_rowsum_SOURCES) $(test_simple_get_value_1_SOURCES) $(test_simple_get_value_2_SOURCES) $(test_simplify_SOURCES) $(test_tiny_mat_SOURCES) $(test_tiny_vec_SOURCES)
+SOURCES = $(quicktour_diff_SOURCES) $(quicktour_linalg_SOURCES) $(quicktour_mini_SOURCES) $(quicktour_mini_2_SOURCES) $(quicktour_mini_3_SOURCES) $(quicktour_mini_4_SOURCES) $(quicktour_mini_5_SOURCES) $(quicktour_pm_lambda_SOURCES) $(quicktour_pm_lambda_boost_SOURCES) $(quicktour_tiny_SOURCES) $(test_block_mat_SOURCES) $(test_change_disambiguation_SOURCES) $(test_inverse_SOURCES) $(test_linalg_SOURCES) $(test_matrix_print_SOURCES) $(test_rowsum_SOURCES) $(test_simple_get_value_1_SOURCES) $(test_simple_get_value_2_SOURCES) $(test_simplify_SOURCES) $(test_tiny_mat_SOURCES) $(test_tiny_vec_SOURCES)
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -486,6 +508,15 @@ Mini.5.$(OBJEXT): $(srcdir)/src/demos/quicktour/Mini.5.C
 quicktour_mini_5$(EXEEXT): $(quicktour_mini_5_OBJECTS) $(quicktour_mini_5_DEPENDENCIES) 
 	@rm -f quicktour_mini_5$(EXEEXT)
 	$(CXXLINK) $(quicktour_mini_5_LDFLAGS) $(quicktour_mini_5_OBJECTS) $(quicktour_mini_5_LDADD) $(LIBS)
+PoorMansLambda.$(OBJEXT): $(srcdir)/src/demos/quicktour/PoorMansLambda.C
+quicktour_pm_lambda$(EXEEXT): $(quicktour_pm_lambda_OBJECTS) $(quicktour_pm_lambda_DEPENDENCIES) 
+	@rm -f quicktour_pm_lambda$(EXEEXT)
+	$(CXXLINK) $(quicktour_pm_lambda_LDFLAGS) $(quicktour_pm_lambda_OBJECTS) $(quicktour_pm_lambda_LDADD) $(LIBS)
+quicktour_pm_lambda_boost-PoorMansLambda.$(OBJEXT): \
+	$(srcdir)/src/demos/quicktour/PoorMansLambda.C
+quicktour_pm_lambda_boost$(EXEEXT): $(quicktour_pm_lambda_boost_OBJECTS) $(quicktour_pm_lambda_boost_DEPENDENCIES) 
+	@rm -f quicktour_pm_lambda_boost$(EXEEXT)
+	$(CXXLINK) $(quicktour_pm_lambda_boost_LDFLAGS) $(quicktour_pm_lambda_boost_OBJECTS) $(quicktour_pm_lambda_boost_LDADD) $(LIBS)
 TinyMatrixAndVector.$(OBJEXT): \
 	$(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C
 quicktour_tiny$(EXEEXT): $(quicktour_tiny_OBJECTS) $(quicktour_tiny_DEPENDENCIES) 
@@ -553,6 +584,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Mini.4.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Mini.5.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Mini.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PoorMansLambda.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestBlockedMatAndVec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestInverse.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestLinalg.Po@am__quote@
@@ -563,6 +595,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestTinyVec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TinyMatrixAndVector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_simple_get_value_1-main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_simple_get_value_2-main.Po@am__quote@
 
@@ -744,6 +777,50 @@ Mini.5.obj: $(srcdir)/src/demos/quicktour/Mini.5.C
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/Mini.5.Po' tmpdepfile='$(DEPDIR)/Mini.5.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Mini.5.obj `if test -f '$(srcdir)/src/demos/quicktour/Mini.5.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/Mini.5.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/Mini.5.C'`
+
+PoorMansLambda.o: $(srcdir)/src/demos/quicktour/PoorMansLambda.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PoorMansLambda.o -MD -MP -MF "$(DEPDIR)/PoorMansLambda.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o PoorMansLambda.o `test -f '$(srcdir)/src/demos/quicktour/PoorMansLambda.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/PoorMansLambda.C; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/PoorMansLambda.Tpo" "$(DEPDIR)/PoorMansLambda.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/PoorMansLambda.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/PoorMansLambda.C' object='PoorMansLambda.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/PoorMansLambda.Po' tmpdepfile='$(DEPDIR)/PoorMansLambda.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PoorMansLambda.o `test -f '$(srcdir)/src/demos/quicktour/PoorMansLambda.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/PoorMansLambda.C
+
+PoorMansLambda.obj: $(srcdir)/src/demos/quicktour/PoorMansLambda.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PoorMansLambda.obj -MD -MP -MF "$(DEPDIR)/PoorMansLambda.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o PoorMansLambda.obj `if test -f '$(srcdir)/src/demos/quicktour/PoorMansLambda.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/PoorMansLambda.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/PoorMansLambda.C'`; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/PoorMansLambda.Tpo" "$(DEPDIR)/PoorMansLambda.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/PoorMansLambda.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/PoorMansLambda.C' object='PoorMansLambda.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/PoorMansLambda.Po' tmpdepfile='$(DEPDIR)/PoorMansLambda.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PoorMansLambda.obj `if test -f '$(srcdir)/src/demos/quicktour/PoorMansLambda.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/PoorMansLambda.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/PoorMansLambda.C'`
+
+quicktour_pm_lambda_boost-PoorMansLambda.o: $(srcdir)/src/demos/quicktour/PoorMansLambda.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(quicktour_pm_lambda_boost_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT quicktour_pm_lambda_boost-PoorMansLambda.o -MD -MP -MF "$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o quicktour_pm_lambda_boost-PoorMansLambda.o `test -f '$(srcdir)/src/demos/quicktour/PoorMansLambda.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/PoorMansLambda.C; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Tpo" "$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/PoorMansLambda.C' object='quicktour_pm_lambda_boost-PoorMansLambda.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Po' tmpdepfile='$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(quicktour_pm_lambda_boost_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o quicktour_pm_lambda_boost-PoorMansLambda.o `test -f '$(srcdir)/src/demos/quicktour/PoorMansLambda.C' || echo '$(srcdir)/'`$(srcdir)/src/demos/quicktour/PoorMansLambda.C
+
+quicktour_pm_lambda_boost-PoorMansLambda.obj: $(srcdir)/src/demos/quicktour/PoorMansLambda.C
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(quicktour_pm_lambda_boost_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT quicktour_pm_lambda_boost-PoorMansLambda.obj -MD -MP -MF "$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o quicktour_pm_lambda_boost-PoorMansLambda.obj `if test -f '$(srcdir)/src/demos/quicktour/PoorMansLambda.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/PoorMansLambda.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/PoorMansLambda.C'`; \
+@am__fastdepCXX_TRUE@	then mv "$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Tpo" "$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/src/demos/quicktour/PoorMansLambda.C' object='quicktour_pm_lambda_boost-PoorMansLambda.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.Po' tmpdepfile='$(DEPDIR)/quicktour_pm_lambda_boost-PoorMansLambda.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(quicktour_pm_lambda_boost_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o quicktour_pm_lambda_boost-PoorMansLambda.obj `if test -f '$(srcdir)/src/demos/quicktour/PoorMansLambda.C'; then $(CYGPATH_W) '$(srcdir)/src/demos/quicktour/PoorMansLambda.C'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/src/demos/quicktour/PoorMansLambda.C'`
 
 TinyMatrixAndVector.o: $(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TinyMatrixAndVector.o -MD -MP -MF "$(DEPDIR)/TinyMatrixAndVector.Tpo" \

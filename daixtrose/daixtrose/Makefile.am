@@ -51,7 +51,9 @@ check_PROGRAMS = \
 	quicktour_mini_5 \
 	quicktour_diff \
 	quicktour_tiny \
-	quicktour_linalg
+	quicktour_linalg \
+	quicktour_pm_lambda \
+	quicktour_pm_lambda_boost
 
 test_simple_get_value_1_SOURCES    = $(srcdir)/src/demos/SimpleGetValue.1/main.C
 test_simple_get_value_1_CXXFLAGS = $(AM_CXXFLAGS) 
@@ -78,6 +80,10 @@ quicktour_diff_SOURCES             =  $(srcdir)/src/demos/quicktour/Differentiat
 
 quicktour_tiny_SOURCES             =  $(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C 
 quicktour_linalg_SOURCES           =  $(srcdir)/src/demos/quicktour/Linalg.C 
+quicktour_pm_lambda_SOURCES        =  $(srcdir)/src/demos/quicktour/PoorMansLambda.C 
+
+quicktour_pm_lambda_boost_SOURCES  =  $(srcdir)/src/demos/quicktour/PoorMansLambda.C 
+quicktour_pm_lambda_boost_CPPFLAGS =  $(AM_CPPFLAGS) "-DUSE_BOOST_LAMBDA"
 
 ################################################################################
 #finally we want these headers to be in the distribution
