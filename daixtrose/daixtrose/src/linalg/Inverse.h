@@ -47,13 +47,13 @@ OperatorDelimImpl<RowExtractor<MatrixExpression<T> >,
                   Daixt::UnOp<Daixt::UnOp<ARG, LumpedMatrix>, InverseOfMatrix> >
 {
 private:
-  template <class TT, int n>
-  static TinyMat::TinyQuadraticMatrix<TT, n>
-  Inverse(const TinyMat::TinyQuadraticMatrix<TT, n>& M)
+  template <class TT, std::size_t N>
+  static TinyMat::TinyQuadraticMatrix<TT, N>
+  Inverse(const TinyMat::TinyQuadraticMatrix<TT, N>& M)
   {
     // FIXIT: Assumes off-diagonal entries are 0
-    TinyMat::TinyQuadraticMatrix<TT, n> Result = 0;
-    for (size_t i = 1; i != n + 1; ++i)
+    TinyMat::TinyQuadraticMatrix<TT, N> Result = 0;
+    for (size_t i = 1; i != N + 1; ++i)
       {
         Result(i, i) = 1.0 / M(i, i);
       }

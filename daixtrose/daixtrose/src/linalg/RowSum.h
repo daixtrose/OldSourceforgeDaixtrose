@@ -65,7 +65,7 @@ struct UnOpResultDisambiguator<
 
 
 // Block matrices need a special handling (row sums over the block matrices)
-template <class T, int N, class RowStorage, class Allocator> 
+template <class T, std::size_t N, class RowStorage, class Allocator> 
 struct UnOpResultDisambiguator<
   Linalg::MatrixExpression<
     Linalg::MatrixDisambiguator<TinyMat::TinyQuadraticMatrix<T, N>, 
@@ -183,7 +183,7 @@ OperatorDelimImpl
 };
 
 
-template<class T, int N, class ARG, class Allocator>
+template<class T, std::size_t N, class ARG, class Allocator>
 struct
 OperatorDelimImpl
 <

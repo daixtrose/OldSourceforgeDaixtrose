@@ -52,7 +52,7 @@ namespace Linalg
 // i.e. human-readable blockwise output with row and column separators
 
 
-template <class Double, int N, class RowStorage>
+template <class Double, std::size_t N, class RowStorage>
 std::ostream& operator<<
   (std::ostream& os, 
    const Linalg::Matrix<TinyMat::TinyQuadraticMatrix<Double, N>, RowStorage>& M)
@@ -179,7 +179,7 @@ std::ostream& operator<<
 ////////////////////////////////////////////////////////////////////////////////
 // Same for Matrix of BlockVectors
 
-template <class Double, int N, class RowStorage>
+template <class Double, std::size_t N, class RowStorage>
 std::ostream& operator<<
   (std::ostream& os, 
    const Linalg::Matrix<TinyVec::TinyVector<Double, N>, RowStorage>& M)
