@@ -52,7 +52,7 @@ public:
   
   template <class T> Variable(const Daixt::Expr<T>& E)
     :
-    Value_(LazyBind<T, ValueGetter>::type()(E)) 
+    Value_(typename LazyBind<T, ValueGetter>::type()(E)) 
   {} 
 
 
