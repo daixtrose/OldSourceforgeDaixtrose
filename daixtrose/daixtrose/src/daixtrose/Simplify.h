@@ -140,6 +140,26 @@ public:
 private:
   template <int i> struct Overloader {};
   
+#if defined(__HP_aCC)
+  typedef boost::mpl::identity<pair<Simpler1, Overloader<1> > > Option_1;
+  typedef boost::mpl::identity<pair<Simpler2, Overloader<2> > > Option_2;
+  typedef boost::mpl::identity<pair<SimplerN, Overloader<3> > > Option_3;
+
+  typedef typename 
+  boost::mpl::apply_if_c<
+    (SAME_TYPE(Simpler1, Simpler2) 
+     || 
+     SAME_TYPE(Simpler1, SimplerN)),
+    
+    Option_1,
+    
+    boost::mpl::apply_if_c<SAME_TYPE(Simpler2, SimplerN),
+                           Option_2,
+                           Option_3
+                           >
+  >::type Decision;
+
+#else
   typedef typename 
   boost::mpl::apply_if_c<
              SAME_TYPE(T, Simpler1),
@@ -161,7 +181,8 @@ private:
                                    boost::mpl::identity<pair<SimplerN, Overloader<3> > >
                                    >
                         >
-             >::type Decision;
+             > ::type Decision;
+#endif
 
   // paranoia: of course Disambiguation must not change, so we check
   COMPILE_TIME_ASSERT
@@ -263,11 +284,21 @@ private:
 
   template <int i> struct Overloader {};
 
+#if defined(__HP_aCC)
+  typedef boost::mpl::identity<pair<Null, Overloader<0> > > Option_0;
+  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<1> > > Option_1;
+
+  typedef typename boost::mpl::apply_if_c<SAME_TYPE(SimplifiedARG, ARGNull), 
+                                          Option_0, Option_1
+                                          >::type Decision;
+
+#else
   typedef typename boost::mpl::apply_if_c<
                             SAME_TYPE(SimplifiedARG, ARGNull), 
                             boost::mpl::identity<pair<Null, Overloader<0> > >,
                             boost::mpl::identity<pair<DefaultResultT, Overloader<1> > >
                             >::type Decision;
+#endif
 
   typedef typename Decision::second_type Overload;
 
@@ -357,6 +388,29 @@ private:
 
   template <int i> struct Overloader {};
 
+
+#if defined(__HP_aCC)
+  typedef boost::mpl::identity<pair<Null, Overloader<0> > > Option_0;
+  typedef boost::mpl::identity<pair<One, Overloader<1> > > Option_1;
+  typedef boost::mpl::identity<pair<SimplifiedARG, Overloader<2> > > Option_2;
+  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<3> > > Option_3;
+
+  typedef typename 
+  boost::mpl::apply_if_c<
+           ((m == 0) || SAME_TYPE(ARG, ARGOne)),
+           Option_1,
+           boost::mpl::apply_if_c<
+                      SAME_TYPE(ARG, ARGNull),
+                      Option_0,
+                      boost::mpl::apply_if_c<
+                                 (m == n),
+                                 Option_2,
+                                 Option_3
+                                 >             
+                    >          
+           >::type Decision;
+
+#else
   typedef typename 
   boost::mpl::apply_if_c<
            ((m == 0) || SAME_TYPE(ARG, ARGOne)),
@@ -371,6 +425,7 @@ private:
                                  >             
                     >          
            >::type Decision;
+#endif
 
   typedef typename Decision::second_type Overload;
   
@@ -508,7 +563,38 @@ private:
   static const bool lhs_is_one = SAME_TYPE(LHSOne, Simplified_LHS);
   static const bool rhs_is_one = SAME_TYPE(RHSOne, Simplified_RHS);
 
-  int i; 
+#if defined(__HP_aCC)
+
+  typedef boost::mpl::identity<pair<Null, Overloader<0> > >           Option_0;  
+  typedef boost::mpl::identity<pair<One, Overloader<1> > >            Option_1;
+  typedef boost::mpl::identity<pair<Simplified_RHS, Overloader<2> > > Option_2;
+  typedef boost::mpl::identity<pair<Simplified_LHS, Overloader<3> > > Option_3;
+  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<4> > > Option_4; 
+
+  typedef typename 
+  boost::mpl::apply_if_c<
+             result_is_null,
+             
+             Option_0, 
+             
+             boost::mpl::apply_if_c<
+                        lhs_is_one,
+               
+                        boost::mpl::apply_if_c<
+                                   rhs_is_one,
+                                   Option_1,
+                                   Option_2
+                                   >,
+               
+                        boost::mpl::apply_if_c<
+                                   rhs_is_one,
+                                   Option_3,
+                                   Option_4
+                                   >
+                        >
+             >::type Decision;
+
+#else
 
   typedef typename 
   boost::mpl::apply_if_c<
@@ -536,6 +622,8 @@ private:
                                    >
                         >
              >::type Decision;
+
+#endif
 
   typedef typename Decision::second_type Overload;
 
@@ -765,6 +853,36 @@ private:
 
   template <int i> struct Overloader {};
 
+#if defined(__HP_aCC)
+  typedef boost::mpl::identity<pair<Null, Overloader<0> > >           Option_0;
+  typedef boost::mpl::identity<pair<One, Overloader<1> > >            Option_1;
+  typedef boost::mpl::identity<pair<Simplified_LHS, Overloader<2> > > Option_2;
+  typedef boost::mpl::identity<pair<Simplified_RHS, Overloader<3> > > Option_3;
+  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<4> > > Option_4;
+
+  typedef typename
+  boost::mpl::apply_if_c<
+             ResultIsOne, // special case handled separately
+             
+             Option_1,
+             
+             boost::mpl::apply_if_c<
+                        LHS_IsNull, 
+                        boost::mpl::apply_if_c<
+                                   RHS_IsNull, 
+                                   Option_0, 
+                                   Option_3
+                                   >,
+                        boost::mpl::apply_if_c<
+                                   RHS_IsNull, 
+                                   Option_2, 
+                                   Option_4 
+                                   >
+                        >
+             >::type Decision;
+
+#else
+
   typedef typename
   boost::mpl::apply_if_c<
              ResultIsOne, // special case handled separately
@@ -785,6 +903,8 @@ private:
                                    >
                         >
              >::type Decision;
+
+#endif
 
   typedef typename Decision::second_type Overload;
 
@@ -830,6 +950,28 @@ private:
   {
     return DefaultResultT(SimplEvoker<LHS>::Apply(BO.lhs()),
                           SimplEvoker<RHS>::Apply(BO.rhs()));
+  }
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+// x + (-x) = 0
+template <class ARG>
+struct SimplImpl<Daixt::BinOp
+<ARG, 
+ Daixt::UnOp<ARG, Daixt::DefaultOps::UnaryMinus>, 
+ Daixt::DefaultOps::BinaryPlus> >
+{
+  typedef Daixt::BinOp<ARG, 
+                       Daixt::UnOp<ARG, Daixt::DefaultOps::UnaryMinus>, 
+                       Daixt::DefaultOps::BinaryPlus> ArgT;
+  
+  typedef IsNull<typename Daixt::disambiguation<ArgT>::type> Null;
+  typedef Null type;
+
+  static type Apply(const ArgT& BO)  
+  {                                             
+    return Null();
   }
 };
 
