@@ -46,10 +46,9 @@ public:
   Variable() : Value_(0.0) {}
   Variable(double Value) : Value_(Value) {}
 
-  typedef LazyBind<Variable, ValueGetter>::type TheValueGetter;
-  template <class T> Variable(const Daixt::Expr<T>& E)
+  template <class T> Variable(Daixt::Expr<T> const & E)
     :
-    Value_(TheValueGetter()(E)) 
+    Value_(LazyBind<T, ValueGetter>::type()(E)) 
   {} 
   
   inline double GetValue() const { return Value_; }
