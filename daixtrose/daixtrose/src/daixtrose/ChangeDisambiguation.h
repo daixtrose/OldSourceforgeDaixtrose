@@ -68,6 +68,8 @@ class Expr<DisambiguationChanger<T, NewDisambiguation> >
   T t_;
 
 public:
+  // FIXIT: this looks like a design error, rethink the way
+  // polymorphic behaviour is attached.
   typedef typename disambiguation<T>::type Disambiguation;
 
   Expr(DisambiguationChanger<T, NewDisambiguation> DCT) 

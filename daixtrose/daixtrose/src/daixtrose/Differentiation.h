@@ -84,8 +84,10 @@ namespace mpl = boost::mpl;
 template<class WRT, class ARG>
 struct PreDifferentiator
 {
+private:
   template <int i, int Dummy = 0> struct Overloader;
 
+public:
   typedef typename 
   mpl::if_c
   <
