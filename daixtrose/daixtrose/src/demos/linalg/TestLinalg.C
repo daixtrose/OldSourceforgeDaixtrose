@@ -243,7 +243,7 @@ void TestOperatorPlusOrMinusEqual()
 
 void TestMatrixSwap()
 {
-  std::cerr << "\n --> " << __FUNCTION__ << '\n';
+  std::cerr << "\n --> " << __LINE__ << '\n';
 
   using namespace Daixt::DefaultOps;
   Matrix M1(3, 3), M2(3, 3);
@@ -263,7 +263,7 @@ void TestMatrixSwap()
 
 void TestRowAndColAccess()
 {
-  std::cerr << "\n --> " << __FUNCTION__ << '\n';
+  std::cerr << "\n --> " << __LINE__ << '\n';
 
   using namespace Daixt::DefaultOps;
   Matrix M1(3, 3), M2(3, 3);
@@ -289,7 +289,7 @@ void TestRowAndColAccess()
 
 void TestTranspose()
 {
-  std::cerr << "\n --> " << __FUNCTION__ << '\n';
+  std::cerr << "\n --> " << __LINE__ << '\n';
 
   using namespace Daixt::DefaultOps;
   Matrix M1(3, 3), M2(3, 3);
@@ -318,7 +318,7 @@ void TestTranspose()
 
 void TestLump()
 {
-  std::cerr << "\n --> " << __FUNCTION__ << '\n';
+  std::cerr << "\n --> " << __LINE__ << '\n';
 
   using namespace Daixt::DefaultOps;
   Matrix M1(3, 3);
