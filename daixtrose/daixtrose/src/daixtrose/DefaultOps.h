@@ -197,8 +197,8 @@ public:
   static inline                                                       
   ReturnType                                                          
   Apply(const ARG& arg, const Hint<ReturnType>& Dummy)                
-  {                                                                   
-    return pow(pow(arg, m), -n);                       
+  { 
+    return pow(arg, static_cast<double>(m)/static_cast<double>(n));
   }                                                 
 };   
 
