@@ -301,14 +301,15 @@ Matrix<T, RowStorage, Allocator>&
 Matrix<T, RowStorage, Allocator>::
 operator=(const T& t)
 {
-  for (size_t i = 0; i < nrows_; ++i) 
+  typename DataStorageT::iterator end = data_.end();
+  for (typename DataStorageT::iterator iter = data_.begin(); iter != end; ++iter)
     {
-      using namespace boost::lambda;
-      using boost::lambda::_1;
-
-      std::for_each(data_[i].begin(), data_[i].end(), 
-                    (&boost::lambda::_1 ->* &RowStorage::value_type::second) = t);
-
+      typedef typename RowStorage::iterator iterator;
+      iterator rsend = iter->end();
+      for (iterator rsiter = iter->begin(); rsiter != rsend; ++rsiter)
+        {
+          rsiter->second = t; 
+        }
     }
   
   return *this;
@@ -343,33 +344,49 @@ operator=(const OtherT& Other)
     }
   else // Not so many temporaries needed
     {
-      nrows_ = NumberOfRows(Other);
-      ncols_ = NumberOfCols(Other);
+      size_t nrows = NumberOfRows(Other);
+      size_t ncols = NumberOfCols(Other);
 
-      // hope that this procedure minimizes the number of reallocations ...
-
-      std::for_each(ColumnInfo_.begin(), ColumnInfo_.end(),
-                    std::mem_fun_ref(&IndexStorage::clear));
-      
-      ColumnInfo_.resize(nrows_); 
-      
-
-      std::for_each(data_.begin(), data_.end(),
-                    std::mem_fun_ref(&RowStorage::clear));
-
-      data_.resize(nrows_);
-
-      RowStorage Empty;
+      if ((nrows_ != nrows) || (ncols_ != ncols))
+        {
+          throw std::runtime_error("sorry, matrix entensions currently must match");
+        }
 
       for (size_t i = 1; i != nrows_ + 1; ++i)
         {
           RowStorage& ActualRow = data_[i-1];
 
           RowStorage NewRow = RowExtractor<Disambiguation>(i)(Other);
-          ActualRow.swap(NewRow);
 
-          UpdateColumnInfo(i, Empty, ActualRow);
+          UpdateColumnInfo(i, ActualRow, NewRow);
+          ActualRow.swap(NewRow);
         }
+
+
+      // hope that this procedure minimizes the number of reallocations ...
+
+//       std::for_each(ColumnInfo_.begin(), ColumnInfo_.end(),
+//                     std::mem_fun_ref(&IndexStorage::clear));
+      
+//       ColumnInfo_.resize(nrows_); 
+      
+
+//       std::for_each(data_.begin(), data_.end(),
+//                     std::mem_fun_ref(&RowStorage::clear));
+
+//       data_.resize(nrows_);
+
+//       RowStorage Empty;
+
+//       for (size_t i = 1; i != nrows_ + 1; ++i)
+//         {
+//           RowStorage& ActualRow = data_[i-1];
+
+//           RowStorage NewRow = RowExtractor<Disambiguation>(i)(Other);
+//           ActualRow.swap(NewRow);
+
+//           UpdateColumnInfo(i, Empty, ActualRow);
+//         }
     }
 
   return *this;
@@ -412,28 +429,27 @@ operator+=(const OtherT& Other)
           RowStorage Row = RowExtractor<Disambiguation>(i)(Other);
           RowStorage& MyRow = data_[i-1];
 
-          // merge Row with MyRow, then swap
+          // merge Row with MyRow
           typedef typename RowStorage::const_iterator const_iterator;
           typedef typename RowStorage::iterator iterator;
 
-          const_iterator end = MyRow.end();
-          for (const_iterator iter = MyRow.begin(); iter!= end; ++iter) 
+          const_iterator end = Row.end();
+          for (const_iterator iter = Row.begin(); iter!= end; ++iter) 
             {
-              iterator lb = Row.lower_bound(iter->first);
+              const std::size_t j = iter->first;
+
+              iterator lb = MyRow.lower_bound(j);
               // if the entry already exists  ...
-              if(lb != Row.end() && !(Row.key_comp()(iter->first, lb->first))) 
+              if(lb != MyRow.end() && !(MyRow.key_comp()(j, lb->first))) 
                 {
                   lb->second += iter->second;
                 } 
               else 
                 {
-                  Row.insert(lb, *iter);
+                  ColumnInfo_[j-1].push_back(i);
+                  MyRow.insert(lb, *iter);
                 }
             }
-          
-          // order is significant in next 2 lines!
-          UpdateColumnInfo(i, data_[i-1], Row);
-          MyRow.swap(Row);
         }
     }
 
