@@ -77,6 +77,14 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   inline TinyQuadraticMatrix();             // uninitialized data 
   inline TinyQuadraticMatrix(const T& t);   // initialized with some value t
+
+  // assignment with type conversion
+  template <typename T2>
+  TinyQuadraticMatrix<T, n>& operator=(const TinyQuadraticMatrix<T2, n>& rhs) {
+    std::copy(rhs.data(), rhs.data() + n, data());
+    return *this;
+  }
+
   
   // construct from Daixt::Expr<...>
   template<class A> inline TinyQuadraticMatrix(const ::Daixt::Expr<A>& E);
@@ -124,7 +132,8 @@ private:
 
 template <class T, std::size_t n> 
 TinyQuadraticMatrix<T, n>::TinyQuadraticMatrix() 
-{}
+{
+}
 
 template <class T, std::size_t n>
 TinyQuadraticMatrix<T, n>::TinyQuadraticMatrix(const T& t) 
