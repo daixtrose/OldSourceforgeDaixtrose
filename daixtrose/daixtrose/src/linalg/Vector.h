@@ -333,7 +333,6 @@ Vector<T, Allocator>&
 Vector<T, Allocator>::
 operator-=(const OtherT& Other)
 {
-  // delegate to +=
   using Daixt::DefaultOps::operator-;
 
   using namespace Daixt::DefaultOps;

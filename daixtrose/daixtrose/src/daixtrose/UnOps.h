@@ -33,7 +33,7 @@
 #include "daixtrose/Disambiguation.h"
 #include "daixtrose/CompileTimeChecks.h"
 
-#include "boost/mpl/apply_if.hpp"
+#include "boost/mpl/eval_if.hpp"
 #include "boost/mpl/identity.hpp"
 
 

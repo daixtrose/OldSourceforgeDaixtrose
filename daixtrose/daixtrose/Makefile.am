@@ -33,11 +33,12 @@ AM_CPPFLAGS += -DBOOST_NO_CONFIG
 
 
 check_PROGRAMS = \
+	test_solver_1 \
+	test_solver_2 \
 	test_performance_matrix_times_vector \
 	test_simple_get_value_1 \
 	test_simple_get_value_2 \
 	test_change_disambiguation \
-	test_linalg \
 	test_rowsum \
 	test_tiny_mat \
 	test_tiny_vec \
@@ -55,8 +56,11 @@ check_PROGRAMS = \
 	quicktour_tiny \
 	quicktour_linalg \
 	quicktour_pm_lambda \
-	quicktour_pm_lambda_boost
+	quicktour_pm_lambda_boost \
+	test_linalg
 
+test_solver_1_SOURCES = $(srcdir)/src/demos/Solver/Solver_1.C
+test_solver_2_SOURCES = $(srcdir)/src/demos/Solver/Solver_2.C
 test_performance_matrix_times_vector_SOURCES = $(srcdir)/src/demos/linalg/PerformanceOfMatrixTimesVector.C
 
 test_simple_get_value_1_SOURCES    = $(srcdir)/src/demos/SimpleGetValue.1/main.C

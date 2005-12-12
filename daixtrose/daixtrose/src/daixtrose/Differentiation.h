@@ -31,9 +31,7 @@
 
 #include <limits>
 
-// #include "loki/TypeManip.h"
-
-#include "boost/mpl/apply_if.hpp"
+#include "boost/mpl/eval_if.hpp"
 #include "boost/mpl/identity.hpp"
 #include "boost/mpl/lower_bound.hpp"
 #include "boost/mpl/deref.hpp"
@@ -41,8 +39,8 @@
 #include "boost/mpl/vector.hpp"
 #include "boost/mpl/pair.hpp"
 #include "boost/mpl/bool.hpp"
-#include "boost/mpl/select1st.hpp"
-#include "boost/mpl/select2nd.hpp"
+//
+//
 #include "boost/mpl/lambda.hpp"
 
 #include "boost/type_traits/is_same.hpp"
@@ -84,30 +82,28 @@ namespace mpl = boost::mpl;
 template<class WRT, class ARG>
 struct PreDifferentiator
 {
-private:
   template <int i, int Dummy = 0> struct Overloader;
 
-public:
   typedef typename 
   mpl::if_c
   <
     true, //StaticOccurrenceCounter<ARG, WRT>::Result, 
     mpl::pair<ARG, 
-              Overloader<1> >, 
+              Overloader<1, 0> >, 
     mpl::pair<IsNull<typename Daixt::disambiguation<ARG>::type>,
-              Overloader<0> >
+              Overloader<0, 0> >
   >::type Decision;
 
 
-  typedef typename mpl::select1st<Decision>::type ReturnType;
-  typedef typename mpl::select2nd<Decision>::type Overload;
+  typedef typename mpl::first<Decision>::type ReturnType;
+  typedef typename mpl::second<Decision>::type Overload;
 
   static inline ReturnType Apply(const ARG& arg)
   {
     return Overload::Apply(arg);
   }
 
-private:
+
   // return zero
   template <int Dummy> 
   struct Overloader<0, Dummy> 
@@ -190,7 +186,7 @@ template<class WRT, class ARG> struct DiffImpl
   enum { Condition = SAME_TYPE(WRT, ARG) };
   
   typedef typename 
-  mpl::apply_if_c<
+  mpl::eval_if_c<
     Condition, 
     mpl::identity<IsOne<Disambiguation> >, 
     mpl::identity<IsNull<Disambiguation> >
@@ -229,7 +225,7 @@ struct DiffImpl<WRT, Daixt::UnOp<ARG, OP> >
   struct XXX_____________Sorry_Not_Implemented_Yet_________________XXX {};
 
   typedef typename
-  mpl::apply_if_c<(
+  mpl::eval_if_c<(
                     SAME_TYPE(OP, Daixt::DefaultOps::UnaryPlus)
                     ||
                     SAME_TYPE(OP, Daixt::DefaultOps::UnaryMinus)
@@ -261,7 +257,7 @@ struct DiffImpl<WRT, Daixt::BinOp<LHS, RHS, OP> >
   struct XXX_____________Sorry_Not_Implemented_Yet_________________XXX {};
   
   typedef typename
-    mpl::apply_if_c<(
+    mpl::eval_if_c<(
                       SAME_TYPE(OP, Daixt::DefaultOps::BinaryPlus)
                       ||
                       SAME_TYPE(OP, Daixt::DefaultOps::BinaryMinus)
@@ -391,41 +387,41 @@ private:
   <
     mpl::pair<bool_<m == n >, 
               mpl::pair<IsOne<Disambiguation>, 
-                        Overloader<0> > >,
+                        Overloader<0, 0> > >,
 
     mpl::pair<bool_<m == -n>, 
               mpl::pair<Daixt::UnOp<IsOne<Disambiguation>, 
                                     Daixt::DefaultOps::UnaryMinus>,
-                        Overloader<1> > >,
+                        Overloader<1, 0> > >,
     
     mpl::pair<bool_<m == 1 >, 
               mpl::pair<Daixt::UnOp<Scalar, 
                                     Daixt::DefaultOps::RationalPower<-1, 1> >,
-                        Overloader<2> > >,
+                        Overloader<2, 0> > >,
     
     mpl::pair<bool_<(m < 0)  >,
               mpl::pair<Daixt::UnOp<Scalar, 
                                     Daixt::DefaultOps::UnaryMinus>,
-                        Overloader<3> > >,
+                        Overloader<3, 0> > >,
   
     mpl::pair<bool_<true   >, 
               mpl::pair<Scalar,
-                        Overloader<4> > >
+                        Overloader<4, 0> > >
   > decision_sequence;
   
 
   typedef typename mpl::find_if<
     decision_sequence,
-    boost::is_same<mpl::select1st<mpl::_1>, 
+    boost::is_same<mpl::first<mpl::_1>, 
                    mpl::bool_<true> > > 
   iter_;
 
   typedef typename iter_::type::type pair_;
-  typedef typename mpl::select2nd<pair_>::type decision;
+  typedef typename mpl::second<pair_>::type decision;
   
 public:
-  typedef typename mpl::select1st<decision>::type ScalarFactorT;
-  typedef typename mpl::select2nd<decision>::type Overload;
+  typedef typename mpl::first<decision>::type ScalarFactorT;
+  typedef typename mpl::second<decision>::type Overload;
 
   // type of pow(arg, ((m-n)/n))
   typedef Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<m-n, n> > ModPowArgT;
@@ -451,7 +447,7 @@ private:
   template <int Dummy> 
   struct Overloader<0, Dummy> 
   {
-    static inline ReturnType Apply(const ArgT& UO, const Overloader<0>& Ignored)  
+    static inline ReturnType Apply(const ArgT& UO, const Overloader<0, 0>& Ignored)  
     {
       typedef IsOne<Disambiguation> One;
       

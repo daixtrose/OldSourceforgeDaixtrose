@@ -19,7 +19,6 @@
 #define ENFORCE_H_
 
 #include <string>
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
 
@@ -37,9 +36,7 @@ struct DefaultRaiser
     template <class T>
     static void Throw(const T&, const std::string& message, const char* locus)
     {
-      std::cerr << message << '\n' << locus << '\n';
-      exit(1);
-      //        throw std::runtime_error(message + '\n' + locus);
+        throw std::runtime_error(message + '\n' + locus);
     }
 };
 
@@ -112,13 +109,13 @@ struct DummyNoActionEnforcer
 
 #ifndef NDEBUG
 
-#  define IFNDEF_NDEBUG_ENFORCE(exp) \
+#  define DEBUG_ENFORCE(exp) \
     *MakeEnforcer<DefaultPredicate, DefaultRaiser>((exp), "Expression '" #exp "' failed in '" \
     __FILE__ "', line: " STRINGIZE(__LINE__))
 
 #else
 
-#  define IFNDEF_NDEBUG_ENFORCE(exp) DummyNoActionEnforcer()
+#  define DEBUG_ENFORCE(exp) DummyNoActionEnforcer()
 
 #endif // NDEBUG
 

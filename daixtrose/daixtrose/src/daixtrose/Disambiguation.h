@@ -35,7 +35,7 @@
 
 #include "daixtrose/CompileTimeChecks.h"
 
-#include "boost/mpl/apply_if.hpp"
+#include "boost/mpl/eval_if.hpp"
 #include "boost/mpl/identity.hpp"
 
 namespace Daixt 
@@ -127,11 +127,11 @@ struct use_external_disambiguation
 template<class T> 
 struct disambiguation 
 {
-  typedef typename boost::mpl::apply_if
+  typedef typename boost::mpl::eval_if
   <
     Check::has_member_disambiguation<T>,
     Check::use_member_disambiguation<T>,
-    boost::mpl::apply_if
+    boost::mpl::eval_if
     <
      Check::has_external_disambiguation<T>,
      Check::use_external_disambiguation<T>,

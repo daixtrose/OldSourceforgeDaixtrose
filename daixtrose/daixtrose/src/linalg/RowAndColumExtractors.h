@@ -36,7 +36,7 @@
 #include "boost/lambda/lambda.hpp"
 #include "boost/lambda/bind.hpp"
 
-#include "boost/mpl/apply_if.hpp"
+#include "boost/mpl/eval_if.hpp"
 #include "boost/mpl/identity.hpp"
 
 
@@ -137,6 +137,7 @@ private:
 
 
 } // namespace Private
+
 
 
 // Overloading is implemented by forwarding all calls to a yet-to-be-specialized
@@ -451,7 +452,7 @@ OperatorDelimImpl<RowExtractor<MatrixExpression<T> >,
 
     using Daixt::Convenience::operator*;
 
-    iterator end = Row.end();
+	iterator end = Row.end();
     for (iterator iter = Row.begin(); iter != end; ++iter)
       {
         iter->second *= arg.lhs().Value();
@@ -760,7 +761,7 @@ private:
     const RHS& rhs = arg.rhs();
 
 //     // If lhs is matrix, we can use the const reference
-//     typedef typename boost::mpl::apply_if_c
+//     typedef typename boost::mpl::eval_if_c
 //       <
 //       SAME_TYPE(),
 //       boost::mpl::identity<const RowStorage&>,

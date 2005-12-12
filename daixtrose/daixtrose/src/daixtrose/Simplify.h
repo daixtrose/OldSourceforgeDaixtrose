@@ -29,7 +29,7 @@
 #ifndef DAIXT_SIMPLIFY_INC
 #define DAIXT_SIMPLIFY_INC
 
-#include "boost/mpl/apply_if.hpp"
+#include "boost/mpl/eval_if.hpp"
 #include "boost/mpl/identity.hpp"
 
 #include "daixtrose/CompileTimeChecks.h"
@@ -122,12 +122,12 @@ public:
   typedef typename SimplImpl<T>::type Simpler1;
 
   typedef typename 
-  boost::mpl::apply_if_c<SAME_TYPE(T, Simpler1), 
+  boost::mpl::eval_if_c<SAME_TYPE(T, Simpler1), 
              boost::mpl::identity<T>, 
              SimplImpl<Simpler1> >::type Simpler2;
 
   typedef typename 
-  boost::mpl::apply_if_c<SAME_TYPE(Simpler1, Simpler2),
+  boost::mpl::eval_if_c<SAME_TYPE(Simpler1, Simpler2),
              boost::mpl::identity<Simpler1>,
              Daixt::ExprManip::SimplEvoker<Simpler2> >::type SimplerN;
 
@@ -138,22 +138,22 @@ public:
   // switching between several versions of the expression.
 
 private:
-  template <int i> struct Overloader {};
+  template <int i, int Dummy = 0> struct Overloader {};
   
 #if defined(__HP_aCC)
-  typedef boost::mpl::identity<pair<Simpler1, Overloader<1> > > Option_1;
-  typedef boost::mpl::identity<pair<Simpler2, Overloader<2> > > Option_2;
-  typedef boost::mpl::identity<pair<SimplerN, Overloader<3> > > Option_3;
+  typedef boost::mpl::identity<pair<Simpler1, Overloader<1, 0> > > Option_1;
+  typedef boost::mpl::identity<pair<Simpler2, Overloader<2, 0> > > Option_2;
+  typedef boost::mpl::identity<pair<SimplerN, Overloader<3, 0> > > Option_3;
 
   typedef typename 
-  boost::mpl::apply_if_c<
+  boost::mpl::eval_if_c<
     (SAME_TYPE(Simpler1, Simpler2) 
      || 
      SAME_TYPE(Simpler1, SimplerN)),
     
     Option_1,
     
-    boost::mpl::apply_if_c<SAME_TYPE(Simpler2, SimplerN),
+    boost::mpl::eval_if_c<SAME_TYPE(Simpler2, SimplerN),
                            Option_2,
                            Option_3
                            >
@@ -161,24 +161,24 @@ private:
 
 #else
   typedef typename 
-  boost::mpl::apply_if_c<
+  boost::mpl::eval_if_c<
              SAME_TYPE(T, Simpler1),
              
-             boost::mpl::identity<pair<T, Overloader<0> > >, 
+             boost::mpl::identity<pair<T, Overloader<0, 0> > >, 
              
-             boost::mpl::apply_if_c<
+             boost::mpl::eval_if_c<
                         (SAME_TYPE(Simpler1, Simpler2) 
                          || 
                          SAME_TYPE(Simpler1, SimplerN)),
              
-                        boost::mpl::identity<pair<Simpler1, Overloader<1> > >,
+                        boost::mpl::identity<pair<Simpler1, Overloader<1, 0> > >,
                         
-                        boost::mpl::apply_if_c<
+                        boost::mpl::eval_if_c<
                                    SAME_TYPE(Simpler2, SimplerN),
                                     
-                                   boost::mpl::identity<pair<Simpler2, Overloader<2> > >,
+                                   boost::mpl::identity<pair<Simpler2, Overloader<2, 0> > >,
                                     
-                                   boost::mpl::identity<pair<SimplerN, Overloader<3> > >
+                                   boost::mpl::identity<pair<SimplerN, Overloader<3, 0> > >
                                    >
                         >
              > ::type Decision;
@@ -206,17 +206,17 @@ public:
 
 private:
   // overload on return type 
-  static inline T Apply(const T& t, const Overloader<0>& Ignored)
+  static inline T Apply(const T& t, const Overloader<0, 0>& Ignored)
   {
     return t; 
   }
 
-  static inline Simpler1 Apply(const T& t, const Overloader<1>& Ignored)
+  static inline Simpler1 Apply(const T& t, const Overloader<1, 0>& Ignored)
   {
     return SimplImpl<T>::Apply(t); 
   }
 
-  static inline Simpler2 Apply(const T& t, const Overloader<2>& Ignored)
+  static inline Simpler2 Apply(const T& t, const Overloader<2, 0>& Ignored)
   {
     Simpler1 Tmp1 = SimplImpl<T>::Apply(t);
     Simpler2 Tmp2 = SimplImpl<Simpler1>::Apply(Tmp1);
@@ -225,10 +225,10 @@ private:
 //     return SimplImpl<Simpler1>::Apply(SimplImpl<T>::Apply(t));
   }
 
-  static inline SimplerN Apply(const T& t, const Overloader<3>& Ignored)
+  static inline SimplerN Apply(const T& t, const Overloader<3, 0>& Ignored)
   {
     return 
-      SimplEvoker<Simpler2>::Apply(Apply(t, Overloader<2>()));
+      SimplEvoker<Simpler2>::Apply(Apply(t, Overloader<2, 0>()));
   }
 
 };
@@ -282,21 +282,21 @@ private:
   // DefaultResultT        in all other cases checked here
   struct Error {};
 
-  template <int i> struct Overloader {};
+  template <int i, int Dummy = 0> struct Overloader {};
 
 #if defined(__HP_aCC)
-  typedef boost::mpl::identity<pair<Null, Overloader<0> > > Option_0;
-  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<1> > > Option_1;
+  typedef boost::mpl::identity<pair<Null, Overloader<0, 0> > > Option_0;
+  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<1, 0> > > Option_1;
 
-  typedef typename boost::mpl::apply_if_c<SAME_TYPE(SimplifiedARG, ARGNull), 
+  typedef typename boost::mpl::eval_if_c<SAME_TYPE(SimplifiedARG, ARGNull), 
                                           Option_0, Option_1
                                           >::type Decision;
 
 #else
-  typedef typename boost::mpl::apply_if_c<
+  typedef typename boost::mpl::eval_if_c<
                             SAME_TYPE(SimplifiedARG, ARGNull), 
-                            boost::mpl::identity<pair<Null, Overloader<0> > >,
-                            boost::mpl::identity<pair<DefaultResultT, Overloader<1> > >
+                            boost::mpl::identity<pair<Null, Overloader<0, 0> > >,
+                            boost::mpl::identity<pair<DefaultResultT, Overloader<1, 0> > >
                             >::type Decision;
 #endif
 
@@ -312,12 +312,12 @@ public:
 
 
 private:
-  static Null Apply(const ArgT& UO, const Overloader<0>& Ignored)
+  static Null Apply(const ArgT& UO, const Overloader<0, 0>& Ignored)
   {
     return Null();
   }
 
-  static DefaultResultT Apply(const ArgT& UO, const Overloader<1>& Ignored)
+  static DefaultResultT Apply(const ArgT& UO, const Overloader<1, 0>& Ignored)
   {
     return DefaultResultT(SimplEvoker<ARG>::Apply(UO.arg()));
   }
@@ -386,23 +386,23 @@ private:
   COMPILE_TIME_ASSERT(!(SAME_TYPE(ARG, ARGNull) && (mm == 0))); 
 
 
-  template <int i> struct Overloader {};
+  template <int i, int Dummy = 0> struct Overloader {};
 
 
 #if defined(__HP_aCC)
-  typedef boost::mpl::identity<pair<Null, Overloader<0> > > Option_0;
-  typedef boost::mpl::identity<pair<One, Overloader<1> > > Option_1;
-  typedef boost::mpl::identity<pair<SimplifiedARG, Overloader<2> > > Option_2;
-  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<3> > > Option_3;
+  typedef boost::mpl::identity<pair<Null, Overloader<0, 0> > > Option_0;
+  typedef boost::mpl::identity<pair<One, Overloader<1, 0> > > Option_1;
+  typedef boost::mpl::identity<pair<SimplifiedARG, Overloader<2, 0> > > Option_2;
+  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<3, 0> > > Option_3;
 
   typedef typename 
-  boost::mpl::apply_if_c<
+  boost::mpl::eval_if_c<
            ((m == 0) || SAME_TYPE(ARG, ARGOne)),
            Option_1,
-           boost::mpl::apply_if_c<
+           boost::mpl::eval_if_c<
                       SAME_TYPE(ARG, ARGNull),
                       Option_0,
-                      boost::mpl::apply_if_c<
+                      boost::mpl::eval_if_c<
                                  (m == n),
                                  Option_2,
                                  Option_3
@@ -412,16 +412,16 @@ private:
 
 #else
   typedef typename 
-  boost::mpl::apply_if_c<
+  boost::mpl::eval_if_c<
            ((m == 0) || SAME_TYPE(ARG, ARGOne)),
-           boost::mpl::identity<pair<One, Overloader<1> > >,
-           boost::mpl::apply_if_c<
+           boost::mpl::identity<pair<One, Overloader<1, 0> > >,
+           boost::mpl::eval_if_c<
                       SAME_TYPE(ARG, ARGNull),
-                      boost::mpl::identity<pair<Null, Overloader<0> > >,
-                      boost::mpl::apply_if_c<
+                      boost::mpl::identity<pair<Null, Overloader<0, 0> > >,
+                      boost::mpl::eval_if_c<
                                  (m == n),
-                                 boost::mpl::identity<pair<SimplifiedARG, Overloader<2> > >,
-                                 boost::mpl::identity<pair<DefaultResultT, Overloader<3> > >
+                                 boost::mpl::identity<pair<SimplifiedARG, Overloader<2, 0> > >,
+                                 boost::mpl::identity<pair<DefaultResultT, Overloader<3, 0> > >
                                  >             
                     >          
            >::type Decision;
@@ -439,22 +439,22 @@ public:
   
 
 private:
-  static Null Apply(const ArgT& UO, const Overloader<0>& Ignored)
+  static Null Apply(const ArgT& UO, const Overloader<0, 0>& Ignored)
   {
     return Null();
   }
 
-  static One Apply(const ArgT& UO, const Overloader<1>& Ignored)
+  static One Apply(const ArgT& UO, const Overloader<1, 0>& Ignored)
   {
     return One();
   }
 
-  static SimplifiedARG Apply(const ArgT& UO, const Overloader<2>& Ignored)
+  static SimplifiedARG Apply(const ArgT& UO, const Overloader<2, 0>& Ignored)
   {
     return SimplEvoker<ARG>::Apply(UO.arg());
   }
 
-  static DefaultResultT Apply(const ArgT& UO, const Overloader<3>& Ignored)
+  static DefaultResultT Apply(const ArgT& UO, const Overloader<3, 0>& Ignored)
   {
     return DefaultResultT(SimplEvoker<ARG>::Apply(UO.arg()));
   }
@@ -555,7 +555,7 @@ private:
   // Simplified_RHS       if (rhs != 0 && lhs == 1)
   // DefaultResultT        in all other cases checked here
 
-  template <int i> struct Overloader {};
+  template <int i, int Dummy = 0> struct Overloader {};
   
   static const bool result_is_null = 
     (SAME_TYPE(LHSNull, Simplified_LHS) || SAME_TYPE(RHSNull, Simplified_RHS));
@@ -565,28 +565,28 @@ private:
 
 #if defined(__HP_aCC)
 
-  typedef boost::mpl::identity<pair<Null, Overloader<0> > >           Option_0;  
-  typedef boost::mpl::identity<pair<One, Overloader<1> > >            Option_1;
-  typedef boost::mpl::identity<pair<Simplified_RHS, Overloader<2> > > Option_2;
-  typedef boost::mpl::identity<pair<Simplified_LHS, Overloader<3> > > Option_3;
-  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<4> > > Option_4; 
+  typedef boost::mpl::identity<pair<Null, Overloader<0, 0> > >           Option_0;  
+  typedef boost::mpl::identity<pair<One, Overloader<1, 0> > >            Option_1;
+  typedef boost::mpl::identity<pair<Simplified_RHS, Overloader<2, 0> > > Option_2;
+  typedef boost::mpl::identity<pair<Simplified_LHS, Overloader<3, 0> > > Option_3;
+  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<4, 0> > > Option_4; 
 
   typedef typename 
-  boost::mpl::apply_if_c<
+  boost::mpl::eval_if_c<
              result_is_null,
              
              Option_0, 
              
-             boost::mpl::apply_if_c<
+             boost::mpl::eval_if_c<
                         lhs_is_one,
                
-                        boost::mpl::apply_if_c<
+                        boost::mpl::eval_if_c<
                                    rhs_is_one,
                                    Option_1,
                                    Option_2
                                    >,
                
-                        boost::mpl::apply_if_c<
+                        boost::mpl::eval_if_c<
                                    rhs_is_one,
                                    Option_3,
                                    Option_4
@@ -597,28 +597,28 @@ private:
 #else
 
   typedef typename 
-  boost::mpl::apply_if_c<
+  boost::mpl::eval_if_c<
              result_is_null,
              
-             boost::mpl::identity<pair<Null, Overloader<0> > >, 
+             boost::mpl::identity<pair<Null, Overloader<0, 0> > >, 
              
-             boost::mpl::apply_if_c<
+             boost::mpl::eval_if_c<
                         lhs_is_one,
                
-                        boost::mpl::apply_if_c<
+                        boost::mpl::eval_if_c<
                                    rhs_is_one,
                                    
-                                   boost::mpl::identity<pair<One, Overloader<1> > >,
+                                   boost::mpl::identity<pair<One, Overloader<1, 0> > >,
                                    
-                                   boost::mpl::identity<pair<Simplified_RHS, Overloader<2> > >
+                                   boost::mpl::identity<pair<Simplified_RHS, Overloader<2, 0> > >
                                    >,
                
-                        boost::mpl::apply_if_c<
+                        boost::mpl::eval_if_c<
                                    rhs_is_one,
                                    
-                                   boost::mpl::identity<pair<Simplified_LHS, Overloader<3> > >,
+                                   boost::mpl::identity<pair<Simplified_LHS, Overloader<3, 0> > >,
                                    
-                                   boost::mpl::identity<pair<DefaultResultT, Overloader<4> > >
+                                   boost::mpl::identity<pair<DefaultResultT, Overloader<4, 0> > >
                                    >
                         >
              >::type Decision;
@@ -639,31 +639,31 @@ public:
 
 private:
   static Null Apply(const ArgT& BO,
-                    const Overloader<0>& Ignored)
+                    const Overloader<0, 0>& Ignored)
   {
     return Null();
   }
 
 
-  static One Apply(const ArgT& BO, const Overloader<1>& Ignored)
+  static One Apply(const ArgT& BO, const Overloader<1, 0>& Ignored)
   {
     return One();
   }
 
 
-  static Simplified_RHS Apply(const ArgT& BO, const Overloader<2>& Ignored)
+  static Simplified_RHS Apply(const ArgT& BO, const Overloader<2, 0>& Ignored)
   {
     return SimplEvoker<RHS>::Apply(BO.rhs()); 
   }
 
 
-  static Simplified_LHS Apply(const ArgT& BO, const Overloader<3>& Ignored)
+  static Simplified_LHS Apply(const ArgT& BO, const Overloader<3, 0>& Ignored)
   {
     return SimplEvoker<LHS>::Apply(BO.lhs());
   }
 
 
-  static DefaultResultT Apply(const ArgT& BO, const Overloader<4>& Ignored)
+  static DefaultResultT Apply(const ArgT& BO, const Overloader<4, 0>& Ignored)
   {
     return DefaultResultT(SimplEvoker<LHS>::Apply(BO.lhs()),
                           SimplEvoker<RHS>::Apply(BO.rhs()));
@@ -851,29 +851,29 @@ private:
     (LHS_IsOne && RHS_IsNull) || (LHS_IsNull && RHS_IsOne) };
 
 
-  template <int i> struct Overloader {};
+  template <int i, int Dummy = 0> struct Overloader {};
 
 #if defined(__HP_aCC)
-  typedef boost::mpl::identity<pair<Null, Overloader<0> > >           Option_0;
-  typedef boost::mpl::identity<pair<One, Overloader<1> > >            Option_1;
-  typedef boost::mpl::identity<pair<Simplified_LHS, Overloader<2> > > Option_2;
-  typedef boost::mpl::identity<pair<Simplified_RHS, Overloader<3> > > Option_3;
-  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<4> > > Option_4;
+  typedef boost::mpl::identity<pair<Null, Overloader<0, 0> > >           Option_0;
+  typedef boost::mpl::identity<pair<One, Overloader<1, 0> > >            Option_1;
+  typedef boost::mpl::identity<pair<Simplified_LHS, Overloader<2, 0> > > Option_2;
+  typedef boost::mpl::identity<pair<Simplified_RHS, Overloader<3, 0> > > Option_3;
+  typedef boost::mpl::identity<pair<DefaultResultT, Overloader<4, 0> > > Option_4;
 
   typedef typename
-  boost::mpl::apply_if_c<
+  boost::mpl::eval_if_c<
              ResultIsOne, // special case handled separately
              
              Option_1,
              
-             boost::mpl::apply_if_c<
+             boost::mpl::eval_if_c<
                         LHS_IsNull, 
-                        boost::mpl::apply_if_c<
+                        boost::mpl::eval_if_c<
                                    RHS_IsNull, 
                                    Option_0, 
                                    Option_3
                                    >,
-                        boost::mpl::apply_if_c<
+                        boost::mpl::eval_if_c<
                                    RHS_IsNull, 
                                    Option_2, 
                                    Option_4 
@@ -884,22 +884,22 @@ private:
 #else
 
   typedef typename
-  boost::mpl::apply_if_c<
+  boost::mpl::eval_if_c<
              ResultIsOne, // special case handled separately
              
-             boost::mpl::identity<pair<One, Overloader<1> > >,
+             boost::mpl::identity<pair<One, Overloader<1, 0> > >,
              
-             boost::mpl::apply_if_c<
+             boost::mpl::eval_if_c<
                         LHS_IsNull, 
-                        boost::mpl::apply_if_c<
+                        boost::mpl::eval_if_c<
                                    RHS_IsNull, 
-                                   boost::mpl::identity<pair<Null, Overloader<0> > >, 
-                                   boost::mpl::identity<pair<Simplified_RHS, Overloader<3> > > 
+                                   boost::mpl::identity<pair<Null, Overloader<0, 0> > >, 
+                                   boost::mpl::identity<pair<Simplified_RHS, Overloader<3, 0> > > 
                                    >,
-                        boost::mpl::apply_if_c<
+                        boost::mpl::eval_if_c<
                                    RHS_IsNull, 
-                                   boost::mpl::identity<pair<Simplified_LHS, Overloader<2> > >, 
-                                   boost::mpl::identity<pair<DefaultResultT, Overloader<4> > > 
+                                   boost::mpl::identity<pair<Simplified_LHS, Overloader<2, 0> > >, 
+                                   boost::mpl::identity<pair<DefaultResultT, Overloader<4, 0> > > 
                                    >
                         >
              >::type Decision;
@@ -922,31 +922,31 @@ public:
 
 
 private:
-  static Null Apply(const ArgT& BO, const Overloader<0>& Ignored)
+  static Null Apply(const ArgT& BO, const Overloader<0, 0>& Ignored)
   {
     return Null();
   }
 
 
-  static One Apply(const ArgT& BO, const Overloader<1>& Ignored)
+  static One Apply(const ArgT& BO, const Overloader<1, 0>& Ignored)
   {
     return One();
   }
 
 
-  static Simplified_LHS Apply(const ArgT& BO, const Overloader<2>& Ignored)
+  static Simplified_LHS Apply(const ArgT& BO, const Overloader<2, 0>& Ignored)
   {
     return SimplEvoker<LHS>::Apply(BO.lhs());
   }
 
 
-  static Simplified_RHS Apply(const ArgT& BO, const Overloader<3>& Ignored)
+  static Simplified_RHS Apply(const ArgT& BO, const Overloader<3, 0>& Ignored)
   {
     return SimplEvoker<RHS>::Apply(BO.rhs()); 
   }
 
 
-  static DefaultResultT Apply(const ArgT& BO, const Overloader<4>& Ignored)
+  static DefaultResultT Apply(const ArgT& BO, const Overloader<4, 0>& Ignored)
   {
     return DefaultResultT(SimplEvoker<LHS>::Apply(BO.lhs()),
                           SimplEvoker<RHS>::Apply(BO.rhs()));

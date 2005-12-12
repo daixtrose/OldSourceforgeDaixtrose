@@ -14,7 +14,7 @@ int main()
   
   typedef Linalg::Vector<double, 
                          std::allocator<double> > Vector;
-  // use operaor+,-,*,/ etc
+  // use operator+,-,*,/ etc
   using namespace Daixt::DefaultOps;
   // allows multiplication of non-disambigauted scalars
   using namespace Daixt::Convenience;

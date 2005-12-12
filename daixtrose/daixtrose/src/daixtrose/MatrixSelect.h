@@ -29,7 +29,7 @@
 #ifndef DAIXT_MATRIX_SELECT_INC
 #define DAIXT_MATRIX_SELECT_INC
 
-#include "boost/mpl/apply_if.hpp"
+#include "boost/mpl/eval_if.hpp"
 #include "boost/mpl/identity.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ template <bool B1, bool B2,
 struct MatrixSelect2
 {
   typedef typename
-  apply_if_c<
+  eval_if_c<
     B1, 
     if_c<B2, tt, tf>, 
     if_c<B2, ft, ff>
