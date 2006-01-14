@@ -46,23 +46,9 @@ AC_PROG_LN_S
 # Check for required libraries/header
 ################################################################################
 
-################################################################################
-# loki headers?
-
-AC_MSG_CHECKING([path to loki headers (http://sourceforge.net/projects/loki-lib/)])
-AC_ARG_WITH(loki,
-    AC_HELP_STRING([--with-loki=LOKI_PREFIX],
-            [place where loki headers reside]),
-    [ LOKIDIR="$withval"; echo $withval; ],
-    AC_MSG_ERROR([please rerun using flag --with-loki=LOKI_PREFIX ]) )     
-
-# a simple test, whether the path to loki is correct: check for loki/TypeManip.h
-#AC_CHECK_FILE([$LOKIDIR/loki/TypeManip.h], ,   
-#    AC_MSG_ERROR([Sorry[,] but path to loki seems to be broken]) )
-
 
 ################################################################################
-# boost headers?
+# boost headers
 
 AC_MSG_CHECKING([path to boost headers (http://www.boost.org/)])
 AC_ARG_WITH(boost,
@@ -75,7 +61,6 @@ AC_ARG_WITH(boost,
 ################################################################################
 # transfer the obtained information to automake
 
-AC_SUBST(LOKIDIR)
 AC_SUBST(BOOSTDIR)
 
 

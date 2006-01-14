@@ -274,7 +274,7 @@ PACKAGE_STRING='daixtrose 0.0.2'
 PACKAGE_BUGREPORT='numerical.simulation@web.de'
 
 ac_default_prefix=/opt/daixtrose-0.0.1
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM mkdir_p AWK SET_MAKE am__leading_dot AMTAR am__tar am__untar CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE LN_S LOKIDIR BOOSTDIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM mkdir_p AWK SET_MAKE am__leading_dot AMTAR am__tar am__untar CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE LN_S BOOSTDIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -814,7 +814,6 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-loki=LOKI_PREFIX place where loki headers reside
   --with-boost=BOOST_PREFIX
                           place where boost headers reside
 
@@ -2553,29 +2552,9 @@ fi
 # Check for required libraries/header
 ################################################################################
 
-################################################################################
-# loki headers?
-
-echo "$as_me:$LINENO: checking path to loki headers (http://sourceforge.net/projects/loki-lib/)" >&5
-echo $ECHO_N "checking path to loki headers (http://sourceforge.net/projects/loki-lib/)... $ECHO_C" >&6
-
-# Check whether --with-loki or --without-loki was given.
-if test "${with_loki+set}" = set; then
-  withval="$with_loki"
-   LOKIDIR="$withval"; echo $withval;
-else
-  { { echo "$as_me:$LINENO: error: please rerun using flag --with-loki=LOKI_PREFIX " >&5
-echo "$as_me: error: please rerun using flag --with-loki=LOKI_PREFIX " >&2;}
-   { (exit 1); exit 1; }; }
-fi;
-
-# a simple test, whether the path to loki is correct: check for loki/TypeManip.h
-#AC_CHECK_FILE([$LOKIDIR/loki/TypeManip.h], ,
-#    AC_MSG_ERROR([Sorry[,] but path to loki seems to be broken]) )
-
 
 ################################################################################
-# boost headers?
+# boost headers
 
 echo "$as_me:$LINENO: checking path to boost headers (http://www.boost.org/)" >&5
 echo $ECHO_N "checking path to boost headers (http://www.boost.org/)... $ECHO_C" >&6
@@ -2593,7 +2572,6 @@ fi;
 
 ################################################################################
 # transfer the obtained information to automake
-
 
 
 
@@ -3368,7 +3346,6 @@ s,@CXXDEPMODE@,$CXXDEPMODE,;t t
 s,@am__fastdepCXX_TRUE@,$am__fastdepCXX_TRUE,;t t
 s,@am__fastdepCXX_FALSE@,$am__fastdepCXX_FALSE,;t t
 s,@LN_S@,$LN_S,;t t
-s,@LOKIDIR@,$LOKIDIR,;t t
 s,@BOOSTDIR@,$BOOSTDIR,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t

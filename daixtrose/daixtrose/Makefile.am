@@ -25,7 +25,7 @@
 # the GNU Lesser General Public License.
 
 # Where to find the headers
-AM_CPPFLAGS = -I$(srcdir)/src -I@BOOSTDIR@ -I@LOKIDIR@ 
+AM_CPPFLAGS = -I$(srcdir)/src -I@BOOSTDIR@ 
 
 # we assume a compliant compiler, but maybe it's a good idea to get this
 # refined in configure.in (contributions welcome)
@@ -33,6 +33,7 @@ AM_CPPFLAGS += -DBOOST_NO_CONFIG
 
 
 check_PROGRAMS = \
+	test_solver_demo \
 	test_solver_1 \
 	test_solver_2 \
 	test_performance_matrix_times_vector \
@@ -59,8 +60,11 @@ check_PROGRAMS = \
 	quicktour_pm_lambda_boost \
 	test_linalg
 
+test_solver_demo_SOURCES = $(srcdir)/src/demos/Formulas/UsingFeaturesOfExpression.C
+
 test_solver_1_SOURCES = $(srcdir)/src/demos/Solver/Solver_1.C
 test_solver_2_SOURCES = $(srcdir)/src/demos/Solver/Solver_2.C
+
 test_performance_matrix_times_vector_SOURCES = $(srcdir)/src/demos/linalg/PerformanceOfMatrixTimesVector.C
 
 test_simple_get_value_1_SOURCES    = $(srcdir)/src/demos/SimpleGetValue.1/main.C
