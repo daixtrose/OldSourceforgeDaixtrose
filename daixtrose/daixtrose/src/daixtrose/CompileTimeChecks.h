@@ -29,7 +29,6 @@
 #ifndef DAIXT_COMPILE_TIME_CHECKS_INC
 #define DAIXT_COMPILE_TIME_CHECKS_INC
 
-#include "loki/Typelist.h"
 
 namespace Daixt 
 {
@@ -46,19 +45,6 @@ struct Is<T, T> { static const bool SameType = true; };
 
 #define SAME_TYPE(T1, T2) Daixt::Check::Is<T1, T2>::SameType 
 
-
-////////////////////////////////////////////////////////////////////////////////
-// find a type in a typelist and return true if its there
-template <class T, class T2> struct Find;
-
-template <class T, class Head, class Tail>
-struct Find<T, Loki::Typelist<Head, Tail> > 
-{
-  static const bool Result = 
-    (Loki::TL::IndexOf<Loki::Typelist<Head, Tail>, T>::value != -1);
-};
-
-#define FIND(T, L) Daixt::Check::Find<T, L >::Result
 
 ////////////////////////////////////////////////////////////////////////////////
 // compile time assertion

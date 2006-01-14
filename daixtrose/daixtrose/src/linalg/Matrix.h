@@ -50,6 +50,7 @@
 #include <algorithm>
 #include <functional>
 #include <stdexcept>
+#include <map>
 
 #include <iosfwd>
 #include <iomanip>
@@ -407,12 +408,14 @@ operator+=(const OtherT& Other)
 
   if (Daixt::CountOccurrence(Other, *this)) 
     {
-      //using Daixt::DefaultOps::operator+; // gcc parser bug
+#if defined(__GNUC__) && __GNUC__ == 3 
       using namespace Daixt::DefaultOps;
-      // delegate to operator= which uses temporary
-      // GCC-3.3-cvs is stupid so we give it explicitly
       *this = Daixt::DefaultOps::operator+ <MyOwnType, MyOwnType>
         (static_cast<const MyOwnType&>(*this), Other); 
+#else
+      using Daixt::DefaultOps::operator+;
+      *this = *this + Other; // delegate to operator= which uses temporary
+#endif
     }
   else
     {

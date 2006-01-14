@@ -311,9 +311,14 @@ operator+=(const OtherT& Other)
 
   if (Daixt::CountOccurrence(Other, *this)) 
     {
+#if defined(__GNUC__) && __GNUC__ == 3 
+      using namespace Daixt::DefaultOps;
+      *this = Daixt::DefaultOps::operator+ <MyOwnType, MyOwnType>
+        (static_cast<const MyOwnType&>(*this), Other); 
+#else
       using Daixt::DefaultOps::operator+;
-
       *this = *this + Other; // delegate to operator= which uses temporary
+#endif
     }
   else
     {
@@ -333,7 +338,11 @@ Vector<T, Allocator>&
 Vector<T, Allocator>::
 operator-=(const OtherT& Other)
 {
+#if defined(__GNUC__) && __GNUC__ == 3 
+  using namespace Daixt::DefaultOps;
+#else
   using Daixt::DefaultOps::operator-;
+#endif
 
   using namespace Daixt::DefaultOps;
   return this->operator+=(Daixt::ExprManip::Simplify(- Other));

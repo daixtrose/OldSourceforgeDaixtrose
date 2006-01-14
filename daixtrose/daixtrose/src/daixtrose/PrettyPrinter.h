@@ -29,12 +29,16 @@
 #ifndef DAIXT_PRETTY_PRINTER_INC
 #define DAIXT_PRETTY_PRINTER_INC
 
-#include <iostream>
 
 #include "daixtrose/Scalar.h"
 #include "daixtrose/NeutralElements.h"
 #include "daixtrose/CompileTimeChecks.h"
 #include "daixtrose/ChangeDisambiguation.h"
+
+#include <boost/mpl/vector.hpp>
+#include <boost/mpl/count.hpp>
+
+#include <iostream>
 
 
 namespace Daixt 
@@ -201,13 +205,16 @@ struct PrettyPrinter<Formatter, Daixt::UnOp<ARG, OP> >
 {
   static void Print(std::ostream& os, const Daixt::UnOp<ARG, OP>& UO)
   {
+    typedef boost::mpl::vector<
+      Daixt::DefaultOps::BinaryPlus,
+      Daixt::DefaultOps::BinaryMinus,
+      Daixt::DefaultOps::BinaryMultiply,
+      Daixt::DefaultOps::BinaryDivide> list_t;  
+  
     static const bool DelimitersAroundArg = 
-      FIND(typename Daixt::ExtractOp<ARG>::Result, 
-           TYPELIST_4(Daixt::DefaultOps::BinaryPlus,
-                      Daixt::DefaultOps::BinaryMinus,
-                      Daixt::DefaultOps::BinaryMultiply,
-                      Daixt::DefaultOps::BinaryDivide));
-
+      boost::mpl::count
+      <list_t, typename Daixt::ExtractOp<ARG>::Result>::value;
+  
     Formatter::template Print<OP>(os);
 
     if (DelimitersAroundArg) os << Formatter::LeftDelimiter();
@@ -226,13 +233,16 @@ struct PrettyPrinter<Formatter,
    const Daixt::UnOp<ARG, Daixt::DefaultOps::RationalPower<m, n> >& UO) 
   {
     typedef typename Daixt::ExtractOp<ARG>::Result OP;
-    
+
+    typedef boost::mpl::vector<
+      Daixt::DefaultOps::BinaryPlus,
+      Daixt::DefaultOps::BinaryMinus,
+      Daixt::DefaultOps::BinaryMultiply,
+      Daixt::DefaultOps::BinaryDivide,
+      Daixt::DefaultOps::UnaryMinus> list_t;
+
     static const bool NeedsDelimiters =
-      FIND(OP, TYPELIST_5(Daixt::DefaultOps::BinaryPlus,
-                          Daixt::DefaultOps::BinaryMinus,
-                          Daixt::DefaultOps::BinaryMultiply,
-                          Daixt::DefaultOps::BinaryDivide,
-                          Daixt::DefaultOps::UnaryMinus));
+      boost::mpl::count<list_t, OP>::value;
 
     os << Formatter::PowBegin();
 

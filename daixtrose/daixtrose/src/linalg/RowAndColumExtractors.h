@@ -414,7 +414,11 @@ OperatorDelimImpl<RowExtractor<MatrixExpression<T> >,
     typename T::RowStorage Row = 
       RowExtractor<MatrixExpression<T> >(i)(arg.lhs());
 
+#if defined(__GNUC__) && __GNUC__ == 3 
+    using namespace Daixt::Convenience;
+#else
     using Daixt::Convenience::operator*;
+#endif
 
     iterator end = Row.end();
     for (iterator iter = Row.begin(); iter != end; ++iter)
@@ -450,7 +454,11 @@ OperatorDelimImpl<RowExtractor<MatrixExpression<T> >,
     typename T::RowStorage Row = 
       RowExtractor<MatrixExpression<T> >(i)(arg.rhs());
 
+#if defined(__GNUC__) && __GNUC__ == 3 
+    using namespace Daixt::Convenience;
+#else
     using Daixt::Convenience::operator*;
+#endif
 
 	iterator end = Row.end();
     for (iterator iter = Row.begin(); iter != end; ++iter)
@@ -631,13 +639,15 @@ OperatorDelimImpl<RowExtractor<VectorExpression<T> >,
     NumT LHS_Result = RowExtractor<VectorExpression<T> >(i)(arg.lhs());
     NumT RHS_Result = RowExtractor<VectorExpression<T> >(i)(arg.rhs());
 
+#if defined(__GNUC__) && __GNUC__ == 3 
+    NumT Result = 
+      Daixt::DefaultOps::operator+ <NumT, NumT>(LHS_Result, RHS_Result);
+    return Result;
+#else
     using Daixt::DefaultOps::operator+;
-
     NumT Result = LHS_Result + RHS_Result;
     return Result;
-//     return (RowExtractor<VectorExpression<T> >(i)(arg.lhs())
-//             +
-//             RowExtractor<VectorExpression<T> >(i)(arg.rhs()));
+#endif
   }
 };
 

@@ -29,14 +29,13 @@
 #ifndef TINY_GET_INDEXED_VALUE_INC
 #define TINY_GET_INDEXED_VALUE_INC
 
-#include <cstddef>
-
-#include "loki/TypeManip.h"
-
 #include "tiny/TinyMatrix.h"
 #include "tiny/MatrixVectorOps.h"
 
 #include "daixtrose/Daixt.h"
+
+#include <boost/mpl/if.hpp>
+#include <cstddef>
 
 
 namespace TinyMat
@@ -465,9 +464,9 @@ private:
   
   template <std::size_t i> struct Overloader {};
 
-  typedef typename Loki::Select<MatrixTimesVector,
-                                Overloader<1>,
-                                Overloader<0> >::Result Overload;
+  typedef typename boost::mpl::if_c<MatrixTimesVector,
+                                    Overloader<1>,
+                                    Overloader<0> >::type Overload;
   
   //////////////////////////////////////////////////////////////////////////////
   // the normal forward to OP
