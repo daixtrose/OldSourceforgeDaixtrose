@@ -103,67 +103,67 @@ quicktour_pm_lambda_boost_CPPFLAGS =  $(AM_CPPFLAGS) "-DUSE_BOOST_LAMBDA"
 
 
 EXTRA_DIST = \
-        $(srcdir)/src/daixtrose/BinOps.h \
-        $(srcdir)/src/daixtrose/CompileTimeChecks.h \
-        $(srcdir)/src/daixtrose/ConstRef.h \
-        $(srcdir)/src/daixtrose/CountLeaves.h \
-        $(srcdir)/src/daixtrose/CountOccurence.h \
-        $(srcdir)/src/daixtrose/Daixt.h \
-        $(srcdir)/src/daixtrose/DefaultOps.h \
-        $(srcdir)/src/daixtrose/Differentiation.h \
-        $(srcdir)/src/daixtrose/Disambiguation.h \
-        $(srcdir)/src/daixtrose/Expr.h \
-        $(srcdir)/src/daixtrose/ExtractOp.h \
-        $(srcdir)/src/daixtrose/MatrixSelect.h \
-        $(srcdir)/src/daixtrose/NeutralElements.h \
-        $(srcdir)/src/daixtrose/PrettyPrinter.h \
-        $(srcdir)/src/daixtrose/Scalar.h \
-        $(srcdir)/src/daixtrose/Simplify.h \
-        $(srcdir)/src/daixtrose/UnOps.h \
-        $(srcdir)/src/daixtrose/ChangeDisambiguation.h \
-        $(srcdir)/src/demos/SimpleGetValue.1/main.C \
-        $(srcdir)/src/demos/SimpleGetValue.2/main.C \
-        $(srcdir)/src/demos/linalg/TestRowSum.C \
-        $(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C \
-        $(srcdir)/src/demos/linalg/TestInverse.C \
-        $(srcdir)/src/demos/linalg/TestLinalg.C \
-        $(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C \
-        $(srcdir)/src/demos/linalg/PerformanceOfMatrixTimesVector.C \
-        $(srcdir)/src/demos/linalg/TestL2_Norm.C \
-        $(srcdir)/src/demos/ChangeDisambiguation/main.C \
+	$(srcdir)/src/tiny/MatrixVectorOps.h \
+        $(srcdir)/src/tiny/GetIndexedValue.h \
+        $(srcdir)/src/tiny/TinyMatAndVec.h \
+        $(srcdir)/src/tiny/TinyVector.h \
+        $(srcdir)/src/tiny/TinyMatrix.h \
         $(srcdir)/src/demos/tiny/TestTinyMat.C \
         $(srcdir)/src/demos/tiny/TestTinyVec.C \
-        $(srcdir)/src/demos/simplify/TestSimplify.C \
+        $(srcdir)/src/demos/SimpleGetValue.1/main.C \
+        $(srcdir)/src/demos/SimpleGetValue.2/main.C \
         $(srcdir)/src/demos/quicktour/Mini.C \
-        $(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C \
-        $(srcdir)/src/demos/quicktour/Linalg.C \
         $(srcdir)/src/demos/quicktour/Mini.2.C \
         $(srcdir)/src/demos/quicktour/Mini.3.C \
         $(srcdir)/src/demos/quicktour/Mini.4.C \
         $(srcdir)/src/demos/quicktour/Mini.5.C \
         $(srcdir)/src/demos/quicktour/Differentiation.C \
+        $(srcdir)/src/demos/quicktour/Linalg.C \
         $(srcdir)/src/demos/quicktour/PoorMansLambda.C \
+        $(srcdir)/src/demos/quicktour/TinyMatrixAndVector.C \
+        $(srcdir)/src/demos/simplify/TestSimplify.C \
+        $(srcdir)/src/demos/ChangeDisambiguation/main.C \
+        $(srcdir)/src/demos/linalg/TestBlockedMatAndVec.C \
+        $(srcdir)/src/demos/linalg/TestPrintingOfBlockedMatrix.C \
+        $(srcdir)/src/demos/linalg/PerformanceOfMatrixTimesVector.C \
+        $(srcdir)/src/demos/linalg/TestRowSum.C \
+        $(srcdir)/src/demos/linalg/TestL2_Norm.C \
+        $(srcdir)/src/demos/linalg/TestInverse.C \
+        $(srcdir)/src/demos/linalg/TestLinalg.C \
+        $(srcdir)/src/error_handling/enforce.h \
+        $(srcdir)/src/linalg/Vector.h \
+        $(srcdir)/src/linalg/SliceIterator.h \
         $(srcdir)/src/linalg/Disambiguation.h \
-        $(srcdir)/src/linalg/Inverse.h \
-        $(srcdir)/src/linalg/L2_Norm.h \
-        $(srcdir)/src/linalg/Linalg.h \
+        $(srcdir)/src/linalg/RowAndColumExtractors.h \
         $(srcdir)/src/linalg/Lump.h \
         $(srcdir)/src/linalg/Matrix.h \
         $(srcdir)/src/linalg/MatrixVectorOps.h \
-        $(srcdir)/src/linalg/PrintBlockedMatrix.h \
-        $(srcdir)/src/linalg/RowAndColumCounters.h \
-        $(srcdir)/src/linalg/RowAndColumExtractors.h \
         $(srcdir)/src/linalg/RowSum.h \
-        $(srcdir)/src/linalg/SliceIterator.h \
-        $(srcdir)/src/linalg/SliceVector.h \
         $(srcdir)/src/linalg/Transpose.h \
-        $(srcdir)/src/linalg/Vector.h \
-        $(srcdir)/src/tiny/GetIndexedValue.h \
-        $(srcdir)/src/tiny/MatrixVectorOps.h \
-        $(srcdir)/src/tiny/TinyMatAndVec.h \
-        $(srcdir)/src/tiny/TinyMatrix.h \
-        $(srcdir)/src/tiny/TinyVector.h \
-        $(srcdir)/src/error_handling/enforce.h \
+        $(srcdir)/src/linalg/Linalg.h \
+        $(srcdir)/src/linalg/L2_Norm.h \
+        $(srcdir)/src/linalg/PrintBlockedMatrix.h \
+        $(srcdir)/src/linalg/SliceVector.h \
+        $(srcdir)/src/linalg/Inverse.h \
+        $(srcdir)/src/linalg/RowAndColumCounters.h \
+        $(srcdir)/src/daixtrose/MatrixSelect.h \
+        $(srcdir)/src/daixtrose/CountOccurence.h \
+        $(srcdir)/src/daixtrose/Expr.h \
+        $(srcdir)/src/daixtrose/Disambiguation.h \
+        $(srcdir)/src/daixtrose/CountLeaves.h \
+        $(srcdir)/src/daixtrose/ConstRef.h \
+        $(srcdir)/src/daixtrose/ChangeDisambiguation.h \
+        $(srcdir)/src/daixtrose/Daixt.h \
+        $(srcdir)/src/daixtrose/PrettyPrinter.h \
+        $(srcdir)/src/daixtrose/Differentiation.h \
+        $(srcdir)/src/daixtrose/DefaultOps.h \
+        $(srcdir)/src/daixtrose/BinOps.h \
+        $(srcdir)/src/daixtrose/ExtractOp.h \
+        $(srcdir)/src/daixtrose/Simplify.h \
+        $(srcdir)/src/daixtrose/NeutralElements.h \
+        $(srcdir)/src/daixtrose/Scalar.h \
+        $(srcdir)/src/daixtrose/CompileTimeChecks.h \
+        $(srcdir)/src/daixtrose/UnOps.h \
         $(srcdir)/wwwdoc/bugs.html \
         $(srcdir)/wwwdoc/contact.html \
         $(srcdir)/wwwdoc/download.html \
