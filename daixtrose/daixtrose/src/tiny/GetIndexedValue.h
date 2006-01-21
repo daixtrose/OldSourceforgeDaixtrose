@@ -407,7 +407,7 @@ struct OperatorDelimImpl<GetValue<T>,
   
   static inline T Apply(const ArgT& S, std::size_t j) 
   {
-    return static_cast<T>(S);
+    return S.Value();
   }
 };
 
