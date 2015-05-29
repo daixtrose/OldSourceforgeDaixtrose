@@ -1,7 +1,7 @@
 # Daixtrose - Differentiable EXpression Templates - the Reusable Open Source Engine
 
 This repository contains the code from http://daixtrose.sf.net. 10 Years ago this software was cool. 
-Now it probably only compiles after some adoptions. Do not judge my C++ skills by looking at this libary. I was young and motivated, but from today's POV I could have done better. 
+Now it probably only compiles after some adoptions. Do not judge my C++ skills by looking at this libary. I was young and motivated, but from today's POV I could have done better. It also was the Good Old Times when Ream Programmers (TM) did not need unit tests.
 
 You can get an idea what Daixtrose was for by reading
 [the old docs](daixtrose/daixtrose/wwwdoc/manual/MAIN/main.pdf).
