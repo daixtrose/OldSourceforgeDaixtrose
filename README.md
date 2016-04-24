@@ -12,3 +12,7 @@ It does not provide automatic differentiation but according to Eric this should 
 If you pay my salary for 9 months I will rewrite Daixtrose on top of [boost::proto-0x](https://github.com/ericniebler/proto-0x).
 
 You can also take a look at http://2013.cppnow.org/files/2013/03/janssens.abstract.pdf to get an idea what proto can be used for.  
+
+# Download
+
+TBD
